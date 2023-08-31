@@ -1,6 +1,6 @@
-const fs = require("fs")
+import fs from "fs"
 
-class ProductManager {
+export class ProductManager {
     constructor(filePath) {
         this.filePath = filePath
     }
@@ -72,6 +72,7 @@ class ProductManager {
             if(this.fileExist()){
                 const products = await this.getProducts()
                 const product = products.find((product) => product.id === id)
+
                 if (product) {
                     console.log(`Id "${id}" encontrado:`, product)
                     return product
@@ -139,97 +140,3 @@ class ProductManager {
         }
     }
 }
-
-// Probar el código
-const operations = async () => {
-    try {
-        const productManager = new ProductManager("./products.json")
-
-        // Ver productos iniciales (0)
-        console.log(await productManager.getProducts())
-
-        // Agregar producto de prueba
-        await productManager.addProduct({
-            title: "Producto prueba",
-            description: "Este es un producto prueba",
-            price: 200,
-            thumbnail: "Sin imagen",
-            code: "abc123",
-            stock: 25
-        })
-
-        // Agregar segundo producto de prueba
-        await productManager.addProduct({
-            title: "Producto prueba 2",
-            description: "Este es el segundo producto prueba",
-            price: 300,
-            thumbnail: "Sin imagen",
-            code: "abc12345",
-            stock: 20
-        })
-
-        // Agregar tercer producto de prueba
-        await productManager.addProduct({
-            title: "Producto prueba 3",
-            description: "Este es el tercer producto prueba",
-            price: 350,
-            thumbnail: "Sin imagen",
-            code: "abc123456",
-            stock: 15
-        })
-
-        // Ver los productos agregados
-        console.log(await productManager.getProducts())
-
-        // Agregar producto de prueba con código repetido
-        await productManager.addProduct({
-            title: "Producto prueba repetido",
-            description: "Este es un producto prueba repetido",
-            price: 290,
-            thumbnail: "Sin imagen",
-            code: "abc123",
-            stock: 6
-        })
-
-        // Agregar producto de prueba con campos incompletos e inválidos
-        await productManager.addProduct({
-            title: undefined,
-            description: "Producto con campos incompletos",
-            price: "300",
-            thumbnail: "Sin imagen",
-            code: "abc123456789",
-            stock: -10
-        })
-
-        // Buscar producto por id
-        await productManager.getProductById(1)
-
-        // Buscar producto por id inexistente
-        await productManager.getProductById(10)
-        
-        // Actualizar campos de un producto
-        await productManager.updateProduct(1, {
-            price: 250,
-            stock: 30,
-        })
-
-        // Actualizar campos de un producto inexistente
-        await productManager.updateProduct(10, {
-            price: 400,
-            stock: 5
-        })
-
-        // Eliminar un producto
-        await productManager.deleteProduct(2)
-
-        // Eliminar un producto inexistente
-        await productManager.deleteProduct(10)
-
-        // Ver lista final de productos
-        console.log(await productManager.getProducts())
-    } catch (error) {
-        console.log(error.message)
-    }
-}
-
-operations()

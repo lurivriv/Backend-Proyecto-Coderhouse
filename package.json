@@ -1,0 +1,24 @@
+{
+  "name": "backend-proyecto-coderhouse",
+  "version": "1.0.0",
+  "description": "Proyecto del curso de Programación Backend en CoderHouse.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lurivriv/Backend-Proyecto-Coderhouse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lurivriv/Backend-Proyecto-Coderhouse/issues"
+  },
+  "homepage": "https://github.com/lurivriv/Backend-Proyecto-Coderhouse#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
