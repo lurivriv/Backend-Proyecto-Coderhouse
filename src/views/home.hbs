@@ -1,0 +1,25 @@
+<div>
+    {{#if products.length}}
+    <h1>MENÚ</h1>
+    {{#each products}}
+    <div>
+        {{#if thumbnail}}
+        <img src="/assets/imgProducts/{{this.thumbnail}}" alt="{{this.title}}">
+        {{/if}}
+        <h2>{{this.title}}</h2>
+        <p>${{this.price}}</p>
+        <p>{{this.category}}</p>
+        <p>Stock: {{this.stock}}</p>
+        <p>Estado: {{this.status}}</p>
+        <h3>Ingredientes</h3>
+        <ul>
+            {{#each this.description}}
+            <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/each}}
+    {{else}}
+    <h1>NO HAY MENÚ DISPONIBLE :(</h1>
+    {{/if}}
+</div>

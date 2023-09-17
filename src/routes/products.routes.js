@@ -1,4 +1,5 @@
-import { Router} from "express"
+import { Router } from "express"
+import { uploader } from "../utils.js"
 import { productManagerService } from "../persistence/index.js"
 
 const router = Router()
@@ -37,9 +38,14 @@ router.get("/:pid", async (req, res) => {
 })
 
 // Agregar un nuevo producto (POST: http://localhost:8080/api/products)
-router.post("/", async (req, res) => {
+router.post("/", uploader.single("thumbnail"), async (req, res) => {
     try {
         const productInfo = req.body
+        const thumbnailFile = req.file.filename
+
+        productInfo.thumbnail = thumbnailFile
+        productInfo.price = parseFloat(productInfo.price)
+        productInfo.stock = parseInt(productInfo.stock)
 
         await productManagerService.addProduct(productInfo)
         res.status(201).json({ message: "Producto agregado" })
@@ -49,10 +55,19 @@ router.post("/", async (req, res) => {
 })
 
 // Actualizar un producto por su ID (PUT: http://localhost:8080/api/products/1)
-router.put("/:pid", async (req, res) => {
+router.put("/:pid", uploader.single("thumbnail"), async (req, res) => {
     try {
         const pid = parseInt(req.params.pid)
         const updateFields = req.body
+        const thumbnailFile = req.file.filename
+
+        if (!thumbnailFile || thumbnailFile.length === 0) {
+            delete updateFields.thumbnailFile
+        } else {
+            updateFields.thumbnail = thumbnailFile
+        }
+        updateFields.price && !isNaN(updateFields.price) && (updateFields.price = parseFloat(updateFields.price))
+        updateFields.stock && !isNaN(updateFields.stock) && (updateFields.stock = parseInt(updateFields.stock))
 
         await productManagerService.updateProduct(pid, updateFields)
         res.status(200).json({ message: `Producto con ID ${pid} actualizado` })

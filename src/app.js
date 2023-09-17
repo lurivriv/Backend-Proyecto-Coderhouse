@@ -1,19 +1,63 @@
 import express from "express"
+import { engine } from "express-handlebars"
+import { Server } from "socket.io"
 import path from "path"
+import { __dirname } from "./utils.js"
+import { viewsRouter } from "./routes/views.routes.js"
 import { productsRouter } from "./routes/products.routes.js"
 import { cartsRouter } from "./routes/carts.routes.js"
+import { productManagerService } from "./persistence/index.js"
 
 const port = 8080
 const app = express()
-const __dirname = path.resolve()
 
-app.listen(port, () => {
-    console.log("Servidor funcionando")
+const httpServer = app.listen(port, () => {
+    console.log("Servidor funcionando en el puerto: ", port)
 })
 
+const socketServer = new Server(httpServer)
+
+// Configuración handlebars
+app.engine(".hbs", engine({extname: ".hbs"}))
+app.set("view engine", ".hbs")
+app.set("views", path.join(__dirname, "/views"))
+
+// Configuración socket.io
+socketServer.on("connection", async (socket) => {
+    console.log("Cliente conectado: ", socket.id)
+
+    // Obtener productos
+    const products = await productManagerService.getProducts()
+    socket.emit("productsArray", products)
+
+    // Agregar el producto del socket del cliente
+    socket.on("addProduct", async (productsData) => {
+        try {
+            const result = await productManagerService.addProduct(productsData)
+            const products = await productManagerService.getProducts()
+            socketServer.emit("productsArray", products)
+        } catch (error) {
+            console.error(error.message)
+        }
+    })
+
+    // Eliminar el producto del socket del cliente
+    socket.on("deleteProduct", async (productId) => {
+        try {
+            const result = await productManagerService.deleteProduct(productId)
+            const products = await productManagerService.getProducts()
+            socketServer.emit("productsArray", products)
+        } catch (error) {
+            console.error(error.message)
+        }
+    })
+})
+
+// Middlewares
 app.use(express.json())
-app.use(express.static(path.join(__dirname, "public")))
+app.use(express.static(path.join(__dirname, "/public")))
 
 // Rutas
+app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)

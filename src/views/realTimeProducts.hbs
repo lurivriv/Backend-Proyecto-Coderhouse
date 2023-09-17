@@ -1,0 +1,47 @@
+<!-- Formulario para agregar productos -->
+<h2>AGREGAR PRODUCTOS</h2>
+<form id="addProductForm" method="post" enctype="multipart/form-data">
+    <label for="title">Título</label>
+    <input type="text" name="title" placeholder="Título">
+    <br>
+    <label for="description">Descripción (Separar los ingredientes con comas ",")</label>
+    <input type="text" name="description" placeholder="Ingredientes">
+    <br>
+    <label for="code">Código</label>
+    <input type="text" name="code" placeholder="Código">
+    <br>
+    <label for="price">Precio</label>
+    <input type="number" name="price" placeholder="Precio">
+    <br>
+    <label for="stock">Stock</label>
+    <input type="number" name="stock" placeholder="Stock">
+    <br>
+    <label for="category">Categoría</label>
+    <select name="category">
+        <option value="vegano">vegano</option>
+        <option value="vegetariano">vegetariano</option>
+    </select>
+    <br>
+    <label for="status">Estado</label>
+    <div>
+        <input type="radio" id="statusTrue" name="status" value="true" checked>
+        <label for="statusTrue">True</label>
+    </div>
+    <div>
+        <input type="radio" id="statusFalse" name="status" value="false">
+        <label for="statusFalse">False</label>
+    </div>
+    <br>
+    <label for="thumbnail">Imagen</label>
+    <input type="file" name="thumbnail">
+    <br>
+    <button ontype="submit">Agregar</button>
+</form>
+
+<hr>
+
+<!-- Productos -->
+<div id="cardProductsContainer"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" src="/js/realTimeProducts.js"></script>
