@@ -1,5 +1,4 @@
 import { Router} from "express"
-import { uploader } from "../utils.js"
 import { productManagerService } from "../persistence/index.js"
 
 const router = Router()
@@ -19,11 +18,6 @@ router.get("/realtimeproducts", async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
-})
-
-// Subir imágenes
-router.post("/realtimeproducts", uploader.single("thumbnail"), (req, res) => {    
-    res.render("realTimeProducts")
 })
 
 export { router as viewsRouter }

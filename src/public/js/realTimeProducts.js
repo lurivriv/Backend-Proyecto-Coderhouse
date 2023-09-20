@@ -70,7 +70,12 @@ addProductForm.addEventListener("submit", (e) => {
     jsonData.price = parseFloat(jsonData.price)
     jsonData.stock = parseInt(jsonData.stock)
     jsonData.status = (formData.get("status") === "true")
-    jsonData.thumbnail = ""
+    
+    if (jsonData.thumbnail && jsonData.thumbnail.name) {
+        jsonData.imageName = `${Date.now()}-${jsonData.thumbnail.name}`
+    } else {
+        jsonData.imageName = ""
+    }
     
     socketClient.emit("addProduct", jsonData)
     addProductForm.reset()

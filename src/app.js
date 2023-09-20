@@ -1,3 +1,4 @@
+import fs from "fs"
 import express from "express"
 import { engine } from "express-handlebars"
 import { Server } from "socket.io"
@@ -33,7 +34,28 @@ socketServer.on("connection", async (socket) => {
     // Agregar el producto del socket del cliente
     socket.on("addProduct", async (productsData) => {
         try {
-            const result = await productManagerService.addProduct(productsData)
+            let filePath = ""
+
+            if (productsData.imageName !== "") {
+                filePath = `${path.join(__dirname, `/public/assets/imgProducts/${productsData.imageName}`)}`
+            }
+
+            const productToSave = {
+                "title": productsData.title,
+                "description": productsData.description,
+                "code": productsData.code,
+                "price": productsData.price,
+                "stock": productsData.stock,
+                "category": productsData.category,
+                "status": productsData.status,
+                "thumbnail": productsData.imageName
+            }
+
+            if (productsData.imageName !== "") {
+                await fs.promises.writeFile(filePath, productsData.thumbnail)
+            }
+            
+            const result = await productManagerService.addProduct(productToSave)
             const products = await productManagerService.getProducts()
             socketServer.emit("productsArray", products)
         } catch (error) {
