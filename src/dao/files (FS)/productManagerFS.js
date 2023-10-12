@@ -1,6 +1,6 @@
 import fs from "fs"
 
-export class ProductManager {
+export class ProductManagerFS {
     constructor(filePath) {
         this.filePath = filePath
     }

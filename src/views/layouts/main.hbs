@@ -3,16 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto backend</title>
+    <meta name="description" content="En Sabores verdes podes comprar comida vegana y vegetariana casera, una cena basada en plantas siempre es buena opción.">
+    {{!-- Google fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Lora:ital@1&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Paytone+One&display=swap" rel="stylesheet">
+    {{!-- Bootstrap --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    {{!-- Custom css --}}
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/assets/sabores-verdes.ico">
+    <title>{{title}}</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/realTimeProducts">Productos en tiempo real</a></li>
-        </ul>
+    <nav class="container-fluid navbar navbar-expand-lg">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/assets/logo-saboresverdes.svg" alt="Logo de Sabores Verdes">
+            </a>
+            <button class="btn-cart-widget" onclick="window.location.href = '/api/carts'">
+                <img class="icon-cart-widget" src="/assets/icon-cart.png" alt="Carrito">
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/realTimeProducts">REAL TIME PRODUCTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/products">PRODUCTS PAGINATE</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
+
     {{{body}}}
-    <footer>Footer</footer>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-12 pt-lg-4 pt-4 pb-lg-0 pb-2 text-center text-md-start">
+                    <a class="logo-footer-container" href="/"><img class="logo-footer mt-md-2" src="/assets/logo-saboresverdes.svg" alt="Logo de sabores verdes"></a>
+                    <p class="text-footer pt-lg-2 pt-1">Nos esforzamos por ofrecerte lo mejor en comida casera <b>basada en plantas</b>. Creemos en el poder de la alimentación consciente y nos comprometemos a brindarte opciones deliciosas que también sean amigables con el medio ambiente y los animales.</p>
+                    <p class="text-footer py-0"><b>¡Gracias por elegirnos!</b></p>
+                </div>
+                <div class="col-md-4 col-12 px-md-5 pt-lg-4 pb-lg-0 pb-2 text-center text-md-start">
+                    <h4 class="titles-footer">Horarios</h4>
+                    <p class="text-footer pt-lg-2 pt-1">Trabajamos de <b>martes a sábados</b>, de <b>11 a 00</b> horas.</p>
+                </div>
+                <div class="col-md-4 col-12 px-md-5 pt-lg-4 pb-2 text-center text-md-start">
+                    <h4 class="titles-footer">Contacto</h4>
+                    <ul class="text-footer pt-lg-2 pt-1">
+                        <li class="my-1 social-media-footer"><a href="https://www.whatsapp.com/?lang=es" target="_blank"><img class="icon-social-media-footer" src="/assets/icon-whatsapp.png" alt="Whatsapp">+598 111 111 111</a></li>
+                        <li class="mt-3 social-media-footer"><a href="https://www.instagram.com/" target="_blank"><img class="icon-social-media-footer" src="/assets/icon-instagram.png" alt="Instagram">@saboresverdes.uy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <p class="copyright-footer">© Todos los derechos reservados - 2023</p>
+            </div>
+        </div>
+    </footer>
+{{!-- Bootstrap --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

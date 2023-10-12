@@ -1,0 +1,33 @@
+<div class="app-content detail-container container">
+    {{#if product}}
+        <div class="card">
+            <div class="card-detail">
+                {{#if product.thumbnail}}
+                    <img class="img-card-detail card-img" src="/assets/imgProducts/{{product.thumbnail}}" alt="{{product.title}}">
+                {{/if}}
+                <div class="body-card-detail">
+                    <h1 class="title-card-detail card-title">{{product.title}}</h1>
+                    <p class="text-card-detail card-text">${{product.price}}</p>
+                    <p class="category-card-detail card-text" data-category="{{product.category}}">
+                        {{product.category}}
+                    </p>
+                    <p class="stock-card-detail">{{product.stock}} disponibles</p>
+                    <button class="btn-add-to-cart btn btn-primary" data-product-id="{{product._id}}" data-product-title="{{product.title}}">Agregar al carrito</button>                
+                </div>
+            </div>
+            <div>
+                <h6 class="subtitle-card-detail card-subtitle">INGREDIENTES</h2>
+                <ul class="info-card-detail">
+                    {{#each product.description}}
+                        <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    {{else}}
+        <h1 class="title-category">No se pudo cargar el producto :(</h1>
+    {{/if}}
+</div>
+ 
+<script type="module" src="/js/main.js"></script>
+<script type="module" src="/js/productDetail.js"></script>

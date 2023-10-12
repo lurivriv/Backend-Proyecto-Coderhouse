@@ -1,9 +1,9 @@
 <div class="app-content container">
     <h1 class="title-category">MENÚ</h1>
-    {{#if productsNoFilter.length}}
+    {{#if payload.length}}
         <div>
             <div class="item-list">
-                {{#each productsNoFilter}}
+                {{#each payload}}
                     <a href="/products/{{this._id}}" class="card-list">
                         <div class="card">
                             {{#if thumbnail}}
@@ -20,6 +20,15 @@
                     </a>
                 {{/each}}
             </div>
+        </div>
+        <div class="pagination-container">
+            {{#if prevLink}}
+                <a href="{{prevLink}}"><p class="pagination-link">{{prevPage}}</p></a>
+            {{/if}}
+            <p class="pagination-active">{{page}}</p>
+            {{#if nextLink}}
+                <a href="{{nextLink}}"><p class="pagination-link">{{nextPage}}</p></a>
+            {{/if}}
         </div>
     {{else}}
         <h2 class="title-category">No se pudo cargar el menú :(</h2>

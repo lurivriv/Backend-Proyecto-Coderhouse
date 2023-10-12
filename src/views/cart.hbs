@@ -1,0 +1,75 @@
+<div class="app-content container">
+    <h1 class="title-category">CARRITO</h1>
+    {{#if cart.products.length}}
+        <div class="table-cart-container">
+            <table class="section-table-cart">
+                <thead>
+                    <tr>
+                        <th class="section-cart" colspan="4">MENÚ</th>
+                        <th class="section-cart" colspan="2">PRECIO</th>
+                        <th class="section-cart" colspan="3">CANTIDAD</th>
+                        <th class="section-cart" colspan="2">SUBTOTAL</th>
+                        <th class="section-cart" colspan="1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each cart.products}}
+                        <tr>
+                            <td class="divider-card-cart" colspan="4">
+                                <a href="/products/{{this.product._id}}" class="info-card-cart">
+                                    {{#if product.thumbnail}}
+                                        <img class="img-card-cart" src="/assets/imgProducts/{{this.product.thumbnail}}" alt="{{this.product.title}}">
+                                    {{/if}}
+                                    <div>
+                                        <p class="text-card-cart">{{this.product.title}}</p>
+                                        <p class="text-card-cart category-card d-inline" data-category="{{this.product.category}}">
+                                            {{this.product.category}}
+                                        </p>
+                                    </div>
+                                </a>
+                            </td>
+                            <td class="text-card-cart text-center divider-card-cart" colspan="2">${{this.product.price}}</td>
+                            <td class="text-card-cart text-center divider-card-cart" colspan="3">
+                                <button class="btn-count-cart btn btn-primary">-</button>
+                                {{this.quantity}}
+                                <button class="btn-count-cart btn btn-primary">+</button>
+                            </td>
+                            <td class="text-card-cart text-center divider-card-cart" colspan="2">Subtotal: {{this.quantity}} * {{this.product.price}}</td>
+                            <td class="divider-card-cart" colspan="1">
+                                <button class="btn-delete-cart btn btn-primary">
+                                    <img src="/assets/icon-trash.png" alt="Eliminar">
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" colspan="4">
+                            <button class="btn-empty-cart btn btn-primary">Vaciar carrito</button>
+                        </td>
+                        <td class="total-price-cart text-center" colspan="4">TOTAL: $</td>
+                        <td class="text-center" colspan="4">
+                            <button class="btn-continue-buy btn btn-primary">Continuar compra</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="12">
+                            <button class="btn-back-menu btn btn-primary" onclick="window.location.href = '/'">Volver al menú</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    {{else}}
+        <h2 class="title-category">Tu carrito está vacío :(</h2>
+        <div class="empty-cart-container">
+            <div>
+                <img class="img-empty-cart" src="/assets/icon-empty-cart.png" alt="Carrito vacío">
+                <button class="btn-back-menu d-block" onclick="window.location.href = '/'">Volver al menú</button>
+            </div>
+        </div>
+    {{/if}}
+</div>
+
+<script type="module" src="/js/main.js"></script>

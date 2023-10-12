@@ -6,49 +6,70 @@ const cardProductsContainer = document.getElementById("cardProductsContainer")
 socketClient.on("productsArray", (productsData) => {
     if (productsData.length > 0) {
         cardProductsContainer.innerHTML = `
-            <h1>MENÚ</h1>
+            <h1 class="title-category">MENÚ</h1>
+            <div>
+                <div class="item-list">
         `
 
         productsData.forEach((product) => {
-            let cardProduct = `<div>`
+            let cardProduct = `
+                <div class="card-list">
+                    <a href="/products/${product._id}">
+                        <div class="card">
+            `
 
             if (product.thumbnail) {
                 cardProduct += `
-                    <img src="/assets/imgProducts/${product.thumbnail}" alt="${product.title}">
+                    <img class="card-img-top" src="/assets/imgProducts/${product.thumbnail}" alt="${product.title}">
                 `
             }
 
             cardProduct += `
-                <h2>${product.title}</h2>
-                <p>$${product.price}</p>
-                <p>${product.category}</p>
-                <p>Stock: ${product.stock}</p>
-                <p>Estado: ${product.status}</p>
-                <h3>Ingredientes</h3>
-                <ul>
-                    ${product.description.map((item) => `<li>${item}</li>`).join("")}
-                </ul>
-                <button class="deleteProductBtn" data-product-id="${product.id}">Eliminar</button>
+                        <div class="card-body row justify-content-evenly">
+                            <h5 class="card-title mb-3">${product.title}</h5>
+                            <p class="col-auto text-card-list">$${product.price}</p>
+                            <p class="col-auto text-card-list category-card" data-category="${product.category}">
+                                ${product.category}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                <button class="btn-delete-product" data-product-id="${product._id}">Eliminar</button>
             `
-            
-            cardProduct += `</div>`
-            cardProductsContainer.innerHTML += cardProduct
+
+            cardProductsContainer.querySelector(".item-list").innerHTML += cardProduct
         })
 
+        cardProductsContainer.innerHTML += `</div></div></div>`
+
         // Eliminar productos
-        const deleteProductBtn = document.querySelectorAll(".deleteProductBtn")
+        const deleteProductBtn = document.querySelectorAll(".btn-delete-product")
 
         deleteProductBtn.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 const productId = e.target.getAttribute("data-product-id")
                 if (confirm("¿Queres eliminar este producto?")) {
-                    socketClient.emit("deleteProduct", parseInt(productId))
+                    socketClient.emit("deleteProduct", productId)
                 }
             })
         })
+
+        // Condicional de clases según la categoría del producto (para estilos)
+        const categoryInfo = document.querySelectorAll("[data-category]")
+
+        categoryInfo.forEach((cat) => {
+            const category = cat.getAttribute("data-category")
+            
+            if (category === "vegetariano") {
+                cat.classList.add("vegetarian-category-card")
+            } else if (category === "vegano") {
+                cat.classList.add("vegan-category-card")
+            }
+        })
     } else {
         cardProductsContainer.innerHTML = `
-            <h1>NO HAY MENÚ DISPONIBLE :(</h1>
+            <h1 class="title-category">MENÚ</h1>
+            <h2 class="title-category">No se pudo cargar el menú :(</h2>
         `
     }
 })
@@ -64,17 +85,6 @@ addProductForm.addEventListener("submit", (e) => {
 
     for (const [key, value] of formData.entries()) {
         jsonData[key] = value
-    }
-
-    jsonData.description = jsonData.description.split(",").map((item) => item.trim())
-    jsonData.price = parseFloat(jsonData.price)
-    jsonData.stock = parseInt(jsonData.stock)
-    jsonData.status = (formData.get("status") === "true")
-    
-    if (jsonData.thumbnail && jsonData.thumbnail.name) {
-        jsonData.imageName = `${Date.now()}-${jsonData.thumbnail.name}`
-    } else {
-        jsonData.imageName = ""
     }
     
     socketClient.emit("addProduct", jsonData)

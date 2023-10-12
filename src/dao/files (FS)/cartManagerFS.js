@@ -1,7 +1,7 @@
 import fs from "fs"
 import { productManagerService } from "../index.js"
 
-export class CartManager {
+export class CartManagerFS {
     constructor(filePath) {
         this.filePath = filePath
     }
