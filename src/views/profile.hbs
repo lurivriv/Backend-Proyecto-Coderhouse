@@ -1,0 +1,17 @@
+<div class="app-content container">
+    <h1 class="title-category">TU PERFIL</h1>
+    <div class="profile-container">
+        <ul>
+            {{#if userFirstName}}
+                <li><b class="item-profile">Nombre:</b> <span class="data-item-profile">{{userFirstName}}</span></li>
+                <li><b class="item-profile">Apellido:</b> <span class="data-item-profile">{{userLastName}}</span></li>
+                <li><b class="item-profile">Edad:</b> <span class="data-item-profile">{{userAge}}</span></li>
+            {{/if}}
+            <li><b class="item-profile">Email:</b> <span class="data-item-profile">{{userEmail}}</span></li>
+            <li><b class="item-profile">Rol:</b> <span class="data-item-profile">{{userRole}}</span></li>
+        </ul>
+    </div>
+    <div class="btn-logout-container">
+        <button type="button" class="btn-logout" onclick="window.location.href = '/api/sessions/logout'">Cerrar sesión</button>
+    </div>
+</div>

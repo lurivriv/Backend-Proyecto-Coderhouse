@@ -73,6 +73,209 @@ a:link, a:visited, a:active {
   text-align: center;
 }
 
+.form-label {
+  font-size: 1rem;
+  padding: 0px;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  border: 1px solid rgba(64, 55, 43, 0.5);
+}
+
+.form-control::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.form-control:focus {
+  border-color: #008040;
+  box-shadow: 0 0 0 0.25rem rgba(0, 128, 64, 0.5);
+}
+
+.form-select {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  border: 1px solid rgba(64, 55, 43, 0.5);
+}
+
+.form-select:focus {
+  border-color: #008040;
+  box-shadow: 0 0 0 0.25rem rgba(0, 128, 64, 0.5);
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+}
+
+.form-container form div {
+  width: 350px;
+}
+
+.error-session {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #a4102d;
+  display: flex;
+  justify-content: center;
+}
+
+.message-session {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #008040;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-signup-container, .btn-login-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0px;
+}
+
+.btn-signup, .btn-login, .btn-add-product {
+  width: 186px;
+  height: 46px;
+  background-color: #008040;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+}
+
+.btn-signup:hover, .btn-login:hover, .btn-add-product:hover {
+  background-color: #015c2e;;
+}
+
+.btn-signup:active, .btn-login:active, .btn-add-product:active {
+  background-color: #029049 ;
+}
+
+.btn-signup:disabled, .btn-login:disabled, .btn-add-product:disabled {
+  background-color: rgba(0, 128, 64, 0.7);
+}
+
+.btn-login-signup-container, .btn-signup-login-container {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-login-signup, .btn-signup-login {
+  width: 186px;
+  height: 46px;
+  background-color: #FFFFFF;
+  color: #008040;
+  font-weight: 500;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  text-decoration: underline;
+}
+
+.btn-login-signup:hover, .btn-signup-login:hover {
+  background-color: #015c2e;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.btn-login-signup:active, .btn-signup-login:active {
+  background-color: #029049 ;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.btn-login-signup:disabled, .btn-signup-login:disabled {
+  background-color: rgba(0, 128, 64, 0.7);
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-container ul li {
+  margin-bottom: 20px;
+  padding: 0px 70px 20px 70px;
+  border-bottom: 2px solid rgba(0, 128, 64, 0.4);
+  display: flex;
+  align-items: center;
+}
+
+.item-profile {
+  min-width: 150px;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin-right: 20px;
+}
+
+.data-item-profile {
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+
+.btn-logout-container {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-logout {
+  width: 186px;
+  height: 46px;
+  background-color: #FFFFFF;
+  color: #a4102d;
+  font-weight: 500;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  text-decoration: underline;
+}
+
+.btn-logout:hover {
+  background-color: #a4102d;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.btn-logout:active {
+  background-color: #880b24;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.btn-logout:disabled {
+  background-color: #FFFFFF;
+  color: #b9445b;
+}
+
+.greeting-message-container {
+  margin-bottom: 40px;
+  text-align: center;
+  display: block;
+}
+
+.greeting-message {
+  font-weight: 500;
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+.role-message {
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #008040;
+  display: inline;
+}
+
+.user-role-role-message {
+  color: #008040;
+}
+
 .item-list {
   z-index: 900;
   display: flex;
@@ -102,7 +305,7 @@ a:link, a:visited, a:active {
   font-weight: 500;
   margin: 0px;
   align-self: center;
-} 
+}
 
 .btn-delete-product {
   margin: 10px auto 12px !important;
@@ -481,6 +684,78 @@ footer {
     font-size: 1.5rem;
   }
 
+  .form-label {
+    font-size: 0.8rem;
+  }
+  
+  .form-control {
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+  }
+  
+  .form-select {
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+  }
+  
+  .error-session {
+    font-size: 0.8rem;
+  }
+  
+  .message-session {
+    font-size: 0.8rem;
+  }
+  
+  .btn-signup-container, .btn-login-container {
+    margin: 16px 0px;
+  }
+  
+  .btn-signup, .btn-login, .btn-add-product {
+    width: 150px;
+    height: 40px;
+    font-size: 0.8rem;
+  }
+  
+  .btn-login-signup, .btn-signup-login {
+    width: 150px;
+    height: 40px;
+    font-size: 0.8rem;
+  }
+  
+  .profile-container ul li {
+    margin-bottom: 16px;
+    padding: 0px 65px 16px 65px;
+  }
+  
+  .item-profile {
+    font-size: 1.1rem;
+    margin-right: 16px;
+  }
+  
+  .data-item-profile {
+    font-size: 1.1rem;
+  }
+
+  .btn-logout {
+    width: 150px;
+    height: 40px;
+    font-size: 0.8rem;
+  }
+  
+  .greeting-message-container {
+    margin-bottom: 32px;
+  }
+  
+  .greeting-message {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  
+  .role-message {
+    font-size: 0.9rem;
+    padding-bottom: 6px;
+  }
+
   .img-card-detail {
     width: 23rem;
     margin-right: 40px;
@@ -617,6 +892,91 @@ footer {
   .title-category {
     font-size: 1.3rem;
     margin-bottom: 20px;
+  }
+
+  .form-label {
+    font-size: 0.7rem;
+  }
+  
+  .form-control {
+    font-size: 0.7rem;
+    margin-bottom: 10px;
+  }
+  
+  .form-select {
+    font-size: 0.7rem;
+    margin-bottom: 10px;
+  }
+
+  .form-add-product-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  #addProductForm {
+    width: 260px;
+  }
+  
+  .error-session {
+    font-size: 0.6rem;
+  }
+  
+  .message-session {
+    font-size: 0.6rem;
+  }
+  
+  .btn-signup-container, .btn-login-container {
+    margin: 13px 0px;
+  }
+  
+  .btn-add-product-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-signup, .btn-login, .btn-add-product {
+    width: 130px;
+    height: 34px;
+    font-size: 0.7rem;
+  }
+  
+  .btn-login-signup, .btn-signup-login {
+    width: 130px;
+    height: 34px;
+    font-size: 0.7rem;
+  }
+  
+  .profile-container ul li {
+    margin-bottom: 13px;
+    padding: 0px 60px 13px 60px;
+  }
+  
+  .item-profile {
+    font-size: 1rem;
+    margin-right: 13px;
+  }
+  
+  .data-item-profile {
+    font-size: 1rem;
+  }
+
+  .btn-logout {
+    width: 130px;
+    height: 34px;
+    font-size: 0.7rem;
+  }
+  
+  .greeting-message-container {
+    margin-bottom: 26px;
+  }
+  
+  .greeting-message {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  
+  .role-message {
+    font-size: 0.8rem;
   }
 
   .pagination-container {
@@ -797,6 +1157,74 @@ footer {
   .title-category {
     font-size: 1rem;
     margin-bottom: 12px;
+  }
+
+  .form-label {
+    font-size: 0.5rem;
+  }
+  
+  .form-control {
+    font-size: 0.5rem;
+    margin-bottom: 8px;
+  }
+  
+  .form-select {
+    font-size: 0.5rem;
+    margin-bottom: 8px;
+  }
+  
+  .form-container form div {
+    width: 150px;
+  }
+  
+  .btn-signup-container, .btn-login-container {
+    margin: 10px 0px;
+  }
+  
+  .btn-signup, .btn-login, .btn-add-product {
+    width: 100px;
+    height: 30px;
+    font-size: 0.6rem;
+  }
+  
+  .btn-login-signup, .btn-signup-login {
+    width: 100px;
+    height: 30px;
+    font-size: 0.6rem;
+  }
+  
+  .profile-container ul li {
+    margin-bottom: 10px;
+    padding: 0px 40px 10px 40px;
+  }
+  
+  .item-profile {
+    font-size: 0.8rem;
+    margin-right: 10px;
+  }
+  
+  .data-item-profile {
+    font-size: 0.8rem;
+  }
+
+  .btn-logout {
+    width: 100px;
+    height: 30px;
+    font-size: 0.6rem;
+  }
+  
+  .greeting-message-container {
+    margin-bottom: 20px;
+  }
+  
+  .greeting-message {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  
+  .role-message {
+    font-size: 0.7rem;
+    padding-bottom: 4px;
   }
 
   .card-list {

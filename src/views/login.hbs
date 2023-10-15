@@ -1,0 +1,31 @@
+<div class="app-content container">
+    <h1 class="title-category">INICIAR SESIÓN</h1>
+    {{#if error}}
+        <div class="error-session">
+            <p class="mb-sm-3 mb-0">{{error}}</p>
+        </div>
+    {{/if}}
+    {{#if message}}
+        <div class="message-session">
+            <p class="mb-sm-3 mb-0">{{message}}</p>
+        </div>
+    {{/if}}
+    <div class="form-container">
+        <form method="post" action="/api/sessions/login">
+            <div class="mb-lg-3 mb-0">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" placeholder="nombre@example.com" id="email" class="form-control">
+            </div>
+            <div class="mb-lg-3 mb-0">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" name="password" placeholder="contraseña123" id="password" class="form-control">
+            </div>
+            <div class="btn-login-container">
+                <button type="submit" class="btn-login">Iniciar sesión</button>
+            </div>
+        </form>
+    </div>
+    <div class="btn-signup-login-container">
+        <button type="button" class="btn-signup-login" onclick="window.location.href = '/signup'">Registrarse</button>
+    </div>
+</div>

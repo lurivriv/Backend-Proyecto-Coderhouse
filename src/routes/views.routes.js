@@ -4,8 +4,24 @@ import { cartManagerService } from "../dao/index.js"
 
 const router = Router()
 
-// Productos en home
-router.get("/", async (req, res) => {
+// Si no hay una sesión activa
+const publicRouteMiddleware = (req, res, next) => {
+    if (!req.session.email) {
+        return res.redirect("/login")
+    }
+    next()
+}
+
+// Si hay una sesión activa
+const privateRouteMiddleware = (req, res, next) => {
+    if (req.session.email) {
+        return res.redirect("/profile")
+    }
+    next()
+}
+
+// Productos en home (Si no hay una sesión activa redirigir al login)
+router.get("/", publicRouteMiddleware, async (req, res) => {
     try {
         const productsNoFilter = await productManagerService.getProductsNoFilter()
         res.render("home", { productsNoFilter, title: "Sabores verdes - Uruguay" })
@@ -61,7 +77,7 @@ router.get("/products", async (req, res) => {
         }
 
         const products = await productManagerService.getProducts(query, options)
-        
+
         const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl
         
         const dataProducts = {
@@ -78,7 +94,12 @@ router.get("/products", async (req, res) => {
             title: "Menú - Sabores verdes"
         }
 
-        res.render("productsPaginate", dataProducts)
+        res.render("productsPaginate", { 
+            dataProducts,
+            userFirstName: req.session.first_name,
+            userLastName: req.session.last_name,
+            userRole: req.session.role,
+        })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -106,6 +127,40 @@ router.get("/carts/:cid", async (req, res) => {
         res.render("cart", { cart, title: "Carrito - Sabores verdes" })
     } catch (error) {
         res.status(500).json({ error: error.message })
+    }
+})
+
+// Signup
+router.get("/signup", privateRouteMiddleware, async (req, res) => {
+    try {
+        res.render("signup", { title: "Registrarse - Sabores verdes" })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+})
+
+// Login
+router.get("/login", privateRouteMiddleware, async (req, res) => {
+    try {
+        res.render("login", { title: "Iniciar sesión - Sabores verdes" })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+})
+
+// Perfil
+router.get("/profile", publicRouteMiddleware, async (req, res) => {
+    try {
+        res.render("profile", { 
+            userFirstName: req.session.first_name,
+            userLastName: req.session.last_name,
+            userEmail: req.session.email,
+            userAge: req.session.age,
+            userRole: req.session.role,
+            title: "Perfil - Sabores verdes"
+        })   
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener el perfil" })
     }
 })
 
