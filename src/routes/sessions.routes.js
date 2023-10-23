@@ -1,45 +1,41 @@
 import { Router } from "express"
-import { sessionManagerService } from "../dao/index.js"
+import passport from "passport"
+import { config } from "../config/config.js"
 
 const router = Router()
 
 // Signup
-router.post("/signup", async (req, res) => {
-    try {
-        const signupForm = req.body
-        const createdUser = await sessionManagerService.registerUser(signupForm)
-        res.render("login", { createdUser, message: "Usuario registrado :)"})
-    } catch (error) {
-        res.render("signup", { error: error.message })
-    }
+router.post("/signup", passport.authenticate("signupLocalStrategy", {
+    failureRedirect: "/api/sessions/fail-signup"
+}), async (req, res) => {
+    res.render("login", { message: "Usuario registrado :)"})
+})
+
+// Fail signup
+router.get("/fail-signup", (req, res) => {
+    res.render("signup", { error: "Error al completar el registro" })
+})
+
+// Signup con GitHub
+router.get("/signup-github", passport.authenticate("signupGithubStrategy"))
+
+// Callback con GitHub
+router.get(config.github.callbackUrl, passport.authenticate("signupGithubStrategy", {
+    failureRedirect: "/api/sessions/fail-signup"
+}), (req, res) => {
+    res.redirect("/products")
 })
 
 // Login
-router.post("/login", async(req,res)=>{
-    try {
-        const loginForm = req.body
+router.post("/login", passport.authenticate("loginLocalStrategy", {
+    failureRedirect: "/api/sessions/fail-login"
+}), async (req, res) => {
+    res.redirect("/products")
+})
 
-        if (loginForm.email === "adminCoder@coder.com" && loginForm.password === "adminCod3r123") {
-            req.session.email = loginForm.email
-            req.session.role = "admin"
-        } else {
-            const loggedUser = await sessionManagerService.loginUser(loginForm)
-
-            if (!loggedUser) {
-                return res.render("login", { error: "Los datos ingresados son incorrectos" })
-            }
-
-            req.session.first_name = loggedUser.first_name
-            req.session.last_name = loggedUser.last_name
-            req.session.email = loggedUser.email
-            req.session.age = loggedUser.age
-            req.session.role = loggedUser.role
-        }
-
-        return res.redirect("/products")
-    } catch (error) {
-        res.render("login", { error: error.message })
-    }
+// Fail login
+router.get("/fail-login", (req, res) => {
+    res.render("login", { error: "Error al iniciar sesión. Volve a ingresar los datos" })
 })
 
 // Logout

@@ -1,27 +1,26 @@
 import { Router} from "express"
-import { productManagerService } from "../dao/index.js"
-import { cartManagerService } from "../dao/index.js"
+import { productManagerService, cartManagerService } from "../dao/index.js"
 
 const router = Router()
 
 // Si no hay una sesión activa
-const publicRouteMiddleware = (req, res, next) => {
-    if (!req.session.email) {
+const noSessionMiddleware = (req, res, next) => {
+    if (!req.isAuthenticated()) {
         return res.redirect("/login")
     }
     next()
 }
 
 // Si hay una sesión activa
-const privateRouteMiddleware = (req, res, next) => {
-    if (req.session.email) {
+const sessionMiddleware = (req, res, next) => {
+    if (req.isAuthenticated()) {
         return res.redirect("/profile")
     }
     next()
 }
 
 // Productos en home (Si no hay una sesión activa redirigir al login)
-router.get("/", publicRouteMiddleware, async (req, res) => {
+router.get("/", noSessionMiddleware, async (req, res) => {
     try {
         const productsNoFilter = await productManagerService.getProductsNoFilter()
         res.render("home", { productsNoFilter, title: "Sabores verdes - Uruguay" })
@@ -40,7 +39,7 @@ router.get("/realtimeproducts", async (req, res) => {
 })
 
 // Todos los productos
-router.get("/products", async (req, res) => {
+router.get("/products", noSessionMiddleware, async (req, res) => {
     try {
         const { limit = 8, page = 1, sort, category, stock } = req.query
 
@@ -96,9 +95,11 @@ router.get("/products", async (req, res) => {
 
         res.render("productsPaginate", { 
             dataProducts,
-            userFirstName: req.session.first_name,
-            userLastName: req.session.last_name,
-            userRole: req.session.role,
+            userFirstName: req.user?.first_name,
+            userLastName: req.user?.last_name,
+            userRole: req.user?.role,
+            userGitHubName: req.user?.githubName,
+            userGitHubUsername: req.user?.githubUsername
         })
     } catch (error) {
         res.status(500).json({ error: error.message })
@@ -131,7 +132,7 @@ router.get("/carts/:cid", async (req, res) => {
 })
 
 // Signup
-router.get("/signup", privateRouteMiddleware, async (req, res) => {
+router.get("/signup", sessionMiddleware, async (req, res) => {
     try {
         res.render("signup", { title: "Registrarse - Sabores verdes" })
     } catch (error) {
@@ -140,7 +141,7 @@ router.get("/signup", privateRouteMiddleware, async (req, res) => {
 })
 
 // Login
-router.get("/login", privateRouteMiddleware, async (req, res) => {
+router.get("/login", sessionMiddleware, async (req, res) => {
     try {
         res.render("login", { title: "Iniciar sesión - Sabores verdes" })
     } catch (error) {
@@ -149,14 +150,16 @@ router.get("/login", privateRouteMiddleware, async (req, res) => {
 })
 
 // Perfil
-router.get("/profile", publicRouteMiddleware, async (req, res) => {
+router.get("/profile", noSessionMiddleware, async (req, res) => {
     try {
         res.render("profile", { 
-            userFirstName: req.session.first_name,
-            userLastName: req.session.last_name,
-            userEmail: req.session.email,
-            userAge: req.session.age,
-            userRole: req.session.role,
+            userFirstName: req.user?.first_name,
+            userLastName: req.user?.last_name,
+            userEmail: req.user?.email,
+            userAge: req.user?.age,
+            userRole: req.user?.role,
+            userGitHubName: req.user?.githubName,
+            userGitHubUsername: req.user?.githubUsername,
             title: "Perfil - Sabores verdes"
         })   
     } catch (error) {

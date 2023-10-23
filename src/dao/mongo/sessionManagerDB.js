@@ -17,22 +17,24 @@ export class SessionManagerDB {
     }
 
     // Login
-    async loginUser(loginForm) {
+    async loginUser(email) {
         try {
-            const result = await this.model.findOne({ email: loginForm.email })
-
-            if (!result) {
-                return null
-            }
-            
-            if (result.password !== loginForm.password) {
-                return null
-            }
-            
+            const result = await this.model.findOne({ email })
             return result
         } catch (error) {
             console.log("loginUser: ", error.message)
             throw new Error ("Error al iniciar sesión. Volve a ingresar los datos")
+        }
+    }
+
+    // Obtener un usuario por ID
+    async getUserById(id){
+        try {
+            const result = await this.model.findById(id)
+            return result
+        } catch (error) {
+            console.log("getUserById: ", error.message)
+            throw new Error("Error al obtener el usuario")
         }
     }
 }

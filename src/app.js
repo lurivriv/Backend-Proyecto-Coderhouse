@@ -2,18 +2,18 @@ import express from "express"
 import { engine } from "express-handlebars"
 import session from "express-session"
 import MongoStore from "connect-mongo"
+import { connectDB } from "./config/dbConnection.js"
+import passport from "passport"
+import { initializePassport } from "./config/passport.config.js"
+import { config } from "./config/config.js"
 import { Server } from "socket.io"
-import dotenv from "dotenv"
 import path from "path"
 import { __dirname } from "./utils.js"
-import { connectDB } from "./config/dbConnection.js"
 import { productManagerService } from "./dao/index.js"
 import { viewsRouter } from "./routes/views.routes.js"
 import { sessionsRouter } from "./routes/sessions.routes.js"
 import { productsRouter } from "./routes/products.routes.js"
 import { cartsRouter } from "./routes/carts.routes.js"
-
-dotenv.config()
 
 const port = process.env.PORT || 8080
 const app = express()
@@ -36,12 +36,17 @@ app.set("views", path.join(__dirname, "/views"))
 app.use(session ({
     store: MongoStore.create ({
         ttl: 3000,
-        mongoUrl: process.env.MONGODB_URI
+        mongoUrl: config.mongo.url
     }),
-    secret: process.env.SESSION_SECRET,
+    secret: config.server.secretSession,
     resave: true,
     saveUninitialized: true
 }))
+
+// Configuración de passport
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Configuración socket.io
 socketServer.on("connection", async (socket) => {

@@ -137,7 +137,7 @@ a:link, a:visited, a:active {
 }
 
 .btn-signup, .btn-login, .btn-add-product {
-  width: 186px;
+  width: 250px;
   height: 46px;
   background-color: #008040;
   color: #FFFFFF;
@@ -148,7 +148,7 @@ a:link, a:visited, a:active {
 }
 
 .btn-signup:hover, .btn-login:hover, .btn-add-product:hover {
-  background-color: #015c2e;;
+  background-color: #015c2e;
 }
 
 .btn-signup:active, .btn-login:active, .btn-add-product:active {
@@ -165,7 +165,7 @@ a:link, a:visited, a:active {
 }
 
 .btn-login-signup, .btn-signup-login {
-  width: 186px;
+  width: 250px;
   height: 46px;
   background-color: #FFFFFF;
   color: #008040;
@@ -177,19 +177,41 @@ a:link, a:visited, a:active {
 }
 
 .btn-login-signup:hover, .btn-signup-login:hover {
-  background-color: #015c2e;
-  color: #FFFFFF;
-  text-decoration: none;
+  font-weight: 700;
 }
 
 .btn-login-signup:active, .btn-signup-login:active {
-  background-color: #029049 ;
-  color: #FFFFFF;
-  text-decoration: none;
+  color: #029049;
+  font-weight: 700;
 }
 
 .btn-login-signup:disabled, .btn-signup-login:disabled {
-  background-color: rgba(0, 128, 64, 0.7);
+  color: rgba(0, 128, 64, 0.7);
+}
+
+.btn-signup-gh, .btn-login-gh {
+  width: 250px;
+  height: 46px;
+  background-color: #24292e;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+}
+
+.btn-signup-gh:hover, .btn-login-gh:hover {
+  background-color: #0f1114;
+}
+
+.btn-signup-gh:active, .btn-login-gh:active {
+  background-color: #2b3137 ;
+}
+
+.btn-signup-gh:disabled, .btn-login-gh:disabled {
+  background-color: rgba(36, 41, 46, 0.7);
 }
 
 .profile-container {
@@ -206,7 +228,7 @@ a:link, a:visited, a:active {
 }
 
 .item-profile {
-  min-width: 150px;
+  width: 200px;
   font-weight: 400;
   font-size: 1.3rem;
   color: rgba(0, 0, 0, 0.6);
@@ -224,7 +246,7 @@ a:link, a:visited, a:active {
 }
 
 .btn-logout {
-  width: 186px;
+  width: 250px;
   height: 46px;
   background-color: #FFFFFF;
   color: #a4102d;
@@ -236,19 +258,15 @@ a:link, a:visited, a:active {
 }
 
 .btn-logout:hover {
-  background-color: #a4102d;
-  color: #FFFFFF;
-  text-decoration: none;
+  font-weight: 700;
 }
 
 .btn-logout:active {
-  background-color: #880b24;
-  color: #FFFFFF;
-  text-decoration: none;
+  color: #880b24;
+  font-weight: 700;
 }
 
 .btn-logout:disabled {
-  background-color: #FFFFFF;
   color: #b9445b;
 }
 
@@ -711,15 +729,22 @@ footer {
   }
   
   .btn-signup, .btn-login, .btn-add-product {
-    width: 150px;
+    width: 200px;
     height: 40px;
     font-size: 0.8rem;
   }
   
   .btn-login-signup, .btn-signup-login {
-    width: 150px;
+    width: 200px;
     height: 40px;
     font-size: 0.8rem;
+  }
+
+  .btn-signup-gh, .btn-login-gh {
+    width: 200px;
+    height: 40px;
+    font-size: 0.8rem;
+    margin-bottom: 16px;
   }
   
   .profile-container ul li {
@@ -737,7 +762,7 @@ footer {
   }
 
   .btn-logout {
-    width: 150px;
+    width: 200px;
     height: 40px;
     font-size: 0.8rem;
   }
@@ -935,23 +960,31 @@ footer {
   }
 
   .btn-signup, .btn-login, .btn-add-product {
-    width: 130px;
+    width: 170px;
     height: 34px;
     font-size: 0.7rem;
   }
   
   .btn-login-signup, .btn-signup-login {
-    width: 130px;
+    width: 170px;
     height: 34px;
     font-size: 0.7rem;
   }
   
+  .btn-signup-gh, .btn-login-gh {
+    width: 170px;
+    height: 34px;
+    font-size: 0.7rem;
+    margin-bottom: 13px;
+  }
+
   .profile-container ul li {
     margin-bottom: 13px;
     padding: 0px 60px 13px 60px;
   }
   
   .item-profile {
+    width: 160px;
     font-size: 1rem;
     margin-right: 13px;
   }
@@ -961,7 +994,7 @@ footer {
   }
 
   .btn-logout {
-    width: 130px;
+    width: 170px;
     height: 34px;
     font-size: 0.7rem;
   }
@@ -1182,15 +1215,22 @@ footer {
   }
   
   .btn-signup, .btn-login, .btn-add-product {
-    width: 100px;
+    width: 140px;
     height: 30px;
     font-size: 0.6rem;
   }
   
   .btn-login-signup, .btn-signup-login {
-    width: 100px;
+    width: 140px;
     height: 30px;
     font-size: 0.6rem;
+  }
+
+  .btn-signup-gh, .btn-login-gh {
+    width: 140px;
+    height: 30px;
+    font-size: 0.6rem;
+    margin-bottom: 10px;
   }
   
   .profile-container ul li {
@@ -1199,6 +1239,7 @@ footer {
   }
   
   .item-profile {
+    width: 135px;
     font-size: 0.8rem;
     margin-right: 10px;
   }
@@ -1208,7 +1249,7 @@ footer {
   }
 
   .btn-logout {
-    width: 100px;
+    width: 140px;
     height: 30px;
     font-size: 0.6rem;
   }
