@@ -24,7 +24,7 @@
             <a class="navbar-brand" href="/">
                 <img src="/assets/logo-saboresverdes.svg" alt="Logo de Sabores Verdes">
             </a>
-            <button class="btn-cart-widget" onclick="window.location.href = '/api/carts'">
+            <button class="btn-cart-widget" onclick="window.location.href = '{{#if user}}/carts/{{user.cart}}{{/if}}'">
                 <img class="icon-cart-widget" src="/assets/icon-cart.png" alt="Carrito">
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">

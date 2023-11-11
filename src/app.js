@@ -2,20 +2,20 @@ import express from "express"
 import { engine } from "express-handlebars"
 import session from "express-session"
 import MongoStore from "connect-mongo"
-import { connectDB } from "./config/dbConnection.js"
+import { ConnectDB } from "./config/dbConnection.js"
 import passport from "passport"
 import { initializePassport } from "./config/passport.config.js"
 import { config } from "./config/config.js"
 import { Server } from "socket.io"
 import path from "path"
 import { __dirname } from "./utils.js"
-import { productManagerService } from "./dao/index.js"
+import { ProductsService } from "./services/products.service.js"
 import { viewsRouter } from "./routes/views.routes.js"
 import { sessionsRouter } from "./routes/sessions.routes.js"
 import { productsRouter } from "./routes/products.routes.js"
 import { cartsRouter } from "./routes/carts.routes.js"
 
-const port = process.env.PORT || 8080
+const port = config.server.port
 const app = express()
 
 const httpServer = app.listen(port, () => {
@@ -25,17 +25,17 @@ const httpServer = app.listen(port, () => {
 const socketServer = new Server(httpServer)
 
 // Conexión base de datos
-connectDB()
+ConnectDB.getInstance()
 
 // Configuración handlebars
-app.engine(".hbs", engine({extname: ".hbs"}))
+app.engine(".hbs", engine({ extname: ".hbs" }))
 app.set("view engine", ".hbs")
 app.set("views", path.join(__dirname, "/views"))
 
 // Configuración de session
 app.use(session ({
     store: MongoStore.create ({
-        ttl: 3000,
+        ttl: 10800000,
         mongoUrl: config.mongo.url
     }),
     secret: config.server.secretSession,
@@ -53,14 +53,14 @@ socketServer.on("connection", async (socket) => {
     console.log("Cliente conectado: ", socket.id)
 
     // Obtener productos
-    const products = await productManagerService.getProductsNoFilter()
+    const products = await ProductsService.getProductsNoFilter()
     socket.emit("productsArray", products)
 
     // Agregar el producto del socket del cliente
-    socket.on("addProduct", async (productsData) => {
+    socket.on("addProduct", async (productInfo) => {
         try {
-            const result = await productManagerService.addProduct(productsData)
-            const products = await productManagerService.getProductsNoFilter()
+            const result = await ProductsService.addProduct(productInfo)
+            const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
             console.error(error.message)
@@ -70,8 +70,8 @@ socketServer.on("connection", async (socket) => {
     // Eliminar el producto del socket del cliente
     socket.on("deleteProduct", async (productId) => {
         try {
-            const result = await productManagerService.deleteProduct(productId)
-            const products = await productManagerService.getProducts()
+            const result = await ProductsService.deleteProduct(productId)
+            const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
             console.error(error.message)
@@ -81,7 +81,7 @@ socketServer.on("connection", async (socket) => {
 
 // Middlewares
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, "/public")))
 
 // Rutas

@@ -84,7 +84,7 @@ addProductForm.addEventListener("submit", (e) => {
     const jsonData = {}
 
     for (const [key, value] of formData.entries()) {
-        jsonData[key] = value
+        jsonData[key] = key === "description" ? value.split(",").map((item) => item.trim()) : value
     }
     
     socketClient.emit("addProduct", jsonData)

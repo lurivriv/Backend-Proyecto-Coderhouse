@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { CartsService } from "../../../services/carts.service.js"
 
 const usersCollection = "users"
 
@@ -34,6 +35,10 @@ const userSchema = new mongoose.Schema({
             return !this.githubUser
         }
     },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "carts"
+    },
     role: {
         type: String,
         enum: ["usuario", "admin"],
@@ -44,10 +49,21 @@ const userSchema = new mongoose.Schema({
         default: false
     },
     githubName: {
-        type: String,
+        type: String
     },
     githubUsername: {
         type: String,
+        unique: [true, "El usuario de GitHub ingresado ya tiene una cuenta"]
+    }
+})
+
+// Asignar carrito al nuevo usuario
+userSchema.pre("save", async function(next) {
+    try {
+        const newCartUser = await CartsService.createCart()
+        this.cart = newCartUser._id
+    } catch (error) {
+        next(error)
     }
 })
 

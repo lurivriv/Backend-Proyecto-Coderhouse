@@ -3,7 +3,7 @@ import localStrategy from "passport-local"
 import githubStrategy from "passport-github2"
 import { config } from "./config.js"
 import { createHash, isValidPassword } from "../utils.js"
-import { sessionManagerService } from "../dao/index.js"
+import { usersDao } from "../dao/index.js"
 
 export const initializePassport = () => {
     // Signup
@@ -14,10 +14,10 @@ export const initializePassport = () => {
         },
 
         async (req, username, password, done) => {
-            const { first_name, last_name, age, role } = req.body
+            const { first_name, last_name, age } = req.body
 
             try {
-                const user = await sessionManagerService.loginUser(username)
+                const user = await usersDao.loginUser(username)
 
                 // Si no se completan los campos
                 if (!first_name || !last_name || !age) {
@@ -36,10 +36,11 @@ export const initializePassport = () => {
                     email: username,
                     age,
                     password: createHash(password),
-                    role: "usuario"
+                    role: (username === config.adminInfo.adminEmail && password === config.adminInfo.adminPassword) ? "admin" : "usuario",
+                    githubUsername: `Registrado con email: ${username}`
                 }
 
-                const createdUser = await sessionManagerService.registerUser(newUser)
+                const createdUser = await usersDao.registerUser(newUser)
                 return done(null, createdUser)
             } catch (error) {
                 return done(error)
@@ -57,7 +58,7 @@ export const initializePassport = () => {
 
         async (accessToken, refreshToken, profile, done) => {
             try {
-                const user = await sessionManagerService.loginUser(profile.username)
+                const user = await usersDao.loginUser(profile.username, true)
 
                 // Si el usuario ya está registrado
                 if (user) {
@@ -70,9 +71,10 @@ export const initializePassport = () => {
                     githubName: profile._json.name,
                     githubUsername: profile.username,
                     role: "usuario",
+                    email: `Registrado con GitHub: ${profile.username}`
                 }
 
-                const createdUser = await sessionManagerService.registerUser(newUser)
+                const createdUser = await usersDao.registerUser(newUser)
                 return done(null, createdUser)
             } catch (error) {
                 return done(error)
@@ -88,7 +90,7 @@ export const initializePassport = () => {
 
         async (username, password, done) => {
             try {
-                const user = await sessionManagerService.loginUser(username)
+                const user = await usersDao.loginUser(username)
 
                 // Si el usuario no existe
                 if (!user) {
@@ -114,7 +116,7 @@ export const initializePassport = () => {
 
     // Deserialización
     passport.deserializeUser(async (id, done) => {
-        const user = await sessionManagerService.getUserById(id)
+        const user = await usersDao.getUserById(id)
         done(null, user)
     })
 }

@@ -1,6 +1,6 @@
-import { usersModel } from "./models/users.model.js"
+import { usersModel } from "../models/users.model.js"
 
-export class SessionManagerDB {
+export class UserManagerDB {
     constructor() {
         this.model = usersModel
     }
@@ -17,10 +17,15 @@ export class SessionManagerDB {
     }
 
     // Login
-    async loginUser(email) {
+    async loginUser(loginIdentifier, isGithubLogin = false) {
         try {
-            const result = await this.model.findOne({ email })
-            return result
+            if (isGithubLogin) {
+                const result = await this.model.findOne({ githubUsername: loginIdentifier })
+                return result
+            } else {
+                const result = await this.model.findOne({ email: loginIdentifier })
+                return result
+            }
         } catch (error) {
             console.log("loginUser: ", error.message)
             throw new Error ("Error al iniciar sesión. Volve a ingresar los datos")
@@ -28,9 +33,9 @@ export class SessionManagerDB {
     }
 
     // Obtener un usuario por ID
-    async getUserById(id){
+    async getUserById(userId){
         try {
-            const result = await this.model.findById(id)
+            const result = await this.model.findById(userId).lean()
             return result
         } catch (error) {
             console.log("getUserById: ", error.message)

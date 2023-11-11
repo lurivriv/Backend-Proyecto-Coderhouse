@@ -1,38 +1,24 @@
 import { Router} from "express"
-import { productManagerService, cartManagerService } from "../dao/index.js"
+import { noSessionMiddleware, sessionMiddleware } from "../middlewares/sessionsViews.middleware.js"
+import { ProductsService } from "../services/products.service.js"
+import { CartsService } from "../services/carts.service.js"
 
 const router = Router()
-
-// Si no hay una sesión activa
-const noSessionMiddleware = (req, res, next) => {
-    if (!req.isAuthenticated()) {
-        return res.redirect("/login")
-    }
-    next()
-}
-
-// Si hay una sesión activa
-const sessionMiddleware = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return res.redirect("/profile")
-    }
-    next()
-}
 
 // Productos en home (Si no hay una sesión activa redirigir al login)
 router.get("/", noSessionMiddleware, async (req, res) => {
     try {
-        const productsNoFilter = await productManagerService.getProductsNoFilter()
-        res.render("home", { productsNoFilter, title: "Sabores verdes - Uruguay" })
+        const productsNoFilter = await ProductsService.getProductsNoFilter()
+        res.render("home", { productsNoFilter, user: req.user, title: "Sabores verdes - Uruguay" })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
 })
 
 // Productos en real time products
-router.get("/realtimeproducts", async (req, res) => {
+router.get("/realtimeproducts", noSessionMiddleware, async (req, res) => {
     try {
-        res.render("realTimeProducts", { title: "Menú - Sabores verdes" })
+        res.render("realTimeProducts", { user: req.user, title: "Menú - Sabores verdes" })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -75,7 +61,7 @@ router.get("/products", noSessionMiddleware, async (req, res) => {
             }
         }
 
-        const products = await productManagerService.getProducts(query, options)
+        const products = await ProductsService.getProducts(query, options)
 
         const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl
         
@@ -92,15 +78,7 @@ router.get("/products", noSessionMiddleware, async (req, res) => {
             nextLink: products.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${products.page}`, `page=${products.nextPage}`) : baseUrl.concat(`?page=${products.nextPage}`) : null,
             title: "Menú - Sabores verdes"
         }
-
-        res.render("productsPaginate", { 
-            dataProducts,
-            userFirstName: req.user?.first_name,
-            userLastName: req.user?.last_name,
-            userRole: req.user?.role,
-            userGitHubName: req.user?.githubName,
-            userGitHubUsername: req.user?.githubUsername
-        })
+        res.render("productsPaginate", { dataProducts, user: req.user })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -110,11 +88,11 @@ router.get("/products", noSessionMiddleware, async (req, res) => {
 router.get("/products/:pid", async (req, res) => {
     try {
         const { pid } = req.params
-        const product = await productManagerService.getProductById(pid)
+        const product = await ProductsService.getProductById(pid)
 
         product.title = product.title.toUpperCase()
         
-        res.render("productDetail", { product, title: `${product.title} - Sabores verdes` })
+        res.render("productDetail", { product, user: req.user, title: `${product.title} - Sabores verdes` })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -124,8 +102,11 @@ router.get("/products/:pid", async (req, res) => {
 router.get("/carts/:cid", async (req, res) => {
     try {
         const { cid } = req.params
-        const cart = await cartManagerService.getCartById(cid)
-        res.render("cart", { cart, title: "Carrito - Sabores verdes" })
+        const cart = await CartsService.getCartById(cid)
+
+        const totalPrice = cart.products.reduce((acc, prod) => acc + prod.quantity * prod.product.price, 0)
+
+        res.render("cart", { cart, totalPrice, user: req.user, title: "Carrito - Sabores verdes" })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -152,16 +133,7 @@ router.get("/login", sessionMiddleware, async (req, res) => {
 // Perfil
 router.get("/profile", noSessionMiddleware, async (req, res) => {
     try {
-        res.render("profile", { 
-            userFirstName: req.user?.first_name,
-            userLastName: req.user?.last_name,
-            userEmail: req.user?.email,
-            userAge: req.user?.age,
-            userRole: req.user?.role,
-            userGitHubName: req.user?.githubName,
-            userGitHubUsername: req.user?.githubUsername,
-            title: "Perfil - Sabores verdes"
-        })   
+        res.render("profile", { user: req.user, title: "Perfil - Sabores verdes" })   
     } catch (error) {
         res.status(500).json({ error: "Error al obtener el perfil" })
     }

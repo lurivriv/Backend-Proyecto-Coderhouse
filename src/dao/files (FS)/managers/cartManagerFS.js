@@ -1,5 +1,5 @@
 import fs from "fs"
-import { productManagerService } from "../index.js"
+import { productsDao } from "../../index.js"
 
 export class CartManagerFS {
     constructor(filePath) {
@@ -73,7 +73,7 @@ export class CartManagerFS {
             if (this.fileExists()) {
                 const carts = await this.getCarts()
                 const cart = await this.getCartById(cartId, carts)
-                const productById = await productManagerService.getProductById(productId)
+                const productById = await productsDao.getProductById(productId)
 
                 // Verificar que quantity sea un número válido
                 if (isNaN(quantity) || quantity < 1) {

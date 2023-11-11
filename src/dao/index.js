@@ -1,7 +1,7 @@
-import { ProductManagerDB } from "./mongo/productManagerDB.js"
-import { CartManagerDB } from "./mongo/cartManagerDB.js"
-import { SessionManagerDB } from "./mongo/sessionManagerDB.js"
+import { ProductManagerDB } from "./mongo/managers/productManagerDB.js"
+import { CartManagerDB } from "./mongo/managers/cartManagerDB.js"
+import { UserManagerDB } from "./mongo/managers/userManagerDB.js"
 
-export const productManagerService = new ProductManagerDB()
-export const cartManagerService = new CartManagerDB()
-export const sessionManagerService = new SessionManagerDB()
+export const productsDao = new ProductManagerDB()
+export const cartsDao = new CartManagerDB()
+export const usersDao = new UserManagerDB()

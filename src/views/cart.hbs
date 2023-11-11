@@ -30,13 +30,13 @@
                             </td>
                             <td class="text-card-cart text-center divider-card-cart" colspan="2">${{this.product.price}}</td>
                             <td class="text-card-cart text-center divider-card-cart" colspan="3">
-                                <button class="btn-count-cart btn btn-primary">-</button>
+                                <button class="update-product-quantity-in-cart btn-count-cart btn btn-primary" data-product-id="{{this.product._id}}" data-cart-id="{{user.cart}}">-</button>
                                 {{this.quantity}}
-                                <button class="btn-count-cart btn btn-primary">+</button>
+                                <button class="update-product-quantity-in-cart btn-count-cart btn btn-primary" data-product-id="{{this.product._id}}" data-cart-id="{{user.cart}}">+</button>
                             </td>
-                            <td class="text-card-cart text-center divider-card-cart" colspan="2">Subtotal: {{this.quantity}} * {{this.product.price}}</td>
+                            <td class="text-card-cart text-center divider-card-cart" colspan="2">Subtotal: $ {{this.quantity}} * {{this.product.price}}</td>
                             <td class="divider-card-cart" colspan="1">
-                                <button class="btn-delete-cart btn btn-primary">
+                                <button class="delete-product-in-cart btn-delete-cart btn btn-primary" data-product-id="{{this.product._id}}" data-product-title="{{this.product.title}}" data-cart-id="{{user.cart}}">
                                     <img src="/assets/icon-trash.png" alt="Eliminar">
                                 </button>
                             </td>
@@ -46,9 +46,9 @@
                 <tfoot>
                     <tr>
                         <td class="text-center" colspan="4">
-                            <button class="btn-empty-cart btn btn-primary">Vaciar carrito</button>
+                            <button class="delete-all-products-in-cart btn-empty-cart btn btn-primary" data-cart-id="{{user.cart}}">Vaciar carrito</button>
                         </td>
-                        <td class="total-price-cart text-center" colspan="4">TOTAL: $</td>
+                        <td class="total-price-cart text-center" colspan="4">TOTAL: ${{totalPrice}}</td>
                         <td class="text-center" colspan="4">
                             <button class="btn-continue-buy btn btn-primary">Continuar compra</button>
                         </td>
@@ -73,3 +73,4 @@
 </div>
 
 <script type="module" src="/js/main.js"></script>
+<script type="module" src="/js/cart.js"></script>

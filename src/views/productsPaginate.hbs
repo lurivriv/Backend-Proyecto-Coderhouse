@@ -1,13 +1,13 @@
 <div class="app-content container">
-    {{#if userRole}}
+    {{#if user.role}}
         <div class="greeting-message-container">
-            {{#if userFirstName}}
-                <h3 class="greeting-message">Hola, <b>{{userFirstName}} {{userLastName}}</b></h3>
+            {{#if user.first_name}}
+                <h3 class="greeting-message">Hola, <b>{{user.first_name}} {{user.last_name}}</b></h3>
             {{/if}}
-            {{#if userGitHubName}}
-                <h3 class="greeting-message">Hola, <b>{{userGitHubName}}</b></h3>
+            {{#if user.githubName}}
+                <h3 class="greeting-message">Hola, <b>{{user.githubName}}</b></h3>
             {{/if}}
-            <h4 class="role-message">Sos <b class="user-role-role-message">{{userRole}}</b> en Sabores verdes</h4>
+            <h4 class="role-message">Sos <b class="user-role-role-message">{{user.role}}</b> en Sabores verdes</h4>
         </div>
     {{/if}}
     <h1 class="title-category">MENÚ</h1>
