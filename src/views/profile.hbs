@@ -2,20 +2,20 @@
     <h1 class="title-category">TU PERFIL</h1>
     <div class="profile-container">
         <ul>
-            {{#if user.first_name}}
-                <li><b class="item-profile">Nombre: </b><span class="data-item-profile">{{user.first_name}}</span></li>
-                <li><b class="item-profile">Apellido: </b><span class="data-item-profile">{{user.last_name}}</span></li>
-                <li><b class="item-profile">Email: </b><span class="data-item-profile">{{user.email}}</span></li>
-                <li><b class="item-profile">Edad: </b><span class="data-item-profile">{{user.age}}</span></li>
+            <li><b class="item-profile">Nombre y apellido: </b><span class="data-item-profile">{{userInfoDto.full_name}}</span></li>
+            {{#if userInfoDto.email}}
+                <li><b class="item-profile">Email: </b><span class="data-item-profile">{{userInfoDto.email}}</span></li>
+                <li><b class="item-profile">Edad: </b><span class="data-item-profile">{{userInfoDto.age}}</span></li>
             {{/if}}
-            {{#if user.githubUser}}
-                <li><b class="item-profile">Nombre y apellido: </b><span class="data-item-profile">{{user.githubName}}</span></li>
-                <li><b class="item-profile">Usuario de GitHub: </b><span class="data-item-profile">{{user.githubUsername}}</span></li>
+            {{#if userInfoDto.github_username}}
+                <li><b class="item-profile">Usuario de GitHub: </b><span class="data-item-profile">{{userInfoDto.github_username}}</span></li>
             {{/if}}
-            <li><b class="item-profile">Rol: </b><span class="data-item-profile">{{user.role}}</span></li>
+            <li><b class="item-profile">Rol: </b><span class="data-item-profile">{{userInfoDto.role}}</span></li>
         </ul>
     </div>
     <div class="btn-logout-container">
         <button type="button" class="btn-logout" onclick="window.location.href = '/api/sessions/logout'">Cerrar sesión</button>
     </div>
 </div>
+
+<script type="module" src="/js/main.js"></script>

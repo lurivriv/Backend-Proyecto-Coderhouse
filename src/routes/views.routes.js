@@ -1,7 +1,8 @@
 import { Router} from "express"
-import { noSessionMiddleware, sessionMiddleware } from "../middlewares/sessionsViews.middleware.js"
+import { noSessionMiddleware, sessionMiddleware, checkRoleMiddleware } from "../middlewares/auth.js"
 import { ProductsService } from "../services/products.service.js"
 import { CartsService } from "../services/carts.service.js"
+import { GetUserInfoDto } from "../dao/dto/getUserInfo.dto.js"
 
 const router = Router()
 
@@ -9,16 +10,18 @@ const router = Router()
 router.get("/", noSessionMiddleware, async (req, res) => {
     try {
         const productsNoFilter = await ProductsService.getProductsNoFilter()
-        res.render("home", { productsNoFilter, user: req.user, title: "Sabores verdes - Uruguay" })
+        
+        const userInfoDto = new GetUserInfoDto(req.user)
+        res.render("home", { productsNoFilter, userInfoDto, title: "Sabores verdes - Uruguay" })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
 })
 
 // Productos en real time products
-router.get("/realtimeproducts", noSessionMiddleware, async (req, res) => {
+router.get("/realtimeproducts", noSessionMiddleware, checkRoleMiddleware(["admin"]), async (req, res) => {
     try {
-        res.render("realTimeProducts", { user: req.user, title: "Menú - Sabores verdes" })
+        res.render("realTimeProducts", { title: "Menú - Sabores verdes" })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -78,35 +81,45 @@ router.get("/products", noSessionMiddleware, async (req, res) => {
             nextLink: products.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${products.page}`, `page=${products.nextPage}`) : baseUrl.concat(`?page=${products.nextPage}`) : null,
             title: "Menú - Sabores verdes"
         }
-        res.render("productsPaginate", { dataProducts, user: req.user })
+
+        const userInfoDto = new GetUserInfoDto(req.user)
+        res.render("productsPaginate", { dataProducts, userInfoDto })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
 })
 
 // Detalle de producto
-router.get("/products/:pid", async (req, res) => {
+router.get("/products/:pid", noSessionMiddleware, async (req, res) => {
     try {
         const { pid } = req.params
         const product = await ProductsService.getProductById(pid)
 
         product.title = product.title.toUpperCase()
         
-        res.render("productDetail", { product, user: req.user, title: `${product.title} - Sabores verdes` })
+        const userInfoDto = new GetUserInfoDto(req.user)
+        res.render("productDetail", { product, userInfoDto, title: `${product.title} - Sabores verdes` })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
 })
 
 // Carrito
-router.get("/carts/:cid", async (req, res) => {
+router.get("/carts/:cid", noSessionMiddleware, checkRoleMiddleware(["usuario"]), async (req, res) => {
     try {
         const { cid } = req.params
         const cart = await CartsService.getCartById(cid)
 
+        // Precio total
         const totalPrice = cart.products.reduce((acc, prod) => acc + prod.quantity * prod.product.price, 0)
 
-        res.render("cart", { cart, totalPrice, user: req.user, title: "Carrito - Sabores verdes" })
+        // Subtotal (cada producto)
+        cart.products.forEach((prod) => {
+            prod.subtotalPrice = prod.quantity * prod.product.price
+        })
+
+        const userInfoDto = new GetUserInfoDto(req.user)
+        res.render("cart", { cart, totalPrice, userInfoDto, title: "Carrito - Sabores verdes" })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -133,7 +146,8 @@ router.get("/login", sessionMiddleware, async (req, res) => {
 // Perfil
 router.get("/profile", noSessionMiddleware, async (req, res) => {
     try {
-        res.render("profile", { user: req.user, title: "Perfil - Sabores verdes" })   
+        const userInfoDto = new GetUserInfoDto(req.user)
+        res.render("profile", { userInfoDto, title: "Perfil - Sabores verdes" })   
     } catch (error) {
         res.status(500).json({ error: "Error al obtener el perfil" })
     }

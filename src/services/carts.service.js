@@ -13,8 +13,8 @@ export class CartsService {
         return cartsDao.createCart()
     }
 
-    static addProductToCart(cartId, productId) {
-        return cartsDao.addProductToCart(cartId, productId)
+    static addProductToCart(cartId, productId, quantity) {
+        return cartsDao.addProductToCart(cartId, productId, quantity)
     }
 
     static updateProductsInCart(cartId, newProducts) {

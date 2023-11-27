@@ -20,7 +20,7 @@ export class UserManagerDB {
     async loginUser(loginIdentifier, isGithubLogin = false) {
         try {
             if (isGithubLogin) {
-                const result = await this.model.findOne({ githubUsername: loginIdentifier })
+                const result = await this.model.findOne({ github_username: loginIdentifier })
                 return result
             } else {
                 const result = await this.model.findOne({ email: loginIdentifier })

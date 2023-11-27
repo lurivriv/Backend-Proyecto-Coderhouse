@@ -1,6 +1,7 @@
 import express from "express"
 import { engine } from "express-handlebars"
 import session from "express-session"
+import cors from "cors"
 import MongoStore from "connect-mongo"
 import { ConnectDB } from "./config/dbConnection.js"
 import passport from "passport"
@@ -83,6 +84,7 @@ socketServer.on("connection", async (socket) => {
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, "/public")))
+app.use(cors())
 
 // Rutas
 app.use("/", viewsRouter)

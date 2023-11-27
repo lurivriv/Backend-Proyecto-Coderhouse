@@ -12,7 +12,14 @@
                         {{product.category}}
                     </p>
                     <p class="stock-card-detail">{{product.stock}} disponibles</p>
-                    <button class="btn-add-to-cart btn btn-primary" data-product-id="{{product._id}}" data-product-title="{{product.title}}" data-cart-id="{{user.cart}}">Agregar al carrito</button>                
+                    <div class="d-flex flex-row">
+                        <div class="count-container">
+                            <button class="count-product-detail btn-count">-</button>
+                            <span class="count-quantity-product-detail count-content">1</span>
+                            <button class="count-product-detail btn-count">+</button>
+                        </div>
+                        <button class="btn-add-to-cart btn btn-primary" data-product-id="{{product._id}}" data-product-title="{{product.title}}" data-cart-id="{{userInfoDto.cart}}" data-user-role="{{userInfoDto.role}}">Agregar al carrito</button>     
+                    </div>
                 </div>
             </div>
             <div>

@@ -45,9 +45,8 @@ export class CartManagerDB {
     }
 
     // Agregar un producto a un carrito
-    async addProductToCart(cartId, productId) {
+    async addProductToCart(cartId, productId, quantity = 1) {
         try {
-            let quantity = 1
             const cart = await this.getCartById(cartId)
             const productInCart = cart.products.find((product) => product.product._id == productId)
 

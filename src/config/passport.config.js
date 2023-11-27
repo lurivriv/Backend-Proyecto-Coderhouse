@@ -4,6 +4,7 @@ import githubStrategy from "passport-github2"
 import { config } from "./config.js"
 import { createHash, isValidPassword } from "../utils.js"
 import { usersDao } from "../dao/index.js"
+import { CreateUserDto } from "../dao/dto/createUser.dto.js"
 
 export const initializePassport = () => {
     // Signup
@@ -30,17 +31,17 @@ export const initializePassport = () => {
                 }
 
                 // Si el usuario no está registrado
-                const newUser = {
+                const newUserDto = new CreateUserDto ({
                     first_name,
                     last_name,
                     email: username,
                     age,
                     password: createHash(password),
                     role: (username === config.adminInfo.adminEmail && password === config.adminInfo.adminPassword) ? "admin" : "usuario",
-                    githubUsername: `Registrado con email: ${username}`
-                }
+                    github_user: false
+                })
 
-                const createdUser = await usersDao.registerUser(newUser)
+                const createdUser = await usersDao.registerUser(newUserDto)
                 return done(null, createdUser)
             } catch (error) {
                 return done(error)
@@ -66,15 +67,14 @@ export const initializePassport = () => {
                 }
 
                 // Si el usuario no está registrado
-                const newUser = {
-                    githubUser: true,
-                    githubName: profile._json.name,
-                    githubUsername: profile.username,
+                const newUserDto = new CreateUserDto ({
+                    github_name: profile._json.name,
+                    github_username: profile.username,
                     role: "usuario",
-                    email: `Registrado con GitHub: ${profile.username}`
-                }
+                    github_user: true
+                })
 
-                const createdUser = await usersDao.registerUser(newUser)
+                const createdUser = await usersDao.registerUser(newUserDto)
                 return done(null, createdUser)
             } catch (error) {
                 return done(error)

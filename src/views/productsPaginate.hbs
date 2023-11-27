@@ -1,48 +1,49 @@
 <div class="app-content container">
-    {{#if user.role}}
-        <div class="greeting-message-container">
-            {{#if user.first_name}}
-                <h3 class="greeting-message">Hola, <b>{{user.first_name}} {{user.last_name}}</b></h3>
-            {{/if}}
-            {{#if user.githubName}}
-                <h3 class="greeting-message">Hola, <b>{{user.githubName}}</b></h3>
-            {{/if}}
-            <h4 class="role-message">Sos <b class="user-role-role-message">{{user.role}}</b> en Sabores verdes</h4>
-        </div>
-    {{/if}}
-    <h1 class="title-category">MENÚ</h1>
-    {{#if dataProducts.payload.length}}
-        <div>
-            <div class="item-list">
-                {{#each dataProducts.payload}}
-                    <a href="/products/{{this._id}}" class="card-list">
-                        <div class="card">
-                            {{#if thumbnail}}
-                                <img class="card-img-top" src="/assets/imgProducts/{{this.thumbnail}}" alt="{{this.title}}">
-                            {{/if}}
-                            <div class="card-body row justify-content-evenly">
-                                <h5 class="card-title mb-3">{{this.title}}</h5>
-                                <p class="col-auto text-card-list">$ {{this.price}}</p>
-                                <p class="col-auto text-card-list category-card" data-category="{{this.category}}">
-                                    {{this.category}}
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                {{/each}}
-            </div>
-        </div>
-        <div class="pagination-container">
-            {{#if dataProducts.prevLink}}
-                <a href="{{dataProducts.prevLink}}"><p class="pagination-link">{{dataProducts.prevPage}}</p></a>
-            {{/if}}
-            <p class="pagination-active">{{dataProducts.page}}</p>
-            {{#if dataProducts.nextLink}}
-                <a href="{{dataProducts.nextLink}}"><p class="pagination-link">{{dataProducts.nextPage}}</p></a>
-            {{/if}}
+    {{#if error}}
+        <div class="error-session">
+            <p class="mb-sm-3 mb-0">{{error}}</p>
         </div>
     {{else}}
-        <h2 class="title-category">No se pudo cargar el menú :(</h2>
+        {{#if userInfoDto.role}}
+            <div class="greeting-message-container">
+                <h3 class="greeting-message">Hola, <b>{{userInfoDto.full_name}}</b></h3>
+                <h4 class="role-message">Sos <b class="user-role-role-message">{{userInfoDto.role}}</b> en Sabores verdes</h4>
+            </div>
+        {{/if}}
+        <h1 class="title-category">MENÚ</h1>
+        {{#if dataProducts.payload.length}}
+            <div>
+                <div class="item-list">
+                    {{#each dataProducts.payload}}
+                        <a href="/products/{{this._id}}" class="card-list">
+                            <div class="card">
+                                {{#if thumbnail}}
+                                    <img class="card-img-top" src="/assets/imgProducts/{{this.thumbnail}}" alt="{{this.title}}">
+                                {{/if}}
+                                <div class="card-body row justify-content-evenly">
+                                    <h5 class="card-title mb-3">{{this.title}}</h5>
+                                    <p class="col-auto text-card-list">$ {{this.price}}</p>
+                                    <p class="col-auto text-card-list category-card" data-category="{{this.category}}">
+                                        {{this.category}}
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="pagination-container">
+                {{#if dataProducts.prevLink}}
+                    <a href="{{dataProducts.prevLink}}"><p class="pagination-link">{{dataProducts.prevPage}}</p></a>
+                {{/if}}
+                <p class="pagination-active">{{dataProducts.page}}</p>
+                {{#if dataProducts.nextLink}}
+                    <a href="{{dataProducts.nextLink}}"><p class="pagination-link">{{dataProducts.nextPage}}</p></a>
+                {{/if}}
+            </div>
+        {{else}}
+            <h2 class="title-category">No se pudo cargar el menú :(</h2>
+        {{/if}}
     {{/if}}
 </div>
 

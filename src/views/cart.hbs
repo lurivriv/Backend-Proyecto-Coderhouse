@@ -1,5 +1,7 @@
 <div class="app-content container">
     <h1 class="title-category">CARRITO</h1>
+    <div class="message-session"></div>
+    <div class="error-session"></div>
     {{#if cart.products.length}}
         <div class="table-cart-container">
             <table class="section-table-cart">
@@ -30,13 +32,15 @@
                             </td>
                             <td class="text-card-cart text-center divider-card-cart" colspan="2">${{this.product.price}}</td>
                             <td class="text-card-cart text-center divider-card-cart" colspan="3">
-                                <button class="update-product-quantity-in-cart btn-count-cart btn btn-primary" data-product-id="{{this.product._id}}" data-cart-id="{{user.cart}}">-</button>
-                                {{this.quantity}}
-                                <button class="update-product-quantity-in-cart btn-count-cart btn btn-primary" data-product-id="{{this.product._id}}" data-cart-id="{{user.cart}}">+</button>
+                                <button class="update-product-quantity-in-cart btn-count-cart btn btn-primary" data-product-id="{{this.product._id}}" data-product-price="{{this.product.price}}" data-cart-id="{{../userInfoDto.cart}}">-</button>
+                                <span class="quantity-product-in-cart">{{this.quantity}}</span>
+                                <button class="update-product-quantity-in-cart btn-count-cart btn btn-primary" data-product-id="{{this.product._id}}" data-product-price="{{this.product.price}}" data-cart-id="{{../userInfoDto.cart}}">+</button>
                             </td>
-                            <td class="text-card-cart text-center divider-card-cart" colspan="2">Subtotal: $ {{this.quantity}} * {{this.product.price}}</td>
+                            <td class="text-card-cart text-center divider-card-cart" colspan="2">
+                                <span class="subtotal-price-element">${{this.subtotalPrice}}</span>
+                            </td>
                             <td class="divider-card-cart" colspan="1">
-                                <button class="delete-product-in-cart btn-delete-cart btn btn-primary" data-product-id="{{this.product._id}}" data-product-title="{{this.product.title}}" data-cart-id="{{user.cart}}">
+                                <button class="delete-product-in-cart btn-delete-cart btn btn-primary" data-product-id="{{this.product._id}}" data-product-title="{{this.product.title}}" data-cart-id="{{../userInfoDto.cart}}">
                                     <img src="/assets/icon-trash.png" alt="Eliminar">
                                 </button>
                             </td>
@@ -46,11 +50,13 @@
                 <tfoot>
                     <tr>
                         <td class="text-center" colspan="4">
-                            <button class="delete-all-products-in-cart btn-empty-cart btn btn-primary" data-cart-id="{{user.cart}}">Vaciar carrito</button>
+                            <button class="delete-all-products-in-cart btn-empty-cart btn btn-primary" data-cart-id="{{userInfoDto.cart}}">Vaciar carrito</button>
                         </td>
-                        <td class="total-price-cart text-center" colspan="4">TOTAL: ${{totalPrice}}</td>
+                        <td class="total-price-cart text-center" colspan="4">
+                            <span class="total-price-element">TOTAL: ${{totalPrice}}</span>
+                        </td>
                         <td class="text-center" colspan="4">
-                            <button class="btn-continue-buy btn btn-primary">Continuar compra</button>
+                            <button class="finish-purchase btn-continue-buy btn btn-primary" data-cart-id="{{userInfoDto.cart}}">Finalizar compra</button>
                         </td>
                     </tr>
                     <tr>

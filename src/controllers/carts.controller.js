@@ -33,12 +33,19 @@ export class CartsController {
     static addProductToCart = async (req, res) => {
         try {
             const { cid, pid } = req.params
+            const { quantity } = req.body
     
             // Verificar que existen cid y pid o lanzar el error correspondiente
             const cart = await CartsService.getCartById(cid)
             const product = await ProductsService.getProductById(pid)
-    
-            const addedProductToCart = await CartsService.addProductToCart(cid, pid)
+            
+            const customQuantity = quantity ?? 1
+
+            if (isNaN(customQuantity) || customQuantity < 0) {
+                throw new Error("La cantidad debe ser un número mayor a 0")
+            }
+
+            const addedProductToCart = await CartsService.addProductToCart(cid, pid, customQuantity)
             res.status(200).json({ data: addedProductToCart })
         } catch (error) {
             res.status(500).json({ error: error.message })
