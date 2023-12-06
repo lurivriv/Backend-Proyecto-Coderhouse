@@ -11,7 +11,6 @@ export class CartManagerDB {
             const result = await this.model.find().populate("products.product").lean()
             return result
         } catch (error) {
-            console.log("getCarts: ", error.message)
             throw new Error("Error al obtener los carritos")
         }
     }
@@ -22,12 +21,11 @@ export class CartManagerDB {
             const result = await this.model.findById(cartId).populate("products.product").lean()
 
             if (!result) {
-                throw new Error("No se encontró el carrito")
+                throw error
             }
 
             return result
         } catch (error) {
-            console.log("getCartById: ", error.message)
             throw new Error("Error al obtener el carrito")
         }
     }
@@ -39,7 +37,6 @@ export class CartManagerDB {
             const result = await this.model.create(newCart)
             return result
         } catch (error) {
-            console.log("createCart: ", error.message)
             throw new Error("Error al crear el carrito")
         }
     }
@@ -56,10 +53,9 @@ export class CartManagerDB {
                 cart.products.push({ product: productId, quantity})
             }
  
-            const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })
+            const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })    
             return result
         } catch (error) {
-            console.log("addProductToCart: ", error.message)
             throw new Error("Error al agregar el producto al carrito")
         }
     }
@@ -74,7 +70,6 @@ export class CartManagerDB {
             const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })
             return result
         } catch (error) {
-            console.log("updateProductsInCart: ", error.message)
             throw new Error("Error al actualizar los productos del carrito")
         }
     }
@@ -92,13 +87,12 @@ export class CartManagerDB {
                     const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })
                     return result
                 } else {
-                    throw new Error ("La cantidad debe ser mayor o igual a 1")
+                    throw error
                 }
             } else {
-                throw new Error("No se puede actualizar la cantidad porque el producto no se encuentra en el carrito")
+                throw error
             }
         } catch (error) {
-            console.log("updateProductQuantityInCart: ", error.message)
             throw new Error("Error al actualizar la cantidad del producto en el carrito")
         }
     }
@@ -114,7 +108,6 @@ export class CartManagerDB {
             const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })
             return result
         } catch (error) {
-            console.log("deleteAllProductsInCart: ", error.message)
             throw new Error("Error al eliminar los productos del carrito")
         }
     }
@@ -133,10 +126,9 @@ export class CartManagerDB {
                 const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })
                 return result
             } else {
-                throw new Error("El producto a eliminar no se encuentra en el carrito")
+                throw error
             }
         } catch (error) {
-            console.log("deleteProductInCart: ", error.message)
             throw new Error("Error al eliminar el producto del carrito")
         }
     }

@@ -1,6 +1,7 @@
 import { Router } from "express"
 import passport from "passport"
 import { config } from "../config/config.js"
+import { checkRoleMiddleware } from "../middlewares/auth.js"
 import { SessionsController } from "../controllers/sessions.controller.js"
 
 const router = Router()
@@ -32,5 +33,11 @@ router.get("/fail-login", SessionsController.failLogin)
 
 // Logout
 router.get("/logout", SessionsController.logout)
+
+// Todos los usuarios
+router.get("/users", checkRoleMiddleware(["admin"]), SessionsController.getUsers)
+
+// Un usuario
+router.get("/users/:uid", checkRoleMiddleware(["admin"]), SessionsController.getUserById)
 
 export { router as sessionsRouter }

@@ -1,7 +1,7 @@
 <div class="app-content container">
-    {{#if error}}
+    {{#if message}}
         <div class="error-session">
-            <p class="mb-sm-3 mb-0">{{error}}</p>
+            <p class="mb-sm-3 mb-0">{{message}}</p>
         </div>
     {{else}}
         {{#if userInfoDto.role}}

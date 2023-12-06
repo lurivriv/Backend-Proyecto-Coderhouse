@@ -11,7 +11,6 @@ export class UserManagerDB {
             const result = await this.model.create(signupForm)
             return result
         } catch (error) {
-            console.log("registerUser: ", error.message)
             throw new Error ("Error al completar el registro")
         }
     }
@@ -27,8 +26,17 @@ export class UserManagerDB {
                 return result
             }
         } catch (error) {
-            console.log("loginUser: ", error.message)
-            throw new Error ("Error al iniciar sesión. Volve a ingresar los datos")
+            throw new Error ("Error al iniciar sesión")
+        }
+    }
+
+    // Obtener todos los usuarios
+    async getUsers() {
+        try {
+            const result = await this.model.find().lean()
+            return result
+        } catch (error) {
+            throw new Error("Error al obtener los usuarios")
         }
     }
 
@@ -36,9 +44,13 @@ export class UserManagerDB {
     async getUserById(userId){
         try {
             const result = await this.model.findById(userId).lean()
+
+            if (!result) {
+                throw error
+            }
+
             return result
         } catch (error) {
-            console.log("getUserById: ", error.message)
             throw new Error("Error al obtener el usuario")
         }
     }

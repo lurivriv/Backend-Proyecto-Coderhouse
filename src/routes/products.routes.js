@@ -5,6 +5,9 @@ import { ProductsController } from "../controllers/products.controller.js"
 
 const router = Router()
 
+// Mocking products (GET: http://localhost:8080/api/products/mockingproducts)
+router.get("/mockingproducts", ProductsController.mockingProducts)
+
 // Obtener todos los productos (GET: http://localhost:8080/api/products?limit=8&page=1)
 router.get("/", noSessionMiddleware, ProductsController.getProducts)
 

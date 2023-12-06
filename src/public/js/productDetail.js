@@ -72,7 +72,7 @@ addToCartBtn.forEach(async (btn) => {
 
                     cartUpdatedEvent()
                 } else {
-                    throw new Error("Error al agregar el producto al carrito")
+                    throw error
                 }
             }
         } catch (error) {

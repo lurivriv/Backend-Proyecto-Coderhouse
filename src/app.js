@@ -10,6 +10,7 @@ import { config } from "./config/config.js"
 import { Server } from "socket.io"
 import path from "path"
 import { __dirname } from "./utils.js"
+import { errorHandler } from "./middlewares/errorHandler.js"
 import { ProductsService } from "./services/products.service.js"
 import { viewsRouter } from "./routes/views.routes.js"
 import { sessionsRouter } from "./routes/sessions.routes.js"
@@ -64,7 +65,7 @@ socketServer.on("connection", async (socket) => {
             const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
-            console.error(error.message)
+            console.log(error)
         }
     })
 
@@ -75,7 +76,7 @@ socketServer.on("connection", async (socket) => {
             const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
-            console.error(error.message)
+            console.log(error)
         }
     })
 })
@@ -91,3 +92,4 @@ app.use("/", viewsRouter)
 app.use("/api/sessions", sessionsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
+app.use(errorHandler)

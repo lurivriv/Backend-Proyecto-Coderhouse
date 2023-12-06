@@ -6,34 +6,31 @@ const productsCollection = "products"
 const productSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, "El título es obligatorio"]
+        required: true
     },
     description: {
         type: Array,
-        required: [true, "La descripción es obligatoria"]
+        required: true
     },
     code: {
         type: String,
-        required: [true, "El código es obligatorio"],
-        unique: [true, "El código ingresado ya existe"],
+        required: true,
+        unique: true
     },
     price: {
         type: Number,
-        required: [true, "El precio es obligatorio"],
-        min: [0, "El precio debe ser mayor o igual a 0"]
+        required: true,
+        min: 0
     },
     stock: {
         type: Number,
-        required: [true, "El stock es obligatorio"],
-        min: [0, "El stock debe ser mayor o igual a 0"]
+        required: true,
+        min: 0
     },
     category: {
         type: String,
-        required: [true, "La categoría es obligatoria"],
-        enum: {
-            values: ["vegano", "vegetariano"],
-            message: "La categoría debe ser 'vegano' o 'vegetariano'"
-        },
+        required: true,
+        enum: ["vegano", "vegetariano"]
     },
     thumbnail: {
         type: String

@@ -134,6 +134,7 @@ a:link, a:visited, a:active {
 }
 
 .error-session {
+  white-space: pre-line;
   font-weight: 500;
   font-size: 1rem;
   color: #a4102d;
@@ -142,6 +143,7 @@ a:link, a:visited, a:active {
 }
 
 .message-session {
+  white-space: pre-line;
   font-weight: 500;
   font-size: 1rem;
   color: #008040;

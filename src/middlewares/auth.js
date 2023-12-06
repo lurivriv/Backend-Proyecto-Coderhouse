@@ -21,7 +21,7 @@ export const checkRoleMiddleware = (roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
             const userInfoDto = new GetUserInfoDto(req.user)
-            res.render("productsPaginate", { userInfoDto, error: "¡Lo sentimos! No tenés acceso a esta página" })
+            res.render("productsPaginate", { userInfoDto, message: "¡Lo sentimos! No tenés acceso a esta página" })
         } else {
             next()
         }

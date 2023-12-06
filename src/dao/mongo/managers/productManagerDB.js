@@ -11,7 +11,6 @@ export class ProductManagerDB {
             const result = await this.model.find().lean()
             return result
         } catch (error) {
-            console.log("getProductsNoFilter: ", error.message)
             throw new Error("Error al obtener los productos")
         }
     }
@@ -22,7 +21,6 @@ export class ProductManagerDB {
             const result = await this.model.paginate(query, options)
             return result
         } catch (error) {
-            console.log("getProducts: ", error.message)
             throw new Error("Error al obtener los productos")
         }
     }
@@ -33,12 +31,11 @@ export class ProductManagerDB {
             const result = await this.model.findById(productId).lean()
 
             if (!result) {
-                throw new Error("No se encontró el producto")
+                throw error
             }
 
             return result
         } catch (error) {
-            console.log("getProductById: ", error.message)
             throw new Error("Error al obtener el producto")
         }
     }
@@ -49,8 +46,7 @@ export class ProductManagerDB {
             const result = await this.model.create(productInfo)
             return result
         } catch (error) {
-            console.log("addProduct: ", error.message)
-            throw error
+            throw new Error("Error al crear el producto")
         }
     }
 
@@ -60,12 +56,11 @@ export class ProductManagerDB {
             const result = await this.model.findByIdAndUpdate(productId, updateFields, { new: true })
 
             if (!result) {
-                throw new Error("No se encontró el producto a actualizar")
+                throw error
             }
 
             return result
         } catch (error) {
-            console.log("updateProduct: ", error.message)
             throw new Error("Error al actualizar el producto")
         }
     }
@@ -76,12 +71,11 @@ export class ProductManagerDB {
             const result = await this.model.findByIdAndDelete(productId)
             
             if (!result) {
-                throw new Error("No se encontró el producto a eliminar")
+                throw error
             }
 
             return result
         } catch (error) {
-            console.log("deleteProduct: ", error.message)
             throw new Error("Error al eliminar el producto")
         }
     }

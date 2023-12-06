@@ -11,7 +11,6 @@ export class TicketManagerDB {
             const result = await this.model.create(newTicket)
             return result
         } catch (error) {
-            console.log("purchaseCart: ", error.message)
             throw new Error("Error al crear el ticket de compra")
         }
     }
@@ -22,7 +21,6 @@ export class TicketManagerDB {
             const result = await this.model.find().lean()
             return result
         } catch (error) {
-            console.log("getTickets: ", error.message)
             throw new Error("Error al obtener los tickets de compra")
         }
     }
@@ -33,12 +31,11 @@ export class TicketManagerDB {
             const result = await this.model.findById(ticketId).lean()
 
             if (!result) {
-                throw new Error("No se encontró el ticket de compra")
+                throw error
             }
 
             return result
         } catch (error) {
-            console.log("getTicketById: ", error.message)
             throw new Error("Error al obtener el ticket de compra")
         }
     }
