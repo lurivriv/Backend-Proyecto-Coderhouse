@@ -1,9 +1,27 @@
 import dotenv from "dotenv"
+import { Command } from "commander"
+import path from "path"
+import { __dirname } from "../utils.js"
 
-dotenv.config()
+const program = new Command()
+
+program
+.option("--mode <mode>", "entorno de trabajo", "development")
+
+program.parse()
+const args = program.opts()
+
+const envMode = args.mode
+
+const pathEnv = envMode === "production" ? path.join(__dirname, "../.env.production") : path.join(__dirname, "../.env.development")
+
+dotenv.config({
+    path: pathEnv
+})
 
 export const config = {
     server: {
+        envMode: envMode,
         port: process.env.PORT,
         secretSession: process.env.SECRET_SESSION
     },

@@ -1,4 +1,5 @@
 import { usersModel } from "../models/users.model.js"
+import { logger } from "../../../helpers/logger.js"
 
 export class UserManagerDB {
     constructor() {
@@ -11,6 +12,7 @@ export class UserManagerDB {
             const result = await this.model.create(signupForm)
             return result
         } catch (error) {
+            logger.error("register user: Error al completar el registro")
             throw new Error ("Error al completar el registro")
         }
     }
@@ -26,6 +28,7 @@ export class UserManagerDB {
                 return result
             }
         } catch (error) {
+            logger.error("login user: Error al iniciar sesión")
             throw new Error ("Error al iniciar sesión")
         }
     }
@@ -36,6 +39,7 @@ export class UserManagerDB {
             const result = await this.model.find().lean()
             return result
         } catch (error) {
+            logger.error("get users: Error al obtener los usuarios")
             throw new Error("Error al obtener los usuarios")
         }
     }
@@ -51,6 +55,7 @@ export class UserManagerDB {
 
             return result
         } catch (error) {
+            logger.error("get user by id: Error al obtener el usuario")
             throw new Error("Error al obtener el usuario")
         }
     }

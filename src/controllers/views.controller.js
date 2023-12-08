@@ -4,6 +4,7 @@ import { GetUserInfoDto } from "../dao/dto/getUserInfo.dto.js"
 import { EError } from "../enums/EError.js"
 import { CustomError } from "../services/customErrors/customError.service.js"
 import { databaseGetError, paramError } from "../services/customErrors/errors/generalErrors.service.js"
+import { logger } from "../helpers/logger.js"
 
 export class ViewsController {
     static renderHome = async (req, res, next) => {
@@ -31,6 +32,7 @@ export class ViewsController {
         try {
             res.render("realTimeProducts", { title: "Menú - Sabores verdes" })
         } catch (error) {
+            logger.error("real time products: Error al renderizar la página")
             res.json({ status: "error", error: error.message })
         }
     }
@@ -183,5 +185,16 @@ export class ViewsController {
         } catch (error) {
             res.json({ status: "error", error: "Error al obtener el perfil" })
         }
+    }
+
+    static loggerTest = (req, res) => {
+        logger.fatal("Log fatal test")
+        logger.error("Log error test")
+        logger.warning("Log warning test")
+        logger.info("Log info test")
+        logger.http("Log http test")
+        logger.debug("Log debug test")
+
+        res.send("Logger test recibido")
     }
 }

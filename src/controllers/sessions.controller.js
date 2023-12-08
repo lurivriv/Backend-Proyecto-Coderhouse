@@ -1,4 +1,5 @@
 import { usersDao } from "../dao/index.js"
+import { logger } from "../helpers/logger.js"
 
 export class SessionsController {
     static redirectLogin = async (req, res) => {
@@ -6,6 +7,7 @@ export class SessionsController {
     }
 
     static failSignup = async (req, res) => {
+        logger.error("signup: Error al completar el registro")
         res.render("signup", { error: `
                                     Error al completar el registro
 
@@ -24,6 +26,7 @@ export class SessionsController {
     }
 
     static failLogin = async (req, res) => {
+        logger.error("login: Error al iniciar sesión")
         res.render("login", { error: `
                                     Error al iniciar sesión
 
@@ -38,12 +41,14 @@ export class SessionsController {
         try {
             req.session.destroy((err) => {
                 if (err) {
+                    logger.error("logout: Error al cerrar la sesión")
                     return res.render("profile", { error: "Error al cerrar la sesión" })
                 } else {
                     return res.redirect("/login")
                 }
             })
         } catch (error) {
+            logger.error("logout: Error al cerrar la sesión")
             res.render("logout", { error: "Error al cerrar la sesión" })
         }
     }
@@ -53,6 +58,7 @@ export class SessionsController {
             const users = await usersDao.getUsers()
             res.json({ status: "success", data: users })
         } catch (error) {
+            logger.error("get users: Error al obtener los usuarios")
             res.json({ status: "error", error: "Error al obtener los usuarios" })
         }
     }
@@ -63,6 +69,7 @@ export class SessionsController {
             const user = await usersDao.getUserById(uid)
             res.json({ status: "success", data: user })
         } catch (error) {
+            logger.error("get user by id: Error al obtener el usuario")
             res.json({ status: "error", error: "Error al obtener el usuario" })
         }
     }

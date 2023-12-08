@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import { CartsService } from "../../../services/carts.service.js"
+import { logger } from "../../../helpers/logger.js"
 
 const usersCollection = "users"
 
@@ -66,6 +67,7 @@ userSchema.pre("save", async function(next) {
         const newCartUser = await CartsService.createCart()
         this.cart = newCartUser._id
     } catch (error) {
+        logger.error("new cart user: Error al asignar un carrito al nuevo usuario")
         next(error)
     }
 })

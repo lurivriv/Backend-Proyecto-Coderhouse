@@ -1,4 +1,5 @@
 import { productsModel } from "../models/products.model.js"
+import { logger } from "../../../helpers/logger.js"
 
 export class ProductManagerDB {
     constructor() {
@@ -11,6 +12,7 @@ export class ProductManagerDB {
             const result = await this.model.find().lean()
             return result
         } catch (error) {
+            logger.error("get products no filter: Error al obtener los productos")
             throw new Error("Error al obtener los productos")
         }
     }
@@ -21,6 +23,7 @@ export class ProductManagerDB {
             const result = await this.model.paginate(query, options)
             return result
         } catch (error) {
+            logger.error("get products: Error al obtener los productos")
             throw new Error("Error al obtener los productos")
         }
     }
@@ -36,6 +39,7 @@ export class ProductManagerDB {
 
             return result
         } catch (error) {
+            logger.error("get product by id: Error al obtener el producto")
             throw new Error("Error al obtener el producto")
         }
     }
@@ -46,6 +50,7 @@ export class ProductManagerDB {
             const result = await this.model.create(productInfo)
             return result
         } catch (error) {
+            logger.error("add product: Error al crear el producto")
             throw new Error("Error al crear el producto")
         }
     }
@@ -61,6 +66,7 @@ export class ProductManagerDB {
 
             return result
         } catch (error) {
+            logger.error("update product: Error al actualizar el producto")
             throw new Error("Error al actualizar el producto")
         }
     }
@@ -76,6 +82,7 @@ export class ProductManagerDB {
 
             return result
         } catch (error) {
+            logger.error("delete product: Error al eliminar el producto")
             throw new Error("Error al eliminar el producto")
         }
     }

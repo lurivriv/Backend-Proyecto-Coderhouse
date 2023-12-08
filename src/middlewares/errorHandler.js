@@ -15,7 +15,7 @@ export const errorHandler = (error, req, res, next) => {
             break
 
         default:
-            res.json ({ status: "error", error: error.message })
+            res.json({ status: "error", error: error.message })
             break
     }
 }
