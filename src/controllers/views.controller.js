@@ -16,7 +16,7 @@ export class ViewsController {
                 CustomError.createError ({
                     name: "get products error",
                     cause: databaseGetError(),
-                    message: "Error al obtener los productos",
+                    message: "Error al obtener los productos: ",
                     errorCode: EError.DATABASE_ERROR
                 })
             }
@@ -30,10 +30,11 @@ export class ViewsController {
 
     static renderRealTimeProducts = async (req, res) => {
         try {
-            res.render("realTimeProducts", { title: "Menú - Sabores verdes" })
+            const userInfoDto = new GetUserInfoDto(req.user)
+            res.render("realTimeProducts", { userInfoDto, title: "Menú - Sabores verdes" })
         } catch (error) {
-            logger.error("real time products: Error al renderizar la página")
-            res.json({ status: "error", error: error.message })
+            logger.error(`real time products: Error al renderizar la página: ${error}`)
+            res.json({ status: "error", error: error })
         }
     }
 
@@ -80,7 +81,7 @@ export class ViewsController {
                 CustomError.createError ({
                     name: "get products error",
                     cause: databaseGetError(),
-                    message: "Error al obtener los productos",
+                    message: "Error al obtener los productos: ",
                     errorCode: EError.DATABASE_ERROR
                 })
             }
@@ -118,13 +119,13 @@ export class ViewsController {
                 CustomError.createError ({
                     name: "get product by id error",
                     cause: paramError(pid),
-                    message: "Error al obtener el producto",
+                    message: "Error al obtener el producto: ",
                     errorCode: EError.INVALID_PARAM_ERROR
                 })
             }
 
             product.title = product.title.toUpperCase()
-            
+
             const userInfoDto = new GetUserInfoDto(req.user)
             res.render("productDetail", { product, userInfoDto, title: `${product.title} - Sabores verdes` })
         } catch (error) {
@@ -142,7 +143,7 @@ export class ViewsController {
                 CustomError.createError ({
                     name: "get cart by id error",
                     cause: paramError(cid),
-                    message: "Error al obtener el carrito",
+                    message: "Error al obtener el carrito: ",
                     errorCode: EError.INVALID_PARAM_ERROR
                 })
             }
@@ -166,7 +167,7 @@ export class ViewsController {
         try {
             res.render("signup", { title: "Registrarse - Sabores verdes" })
         } catch (error) {
-            res.json({ status: "error", error: error.message})
+            res.json({ status: "error", error: error})
         }
     }
 
@@ -174,7 +175,24 @@ export class ViewsController {
         try {
             res.render("login", { title: "Iniciar sesión - Sabores verdes" })
         } catch (error) {
-            res.json({ status: "error", error: error.message })
+            res.json({ status: "error", error: error })
+        }
+    }
+
+    static renderForgotPassword = async (req, res) => {
+        try {
+            res.render("forgotPassword", { title: "Restablecer contraseña - Sabores verdes" })
+        } catch (error) {
+            res.json({ status: "error", error: error })
+        }
+    }
+
+    static renderResetPassword = async (req, res) => {
+        try {
+            const token = req.query.token
+            res.render("resetPassword", { token, title: "Nueva contraseña - Sabores verdes" })
+        } catch (error) {
+            res.json({ status: "error", error: error })
         }
     }
 

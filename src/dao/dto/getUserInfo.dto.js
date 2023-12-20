@@ -1,5 +1,6 @@
 export class GetUserInfoDto {
     constructor(userInfo) {
+        this._id = userInfo._id
         this.full_name = userInfo.full_name
         this.role = userInfo.role
         this.cart = userInfo.cart

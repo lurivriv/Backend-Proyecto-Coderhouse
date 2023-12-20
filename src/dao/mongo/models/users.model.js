@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["usuario", "admin"],
+        enum: ["usuario", "admin", "premium"],
         default: "usuario"
     },
     cart: {
@@ -67,7 +67,7 @@ userSchema.pre("save", async function(next) {
         const newCartUser = await CartsService.createCart()
         this.cart = newCartUser._id
     } catch (error) {
-        logger.error("new cart user: Error al asignar un carrito al nuevo usuario")
+        logger.error(`new cart user error: Error al asignar un carrito al nuevo usuario: ${error}`)
         next(error)
     }
 })

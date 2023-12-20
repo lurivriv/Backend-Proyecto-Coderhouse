@@ -8,7 +8,7 @@ const router = Router()
 router.get("/", noSessionMiddleware, ViewsController.renderHome)
 
 // Productos en real time products
-router.get("/realtimeproducts", noSessionMiddleware, checkRoleMiddleware(["admin"]), ViewsController.renderRealTimeProducts)
+router.get("/realtimeproducts", noSessionMiddleware, checkRoleMiddleware(["admin", "premium"]), ViewsController.renderRealTimeProducts)
 
 // Todos los productos
 router.get("/products", noSessionMiddleware, ViewsController.renderProducts)
@@ -17,13 +17,19 @@ router.get("/products", noSessionMiddleware, ViewsController.renderProducts)
 router.get("/products/:pid", noSessionMiddleware, ViewsController.renderProductDetail)
 
 // Carrito
-router.get("/carts/:cid", noSessionMiddleware, checkRoleMiddleware(["usuario"]), ViewsController.renderCart)
+router.get("/carts/:cid", noSessionMiddleware, checkRoleMiddleware(["usuario", "premium"]), ViewsController.renderCart)
 
 // Signup
 router.get("/signup", sessionMiddleware, ViewsController.renderSignup)
 
 // Login
 router.get("/login", sessionMiddleware, ViewsController.renderLogin)
+
+// Restablecer contraseña
+router.get("/forgot-password", ViewsController.renderForgotPassword)
+
+// Nueva contraseña
+router.get("/reset-password", ViewsController.renderResetPassword)
 
 // Perfil
 router.get("/profile", noSessionMiddleware, ViewsController.renderProfile)

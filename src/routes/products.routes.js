@@ -15,12 +15,12 @@ router.get("/", noSessionMiddleware, ProductsController.getProducts)
 router.get("/:pid", noSessionMiddleware, ProductsController.getProductById)
 
 // Agregar un producto (POST: http://localhost:8080/api/products)
-router.post("/", uploader.single("thumbnail"), noSessionMiddleware, checkRoleMiddleware(["admin"]), ProductsController.addProduct)
+router.post("/", uploader.single("thumbnail"), noSessionMiddleware, checkRoleMiddleware(["admin", "premium"]), ProductsController.addProduct)
 
 // Actualizar un producto (PUT: http://localhost:8080/api/products/pid)
-router.put("/:pid", uploader.single("thumbnail"), noSessionMiddleware, checkRoleMiddleware(["admin"]), ProductsController.updateProduct)
+router.put("/:pid", uploader.single("thumbnail"), noSessionMiddleware, checkRoleMiddleware(["admin", "premium"]), ProductsController.updateProduct)
 
 // Eliminar un producto (DELETE: http://localhost:8080/api/products/pid)
-router.delete("/:pid", noSessionMiddleware, checkRoleMiddleware(["admin"]), ProductsController.deleteProduct)
+router.delete("/:pid", noSessionMiddleware, checkRoleMiddleware(["admin", "premium"]), ProductsController.deleteProduct)
 
 export { router as productsRouter }

@@ -21,13 +21,13 @@ router.get("/:cid/tickets/:tid", noSessionMiddleware, TicketsController.getTicke
 router.post("/", noSessionMiddleware, CartsController.createCart)
 
 // Agregar un producto a un carrito (POST: http://localhost:8080/api/carts/cid/product/pid)
-router.post("/:cid/product/:pid", noSessionMiddleware, checkRoleMiddleware(["usuario"]), CartsController.addProductToCart)
+router.post("/:cid/product/:pid", noSessionMiddleware, checkRoleMiddleware(["usuario", "premium"]), CartsController.addProductToCart)
 
 // Actualizar un carrito con un array de productos (PUT: http://localhost:8080/api/carts/cid)
-router.put("/:cid", noSessionMiddleware, checkRoleMiddleware(["usuario"]), CartsController.updateProductsInCart)
+router.put("/:cid", noSessionMiddleware, checkRoleMiddleware(["usuario", "premium"]), CartsController.updateProductsInCart)
 
 // Actualizar la cantidad de un producto en el carrito (PUT: http://localhost:8080/api/carts/cid/products/pid)
-router.put("/:cid/products/:pid", noSessionMiddleware, checkRoleMiddleware(["usuario"]), CartsController.updateProductQuantityInCart)
+router.put("/:cid/products/:pid", noSessionMiddleware, checkRoleMiddleware(["usuario", "premium"]), CartsController.updateProductQuantityInCart)
 
 // Eliminar todos los productos de un carrito (DELETE: http://localhost:8080/api/carts/cid)
 router.delete("/:cid", noSessionMiddleware, CartsController.deleteAllProductsInCart)
@@ -36,6 +36,6 @@ router.delete("/:cid", noSessionMiddleware, CartsController.deleteAllProductsInC
 router.delete("/:cid/products/:pid", noSessionMiddleware, CartsController.deleteProductInCart)
 
 // Finalizar compra (POST: http://localhost:8080/api/carts/cid/purchase)
-router.post("/:cid/purchase", noSessionMiddleware, checkRoleMiddleware(["usuario"]), TicketsController.purchaseCart)
+router.post("/:cid/purchase", noSessionMiddleware, checkRoleMiddleware(["usuario", "premium"]), TicketsController.purchaseCart)
 
 export { router as cartsRouter }

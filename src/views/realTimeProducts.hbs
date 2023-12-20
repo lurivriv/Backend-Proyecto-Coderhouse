@@ -2,7 +2,7 @@
     <h2 class="title-category">AGREGAR PRODUCTOS</h2>
     <!-- Formulario para agregar productos -->
     <div class="form-add-product-container">
-        <form id="addProductForm" enctype="multipart/form-data" class="row mb-5">
+        <form id="addProductForm" enctype="multipart/form-data" class="row mb-5" data-user-id="{{userInfoDto._id}}" data-user-role="{{userInfoDto.role}}">
             <div class="col-md-6 col-12">
                 <div class="mb-3">
                     <label for="title" class="form-label">Título</label>
@@ -48,4 +48,5 @@
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
+<script type="module" src="/js/main.js"></script>
 <script type="module" src="/js/realTimeProducts.js"></script>

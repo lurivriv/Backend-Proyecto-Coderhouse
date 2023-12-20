@@ -117,7 +117,7 @@ export class TicketsController {
                 CustomError.createError ({
                     name: "get tickets error",
                     cause: databaseGetError(),
-                    message: "Error al obtener los tickets de compra",
+                    message: "Error al obtener los tickets de compra: ",
                     errorCode: EError.DATABASE_ERROR
                 })
             }
@@ -138,7 +138,7 @@ export class TicketsController {
                 CustomError.createError ({
                     name: "get ticket by id error",
                     cause: paramError(tid),
-                    message: "Error al obtener el ticket de compra",
+                    message: "Error al obtener el ticket de compra: ",
                     errorCode: EError.INVALID_PARAM_ERROR
                 })
             }

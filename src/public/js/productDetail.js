@@ -34,11 +34,22 @@ addToCartBtn.forEach(async (btn) => {
             const cartId = e.currentTarget.getAttribute("data-cart-id")
             const productId = e.currentTarget.getAttribute("data-product-id")
             const productTitle = e.currentTarget.getAttribute("data-product-title")
+            const productOwner = e.currentTarget.getAttribute("data-product-owner")
+            const userId = e.currentTarget.getAttribute("data-user-id")
             const userRole = e.currentTarget.getAttribute("data-user-role")
 
-            if (userRole == "admin") {
+            if (userRole === "admin") {
                 Toastify({
                     text: `Un admin no puede agregar productos al carrito`,
+                    duration: 2000,
+                    close: false,
+                    position: "right",
+                    gravity: "bottom",
+                    className: "custom-toast"
+                }).showToast()
+            } else if (userRole === "premium" && productOwner.toString() === userId.toString()) {
+                Toastify({
+                    text: `No podés agregar al carrito tu propio producto`,
                     duration: 2000,
                     close: false,
                     position: "right",

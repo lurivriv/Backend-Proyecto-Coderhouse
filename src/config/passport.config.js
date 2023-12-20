@@ -3,7 +3,7 @@ import localStrategy from "passport-local"
 import githubStrategy from "passport-github2"
 import { config } from "./config.js"
 import { createHash, isValidPassword } from "../utils.js"
-import { usersDao } from "../dao/index.js"
+import { UsersService } from "../services/users.service.js"
 import { CreateUserDto } from "../dao/dto/createUser.dto.js"
 
 export const initializePassport = () => {
@@ -18,7 +18,7 @@ export const initializePassport = () => {
             const { first_name, last_name, age } = req.body
 
             try {
-                const user = await usersDao.loginUser(username)
+                const user = await UsersService.loginUser(username)
 
                 // Si no se completan los campos
                 if (!first_name || !last_name || !age) {
@@ -41,7 +41,7 @@ export const initializePassport = () => {
                     github_user: false
                 })
 
-                const createdUser = await usersDao.registerUser(newUserDto)
+                const createdUser = await UsersService.registerUser(newUserDto)
                 return done(null, createdUser)
             } catch (error) {
                 return done(error)
@@ -59,7 +59,7 @@ export const initializePassport = () => {
 
         async (accessToken, refreshToken, profile, done) => {
             try {
-                const user = await usersDao.loginUser(profile.username, true)
+                const user = await UsersService.loginUser(profile.username, true)
 
                 // Si el usuario ya está registrado
                 if (user) {
@@ -74,7 +74,7 @@ export const initializePassport = () => {
                     github_user: true
                 })
 
-                const createdUser = await usersDao.registerUser(newUserDto)
+                const createdUser = await UsersService.registerUser(newUserDto)
                 return done(null, createdUser)
             } catch (error) {
                 return done(error)
@@ -90,7 +90,7 @@ export const initializePassport = () => {
 
         async (username, password, done) => {
             try {
-                const user = await usersDao.loginUser(username)
+                const user = await UsersService.loginUser(username)
 
                 // Si el usuario no existe
                 if (!user) {
@@ -116,7 +116,7 @@ export const initializePassport = () => {
 
     // Deserialización
     passport.deserializeUser(async (id, done) => {
-        const user = await usersDao.getUserById(id)
+        const user = await UsersService.getUserById(id)
         done(null, user)
     })
 }

@@ -6,7 +6,7 @@ export class CustomError {
         error.name = name
         error.code = errorCode
 
-        logger.error("Custom error: ", error)
+        logger.error(`Custom error: ${error}`)
         throw error
     }
 }

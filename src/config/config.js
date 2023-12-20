@@ -33,6 +33,11 @@ export const config = {
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackUrl: process.env.GITHUB_CALLBACK_URL
     },
+    gmail: {
+        tokenEmail: process.env.TOKEN_EMAIL,
+        account: process.env.GMAIL_ACCOUNT,
+        appPassword: process.env.GMAIL_APP_PASSWORD
+    },
     adminInfo: {
         adminEmail: process.env.ADMIN_EMAIL,
         adminPassword: process.env.ADMIN_PASSWORD

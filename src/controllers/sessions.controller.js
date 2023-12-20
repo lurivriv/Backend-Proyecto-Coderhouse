@@ -1,5 +1,7 @@
-import { usersDao } from "../dao/index.js"
+import { UsersService } from "../services/users.service.js"
+import { generateEmailToken, sendChangePasswordEmail, verifyEmailToken } from "../helpers/email.js"
 import { logger } from "../helpers/logger.js"
+import { createHash, isValidPassword } from "../utils.js"
 
 export class SessionsController {
     static redirectLogin = async (req, res) => {
@@ -7,7 +9,8 @@ export class SessionsController {
     }
 
     static failSignup = async (req, res) => {
-        logger.error("signup: Error al completar el registro")
+        // Error customizado
+        logger.error("signup error: Error al completar el registro")
         res.render("signup", { error: `
                                     Error al completar el registro
 
@@ -26,7 +29,7 @@ export class SessionsController {
     }
 
     static failLogin = async (req, res) => {
-        logger.error("login: Error al iniciar sesión")
+        logger.error("login error: Error al iniciar sesión")
         res.render("login", { error: `
                                     Error al iniciar sesión
 
@@ -35,6 +38,59 @@ export class SessionsController {
                                     * La contraseña puede estar incorrecta
                                 ` 
         })
+    }
+
+    static forgotPassword = async (req, res) => {
+        try {
+            const { email } = req.body
+            const user = await UsersService.loginUser(email)         
+            const emailToken = generateEmailToken(email, 60 * 60)
+
+            if (email == "") {
+                return res.render("forgotPassword", { error: "Tenés que ingresar tu email" })
+            }
+
+            await sendChangePasswordEmail(req, email, emailToken)
+
+            res.render("forgotPassword", { message: "Se envío el link para restablecer tu contraseña a tu email" })
+        } catch (error) {
+            logger.error(`forgot password error: Error al obtener el restablecimiento de contraseña: ${error}`)
+            res.json({ status: "error", error: "Error al obtener el restablecimiento de contraseña" })
+        }
+    }
+
+    static resetPassword = async (req, res) => {
+        try {
+            const token = req.query.token
+            const { newPassword } = req.body
+            const validEmail = verifyEmailToken(token)
+
+            if (!validEmail) {
+                return res.render("resetPassword", { message: "El link para restablecer tu contraseña ha expirado" })
+            }
+
+            const user = await UsersService.loginUser(validEmail)
+
+            if (!user) {
+                return res.render("resetPassword", { message: "Esta acción no es válida. El usuario no fue encontrado" })
+            }
+
+            if (isValidPassword(newPassword, user) || newPassword == "") {
+                return res.render("resetPassword", { token, error: "Contraseña inválida" })
+            }
+
+            const userData = {
+                ...user,
+                password: createHash(newPassword)
+            }
+
+            await UsersService.updateUser(user._id, userData)
+
+            res.render("login", { message: "Contraseña actualizada :)" })
+        } catch (error) {
+            logger.error(`reset password error: Error al cambiar la contraseña: ${error}`)
+            res.json({ status: "error", error: "Error al cambiar la contraseña" })
+        }
     }
 
     static logout = async (req, res) => {
@@ -48,29 +104,8 @@ export class SessionsController {
                 }
             })
         } catch (error) {
-            logger.error("logout: Error al cerrar la sesión")
+            logger.error(`logout error: Error al cerrar la sesión: ${error}`)
             res.render("logout", { error: "Error al cerrar la sesión" })
-        }
-    }
-
-    static getUsers = async (req, res) => {
-        try {
-            const users = await usersDao.getUsers()
-            res.json({ status: "success", data: users })
-        } catch (error) {
-            logger.error("get users: Error al obtener los usuarios")
-            res.json({ status: "error", error: "Error al obtener los usuarios" })
-        }
-    }
-
-    static getUserById = async (req, res) => {
-        try {
-            const { uid } = req.params
-            const user = await usersDao.getUserById(uid)
-            res.json({ status: "success", data: user })
-        } catch (error) {
-            logger.error("get user by id: Error al obtener el usuario")
-            res.json({ status: "error", error: "Error al obtener el usuario" })
         }
     }
 }

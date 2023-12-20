@@ -12,8 +12,8 @@ export class TicketManagerDB {
             const result = await this.model.create(newTicket)
             return result
         } catch (error) {
-            logger.error("purchase cart: Error al crear el ticket de compra")
-            throw new Error("Error al crear el ticket de compra")
+            logger.error(`purchase cart error: Error al crear el ticket de compra: ${error}`)
+            throw new Error(`purchase cart error: Error al crear el ticket de compra: ${error}`)
         }
     }
 
@@ -23,8 +23,8 @@ export class TicketManagerDB {
             const result = await this.model.find().lean()
             return result
         } catch (error) {
-            logger.error("get tickets: Error al obtener los tickets de compra")
-            throw new Error("Error al obtener los tickets de compra")
+            logger.error(`get tickets error: Error al obtener los tickets de compra: ${error}`)
+            throw new Error(`get tickets error: Error al obtener los tickets de compra: ${error}`)
         }
     }
 
@@ -39,8 +39,8 @@ export class TicketManagerDB {
 
             return result
         } catch (error) {
-            logger.error("get ticket by id: Error al obtener el ticket de compra")
-            throw new Error("Error al obtener el ticket de compra")
+            logger.error(`get ticket by id error: Error al obtener el ticket de compra: ${error}`)
+            throw new Error(`get ticket by id error: Error al obtener el ticket de compra: ${error}`)
         }
     }
 }

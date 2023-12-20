@@ -12,8 +12,8 @@ export class UserManagerDB {
             const result = await this.model.create(signupForm)
             return result
         } catch (error) {
-            logger.error("register user: Error al completar el registro")
-            throw new Error ("Error al completar el registro")
+            logger.error(`register user error: Error al completar el registro: ${error}`)
+            throw new Error(`register user error: Error al completar el registro: ${error}`)
         }
     }
 
@@ -21,15 +21,15 @@ export class UserManagerDB {
     async loginUser(loginIdentifier, isGithubLogin = false) {
         try {
             if (isGithubLogin) {
-                const result = await this.model.findOne({ github_username: loginIdentifier })
+                const result = await this.model.findOne({ github_username: loginIdentifier }).lean()
                 return result
             } else {
-                const result = await this.model.findOne({ email: loginIdentifier })
+                const result = await this.model.findOne({ email: loginIdentifier }).lean()
                 return result
             }
         } catch (error) {
-            logger.error("login user: Error al iniciar sesión")
-            throw new Error ("Error al iniciar sesión")
+            logger.error(`login user error: Error al iniciar sesión: ${error}`)
+            throw new Error(`login user error: Error al iniciar sesión: ${error}`)
         }
     }
 
@@ -39,8 +39,8 @@ export class UserManagerDB {
             const result = await this.model.find().lean()
             return result
         } catch (error) {
-            logger.error("get users: Error al obtener los usuarios")
-            throw new Error("Error al obtener los usuarios")
+            logger.error(`get users error: Error al obtener los usuarios: ${error}`)
+            throw new Error(`get users error: Error al obtener los usuarios: ${error}`)
         }
     }
 
@@ -55,8 +55,24 @@ export class UserManagerDB {
 
             return result
         } catch (error) {
-            logger.error("get user by id: Error al obtener el usuario")
-            throw new Error("Error al obtener el usuario")
+            logger.error(`get user by id error: Error al obtener el usuario: ${error}`)
+            throw new Error(`get user by id error: Error al obtener el usuario: ${error}`)
+        }
+    }
+
+    // Actualizar un usuario
+    async updateUser(userId, user) {
+        try {
+            const result = await this.model.findByIdAndUpdate(userId, user, { new: true })
+
+            if (!result) {
+                throw error
+            }
+            
+            return result
+        } catch (error) {
+            logger.error(`update user error: Error al actualizar el usuario: ${error}`)
+            throw new Error(`update user error: Error al actualizar el usuario: ${error}`)
         }
     }
 }

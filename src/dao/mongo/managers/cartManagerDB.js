@@ -12,8 +12,8 @@ export class CartManagerDB {
             const result = await this.model.find().populate("products.product").lean()
             return result
         } catch (error) {
-            logger.error("get carts: Error al obtener los carritos")
-            throw new Error("Error al obtener los carritos")
+            logger.error(`get carts error: Error al obtener los carritos: ${error}`)
+            throw new Error(`get carts error: Error al obtener los carritos: ${error}`)
         }
     }
 
@@ -28,8 +28,8 @@ export class CartManagerDB {
 
             return result
         } catch (error) {
-            logger.error("get cart by id: Error al obtener el carrito")
-            throw new Error("Error al obtener el carrito")
+            logger.error(`get cart by id error: Error al obtener el carrito: ${error}`)
+            throw new Error(`get cart by id error: Error al obtener el carrito: ${error}`)
         }
     }
 
@@ -40,8 +40,8 @@ export class CartManagerDB {
             const result = await this.model.create(newCart)
             return result
         } catch (error) {
-            logger.error("create cart: Error al crear el carrito")
-            throw new Error("Error al crear el carrito")
+            logger.error(`create cart error: Error al crear el carrito: ${error}`)
+            throw new Error(`create cart error: Error al crear el carrito: ${error}`)
         }
     }
 
@@ -60,8 +60,8 @@ export class CartManagerDB {
             const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })    
             return result
         } catch (error) {
-            logger.error("add product to cart: Error al agregar el producto al carrito")
-            throw new Error("Error al agregar el producto al carrito")
+            logger.error(`add product to cart error: Error al agregar el producto al carrito: ${error}`)
+            throw new Error(`add product to cart error: Error al agregar el producto al carrito: ${error}`)
         }
     }
 
@@ -75,8 +75,8 @@ export class CartManagerDB {
             const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })
             return result
         } catch (error) {
-            logger.error("update products in cart: Error al actualizar los productos del carrito")
-            throw new Error("Error al actualizar los productos del carrito")
+            logger.error(`update products in cart error: Error al actualizar los productos del carrito: ${error}`)
+            throw new Error(`update products in cart error: Error al actualizar los productos del carrito: ${error}`)
         }
     }
 
@@ -99,8 +99,8 @@ export class CartManagerDB {
                 throw error
             }
         } catch (error) {
-            logger.error("update product quantity in cart: Error al actualizar la cantidad del producto en el carrito")
-            throw new Error("Error al actualizar la cantidad del producto en el carrito")
+            logger.error(`update product quantity in cart error: Error al actualizar la cantidad del producto en el carrito: ${error}`)
+            throw new Error(`update product quantity in cart error: Error al actualizar la cantidad del producto en el carrito: ${error}`)
         }
     }
 
@@ -115,8 +115,8 @@ export class CartManagerDB {
             const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })
             return result
         } catch (error) {
-            logger.error("delete all products in cart: Error al eliminar los productos del carrito")
-            throw new Error("Error al eliminar los productos del carrito")
+            logger.error(`delete all products in cart error: Error al eliminar los productos del carrito: ${error}`)
+            throw new Error(`delete all products in cart error: Error al eliminar los productos del carrito: ${error}`)
         }
     }
 
@@ -137,8 +137,8 @@ export class CartManagerDB {
                 throw error
             }
         } catch (error) {
-            logger.error("delete product in cart: Error al eliminar el producto del carrito")
-            throw new Error("Error al eliminar el producto del carrito")
+            logger.error(`delete product in cart error: Error al eliminar el producto del carrito: ${error}`)
+            throw new Error(`delete product in cart error: Error al eliminar el producto del carrito: ${error}`)
         }
     }
 }

@@ -180,7 +180,7 @@ a:link, a:visited, a:active {
   background-color: rgba(0, 128, 64, 0.7);
 }
 
-.btn-login-signup-container, .btn-signup-login-container {
+.btn-login-signup-container {
   display: flex;
   justify-content: center;
 }
@@ -208,6 +208,19 @@ a:link, a:visited, a:active {
 
 .btn-login-signup:disabled, .btn-signup-login:disabled {
   color: rgba(0, 128, 64, 0.7);
+}
+
+.btn-forgot-password {
+  color: #a4102d;
+}
+
+.btn-forgot-password:active {
+  color: #c21336;;
+  font-weight: 700;
+}
+
+.btn-forgot-password:disabled {
+  color: #7e0d23;;
 }
 
 .btn-signup-gh, .btn-login-gh {

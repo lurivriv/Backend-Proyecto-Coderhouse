@@ -17,6 +17,7 @@ import { viewsRouter } from "./routes/views.routes.js"
 import { sessionsRouter } from "./routes/sessions.routes.js"
 import { productsRouter } from "./routes/products.routes.js"
 import { cartsRouter } from "./routes/carts.routes.js"
+import { usersRouter } from "./routes/users.routes.js"
 
 const port = config.server.port
 const app = express()
@@ -38,7 +39,7 @@ app.set("views", path.join(__dirname, "/views"))
 // Configuración de session
 app.use(session ({
     store: MongoStore.create ({
-        ttl: 10800000,
+        ttl: 300000,
         mongoUrl: config.mongo.url
     }),
     secret: config.server.secretSession,
@@ -53,7 +54,7 @@ app.use(passport.session())
 
 // Configuración socket.io
 socketServer.on("connection", async (socket) => {
-    logger.info("Cliente conectado: ", socket.id)
+    logger.info(`Cliente conectado: ${socket.id}`)
 
     // Obtener productos
     const products = await ProductsService.getProductsNoFilter()
@@ -66,7 +67,7 @@ socketServer.on("connection", async (socket) => {
             const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
-            logger.error(error)
+            logger.error(`add product error: Error al crear el producto: ${error}`)
         }
     })
 
@@ -77,7 +78,7 @@ socketServer.on("connection", async (socket) => {
             const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
-            logger.error(error)
+            logger.error(`delete product error: Error al eliminar el producto: ${error}`)
         }
     })
 })
@@ -93,4 +94,5 @@ app.use("/", viewsRouter)
 app.use("/api/sessions", sessionsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
+app.use("/api/users", usersRouter)
 app.use(errorHandler)
