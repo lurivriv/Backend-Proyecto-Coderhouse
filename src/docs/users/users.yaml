@@ -1,0 +1,190 @@
+paths:
+  /api/users:
+    get:
+      summary: Obtener todos los usuarios (Iniciar sesión con admin)
+      tags:
+        - Usuarios
+      responses:
+        "200":
+          description: Los usuarios se obtuvieron con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  users:
+                    type: array
+                    items:
+                      $ref: "#components/schemas/User"
+        "401":
+          description: Este usuario no tiene permisos para obtener los usuarios
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se obtuvieron los usuarios por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+  /api/users/{uid}:
+    get:
+      summary: Obtener un usuario por Id (Iniciar sesión con admin)
+      tags:
+        - Usuarios
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El Id del usuario a obtener
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se obtuvo el usuario por Id con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  user:
+                    $ref: "#components/schemas/User"
+        "401":
+          description: Este usuario no tiene permisos para obtener el usuario por Id
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "404":
+          description: El usuario no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se obtuvo el usuario por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+  /api/users/premium/{uid}:
+    put:
+      summary: Modificar el rol de un usuario (Iniciar sesión con admin)
+      tags:
+        - Usuarios
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El Id del usuario a modificarle el rol
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El rol del usuario se modificó con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/SuccessMessage"
+        "401":
+          description: Este usuario no tiene permisos para modificar roles
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "404":
+          description: El usuario no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se modificó el rol del usuario por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+          description: Id generado por la base de datos (requerido)
+        full_name:
+          type: string
+          description: Nombre y apellido del usuario (generado a partir de first_name y last_name o del github_name)
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: Email del usuario (aclaración del usuario de GitHub en caso de ser un usuario registrado con dicha opción) (único)
+        age:
+          type: number
+          description: Edad del usuario
+        password:
+          type: string
+          description: Contraseña encriptada del usuario
+        role:
+          type: string
+          description: Rol del usuario ("usuario", "admin", "premium")
+        cart:
+          type: string
+          format: ObjectId
+          description: Id del carrito asociado al usuario (generado por la base de datos)
+        github_user:
+          type: boolean
+          description: Booleano correspondiente a usuarios locales o de GitHub
+        github_username:
+          type: string
+          description: Usuario de GitHub del usuario (aclaración del email en caso de ser un usuario local) (único)
+      example:
+        _id: hjsg892778234sde32
+        full_name: Admin Coder
+        first_name: Admin
+        last_name: Coder
+        email: adminCoder@coder.com
+        age: 20
+        password: usy89127kjashd9123asd
+        role: admin
+        cart: d43r34nfrh43rj43t4
+        github_user: false
+        github_username: Registrado con email adminCoder@coder.com
+
+    SuccessMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      example:
+        status: success
+        message: Proceso exitoso
+
+    ErrorMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        error:
+          type: string
+      example:
+        status: error
+        error: Ocurrió un error

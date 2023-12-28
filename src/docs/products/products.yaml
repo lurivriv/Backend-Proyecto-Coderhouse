@@ -1,0 +1,366 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtener todos los productos (Iniciar sesión)
+      tags:
+        - Productos
+      responses:
+        "200":
+          description: Los productos se obtuvieron con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  dataProducts:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        example: success
+                      payload:
+                        type: array
+                        items:
+                          $ref: "#components/schemas/Product"
+                      totalPages:
+                        type: number
+                        example: 3
+                      prevPage:
+                        type: number
+                        example: 1
+                      nextPage:
+                        type: number
+                        example: 3
+                      page:
+                        type: number
+                        example: 2
+                      hasPrevPage:
+                        type: boolean
+                        example: true
+                      hasNextPage:
+                        type: boolean
+                        example: true
+                      prevLink:
+                        type: string
+                        example: http://localhost:8080/api/products?limit=8&page=1
+                      nextLink:
+                        type: string
+                        example: http://localhost:8080/api/products?limit=8&page=3
+        "500":
+          description: No se obtuvieron los productos por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+    post:
+      summary: Agregar un producto (Iniciar sesión con admin o premium)
+      tags:
+        - Productos
+      requestBody:
+        required: true
+        description: Datos del producto a crear
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/AddUpdateProduct"
+      responses:
+        "200":
+          description: Producto creado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/AddProductSuccess"
+        "401":
+          description: Este usuario no tiene permisos para agregar un producto
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se agregó el producto por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+  /api/products/{pid}:
+    get:
+      summary: Obtener un producto por Id (Iniciar sesión)
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El Id del producto a obtener
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se obtuvo el producto por Id con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  product:
+                    $ref: "#components/schemas/Product"
+        "404":
+          description: El producto no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se obtuvo el producto por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+    put:
+      summary: Actualizar un producto (Iniciar sesión con admin o premium)
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El Id del producto a actualizar
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        description: Datos del producto a actualizar
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/AddUpdateProduct"
+      responses:
+        "200":
+          description: Producto actualizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/UpdateProductSuccess"
+        "401":
+          description: Este usuario no tiene permisos para actualizar un producto
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "404":
+          description: El producto no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se actualizó el producto por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+    delete:
+      summary: Eliminar un producto por Id (Iniciar sesión con admin o premium)
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El Id del producto a eliminar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se obtuvo el producto por Id con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/DeleteProductSuccess"
+        "401":
+          description: Este usuario no tiene permisos para eliminar un producto
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "404":
+          description: El producto a eliminar no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se eliminó el producto por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+          description: Id generado por la base de datos (requerido)
+        title:
+          type: string
+          description: Título del producto
+        description:
+          type: array
+          description: Descripción del producto
+        code:
+          type: string
+          description: Código del producto (único)
+        price:
+          type: number
+          description: Precio del producto (mínimo 0)
+        stock:
+          type: number
+          description: Stock del producto (mínimo 0)
+        category:
+          type: string
+          description: Categoría del producto ("vegano", "vegetariano")
+        thumbnail:
+          type: string
+          description: Imagen del producto
+        owner:
+          type: string
+          format: ObjectId
+          description: Id del propietario del producto (generado por la base de datos)
+      example:
+        _id: fvdff34534t54t45t
+        title: Papas fritas con cheddar
+        description: [Papa, Queso Cheddar, Cebolla de verdeo]
+        code: vdg54yh
+        price: 200
+        stock: 40
+        category: vegetariano
+        thumbnail: 1697091632561-item-9.jpg
+        owner: hjsg892778234sde32
+
+    AddProductSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        addedProduct:
+          $ref: "#components/schemas/product"
+      example:
+        status: success
+        message: Producto creado
+        addedProduct:
+          _id: fvdff34534t54t45t
+          title: Papas fritas con cheddar
+          description: [Papa, Queso Cheddar, Cebolla de verdeo]
+          code: vdg54yh
+          price: 200
+          stock: 40
+          category: vegetariano
+          thumbnail: 1697091632561-item-9.jpg
+          owner: hjsg892778234sde32
+
+    UpdateProductSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        updatedProduct:
+          $ref: "#components/schemas/product"
+      example:
+        status: success
+        message: Producto actualizado
+        updatedProduct:
+          _id: fvdff34534t54t45t
+          title: Papas fritas con cheddar
+          description: [Papa, Queso Cheddar, Cebolla de verdeo]
+          code: vdg54yh
+          price: 200
+          stock: 40
+          category: vegetariano
+          thumbnail: 1697091632561-item-9.jpg
+          owner: hjsg892778234sde32
+
+    DeleteProductSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        deletedProduct:
+          $ref: "#components/schemas/product"
+      example:
+        status: success
+        message: Producto eliminado
+        deletedProduct:
+          _id: fvdff34534t54t45t
+          title: Papas fritas con cheddar
+          description: [Papa, Queso Cheddar, Cebolla de verdeo]
+          code: vdg54yh
+          price: 200
+          stock: 40
+          category: vegetariano
+          thumbnail: 1697091632561-item-9.jpg
+          owner: hjsg892778234sde32
+
+    ErrorMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        error:
+          type: string
+      example:
+        status: error
+        error: Ocurrió un error
+
+  requestBodies:
+    AddUpdateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Título del producto
+        description:
+          type: array
+          description: Descripción del producto
+        code:
+          type: string
+          description: Código del producto (único)
+        price:
+          type: number
+          description: Precio del producto (mínimo 0)
+        stock:
+          type: number
+          description: Stock del producto (mínimo 0)
+        category:
+          type: string
+          description: Categoría del producto ("vegano", "vegetariano")
+        thumbnail:
+          type: string
+          description: Imagen del producto
+      example:
+        title: Papas fritas con cheddar
+        description: [Papa, Queso Cheddar, Cebolla de verdeo]
+        code: vdg54yh
+        price: 200
+        stock: 40
+        category: vegetariano
+        thumbnail: 1697091632561-item-9.jpg

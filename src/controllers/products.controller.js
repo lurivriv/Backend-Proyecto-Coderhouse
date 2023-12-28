@@ -5,7 +5,7 @@ import { generateProductMock } from "../helpers/mock.js"
 import { EError } from "../enums/EError.js"
 import { CustomError } from "../services/customErrors/customError.service.js"
 import { databaseGetError, paramError } from "../services/customErrors/errors/generalErrors.service.js"
-import { addProductError, updateProductError, mockingProductsError } from "../services/customErrors/errors/productsErrors.service.js"
+import { addProductError, mockingProductsError } from "../services/customErrors/errors/productsErrors.service.js"
 
 export class ProductsController {
     static getProducts = async (req, res, next) => {
@@ -71,7 +71,7 @@ export class ProductsController {
                 nextLink: products.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${products.page}`, `page=${products.nextPage}`) : baseUrl.concat(`?page=${products.nextPage}`) : null,
             }
 
-            res.json({ status: "success", data: dataProducts })
+            res.json({ status: "success", dataProducts })
         } catch (error) {
             next(error)
         }
@@ -92,7 +92,7 @@ export class ProductsController {
                 })
             }
 
-            res.json({ status: "success", data: product })
+            res.json({ status: "success", product })
         } catch (error) {
            next(error)
         }
@@ -137,7 +137,7 @@ export class ProductsController {
             }
 
             const addedProduct = await ProductsService.addProduct(productInfo)
-            res.json({ status: "success", message: "Producto creado", data: addedProduct })
+            res.json({ status: "success", message: "Producto creado", addedProduct })
         } catch (error) {
             next(error)
         }
@@ -149,30 +149,12 @@ export class ProductsController {
             const updateFields = req.body
             const thumbnailFile = req.file ? req.file.filename : undefined
             const product = await ProductsService.getProductById(pid)
-            const { title, description, code, price, stock, category } = updateFields
 
             updateFields.thumbnail = thumbnailFile
 
             if ((req.user.role === "premium" && product.owner.toString() === req.user._id.toString()) || req.user.role === "admin") {
-                // Error customizado
-                if (
-                    (title !== undefined && typeof title !== "string") ||
-                    (description !== undefined && !Array.isArray(description)) ||
-                    (code !== undefined && typeof code !== "string") ||
-                    (price !== undefined && (typeof price !== "number" || price < 0)) ||
-                    (stock !== undefined && (typeof stock !== "number" || stock < 0)) ||
-                    (category !== undefined && (typeof category !== "string" || (category !== "vegano" && category !== "vegetariano")))
-                ) {
-                    CustomError.createError({
-                        name: "update product error",
-                        cause: updateProductError(updateFields),
-                        message: "Error al validar los datos: ",
-                        errorCode: EError.INVALID_BODY_ERROR
-                    })
-                } else { 
-
                 const updatedProduct = await ProductsService.updateProduct(pid, updateFields)
-                res.json({ status: "success", message: "Producto actualizado", data: updatedProduct })}
+                res.json({ status: "success", message: "Producto actualizado", updatedProduct })
             } else {
                 // Error customizado
                 CustomError.createError ({
@@ -194,7 +176,7 @@ export class ProductsController {
 
             if ((req.user.role === "premium" && product.owner.toString() === req.user._id.toString()) || req.user.role === "admin") {
                 const deletedProduct = await ProductsService.deleteProduct(pid)
-                res.json({ status: "success", message: "Producto eliminado", data: deletedProduct })
+                res.json({ status: "success", message: "Producto eliminado", deletedProduct })
             } else {
                 // Error customizado
                 CustomError.createError ({
@@ -230,7 +212,7 @@ export class ProductsController {
                 products.push(newProduct)
             }
 
-            res.json({ status: "success", data: { payload: products }})
+            res.json({ status: "success", dataProducts: { payload: products }})
         } catch (error) {
             next(error)
         }

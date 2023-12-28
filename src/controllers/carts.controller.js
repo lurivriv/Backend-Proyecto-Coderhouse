@@ -20,7 +20,7 @@ export class CartsController {
                 })
             }
 
-            res.json({ status: "success", data: carts })
+            res.json({ status: "success", carts })
         } catch (error) {
             next(error)
         }
@@ -41,7 +41,7 @@ export class CartsController {
                 })
             }
 
-            res.json({ status: "success", data: cart })
+            res.json({ status: "success", cart })
         } catch (error) {
             next(error)
         }
@@ -61,7 +61,7 @@ export class CartsController {
                 })
             }
 
-            res.json({ status: "success", message: "Carrito creado", data: createdCart })
+            res.json({ status: "success", message: "Carrito creado", createdCart })
         } catch (error) {
             next(error)
         }
@@ -98,7 +98,7 @@ export class CartsController {
                 })
             } else {
                 const addedProductToCart = await CartsService.addProductToCart(cid, pid, customQuantity)
-                res.json({ status: "success", message: "Producto agregado al carrito", data: addedProductToCart })
+                res.json({ status: "success", message: "Producto agregado al carrito", addedProductToCart })
             }
         } catch (error) {
             next(error)
@@ -152,7 +152,7 @@ export class CartsController {
             }
 
             const updatedProductsInCart = await CartsService.updateProductsInCart(cid, newProducts)
-            res.json({ status: "success", message: "Productos en el carrito actualizados", data: updatedProductsInCart })
+            res.json({ status: "success", message: "Productos en el carrito actualizados", updatedProductsInCart })
         } catch (error) {
             next(error)
         }
@@ -187,7 +187,7 @@ export class CartsController {
                 })
             } else {
                 const updatedQuantityProductInCart = await CartsService.updateProductQuantityInCart(cid, pid, newQuantity)
-                res.json({ status: "success", message: "Cantidad del producto actualizada", data: updatedQuantityProductInCart })
+                res.json({ status: "success", message: "Cantidad del producto actualizada", updatedQuantityProductInCart })
             }
         } catch (error) {
             next(error)
@@ -213,7 +213,7 @@ export class CartsController {
             }
 
             const emptyNewCart = await CartsService.deleteAllProductsInCart(cid, newCart)
-            res.json({ status: "success", message: "Carrito vaciado", data: emptyNewCart })
+            res.json({ status: "success", message: "Carrito vaciado", emptyNewCart })
         } catch (error) {
             next(error)
         }
@@ -247,7 +247,7 @@ export class CartsController {
             }
 
             const newCart = await CartsService.deleteProductInCart(cid, pid)
-            res.json({ status: "success", message: "Producto eliminado del carrito", data: newCart })
+            res.json({ status: "success", message: "Producto eliminado del carrito", newCart })
         } catch (error) {
             next(error)
         }

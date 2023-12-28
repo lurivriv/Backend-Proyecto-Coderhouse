@@ -122,7 +122,7 @@ export class TicketsController {
                 })
             }
 
-            res.json({ status: "success", data: tickets })
+            res.json({ status: "success", tickets })
         } catch (error) {
             next(error)
         }
@@ -143,7 +143,7 @@ export class TicketsController {
                 })
             }
 
-            res.json({ status: "success", data: ticket })
+            res.json({ status: "success", ticket })
         } catch (error) {
             next(error)
         }

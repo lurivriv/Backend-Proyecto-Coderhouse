@@ -15,7 +15,7 @@ export class UsersController {
                 })
             }
 
-            res.json({ status: "success", data: users })
+            res.json({ status: "success", users })
         } catch (error) {
             next(error)
         }
@@ -36,7 +36,7 @@ export class UsersController {
                 })
             }
 
-            res.json({ status: "success", data: user })
+            res.json({ status: "success", user })
         } catch (error) {
             next(error)
         }

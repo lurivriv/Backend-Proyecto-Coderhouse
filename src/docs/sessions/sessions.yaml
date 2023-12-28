@@ -1,0 +1,157 @@
+paths:
+  /api/sessions/signup:
+    post:
+      summary: Registrar un usuario
+      tags:
+        - Sesiones
+      requestBody:
+        required: true
+        description: Registro del usuario
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/Signup"
+      responses:
+        "200":
+          description: El usuario fue registrado con éxito
+        "500":
+          description: No se completó el registro por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+  /api/sessions/login:
+    post:
+      summary: Iniciar sesión con un usuario
+      tags:
+        - Sesiones
+      requestBody:
+        required: true
+        description: Inicio de sesión del usuario
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/Login"
+      responses:
+        "200":
+          description: El usuario inició sesión con éxito
+        "500":
+          description: No se inició sesión por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+  /api/sessions/forgot-password:
+    post:
+      summary: Restablecer contraseña de un usuario
+      tags:
+        - Sesiones
+      requestBody:
+        required: true
+        description: Restablecimiento de contraseña del usuario
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/ForgotPassword"
+      responses:
+        "200":
+          description: El email para restablecer la contraseña fue enviado con éxito
+        "500":
+          description: No se restableció la contraseña del usuario por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+          
+  /api/sessions/logout:
+    get:
+      summary: Cerrar sesión del usuario (Iniciar sesión)
+      tags:
+        - Sesiones
+      responses:
+        "200":
+          description: El usuario cerró sesión con éxito
+        "500":
+          description: No se cerró sesión por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+  /profile:
+    get:
+      summary: Obtener perfil del usuario (Iniciar sesión)
+      tags:
+        - Sesiones
+      responses:
+        "200":
+          description: El perfil del usuario se obtuvo con éxito
+        "500":
+          description: No se obtuvo el perfil del usuario por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
+components:
+  schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        error:
+          type: string
+      example:
+        status: error
+        error: Ocurrió un error
+
+  requestBodies:
+    Signup:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: Email del usuario (único)
+        age:
+          type: number
+          description: Edad del usuario
+        password:
+          type: string
+          description: Contraseña del usuario
+      example:
+        first_name: Usuario
+        last_name: Prueba
+        email: usuarioprueba@gmail.com
+        age: 20
+        password: pruebacoder123
+
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email del usuario (único)
+        password:
+          type: string
+          description: Contraseña del usuario
+      example:
+        email: usuarioprueba@gmail.com
+        password: pruebacoder123
+
+    ForgotPassword:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email del usuario (único)
+      example:
+        email: usuarioprueba@gmail.com
