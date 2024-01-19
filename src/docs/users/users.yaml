@@ -76,6 +76,44 @@ paths:
               schema:
                 $ref: "#components/schemas/ErrorMessage"
 
+    put:
+      summary: Actualizar un usuario (Iniciar sesión)
+      tags:
+        - Usuarios
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El Id del usuario a actualizar
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        description: Datos del usuario a actualizar
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateUser"
+      responses:
+        "200":
+          description: Usuario actualizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/UpdateUserSuccess"
+        "404":
+          description: El usuario no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se actualizó el usuario por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+
   /api/users/premium/{uid}:
     put:
       summary: Modificar el rol de un usuario (Iniciar sesión con admin)
@@ -114,6 +152,45 @@ paths:
               schema:
                 $ref: "#components/schemas/ErrorMessage"
 
+  /api/users/{uid}/documents:
+    post:
+      summary: Subir documentos del usuario (Iniciar sesión)
+      tags:
+        - Usuarios
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El Id del usuario de los documentos
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        description: Documento a subir
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/AddDocumentUser"
+      responses:
+        "200":
+          description: Documento subido con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/AddDocumentUserSuccess"
+        "404":
+          description: El usuario no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se subió el documento por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        
 components:
   schemas:
     User:
@@ -123,6 +200,9 @@ components:
           type: string
           format: ObjectId
           description: Id generado por la base de datos (requerido)
+        avatar:
+          type: string
+          description: Foto de perfil
         full_name:
           type: string
           description: Nombre y apellido del usuario (generado a partir de first_name y last_name o del github_name)
@@ -156,6 +236,7 @@ components:
           description: Usuario de GitHub del usuario (aclaración del email en caso de ser un usuario local) (único)
       example:
         _id: hjsg892778234sde32
+        avatar: "noImgProfile-profile.jpg"
         full_name: Admin Coder
         first_name: Admin
         last_name: Coder
@@ -166,6 +247,54 @@ components:
         cart: d43r34nfrh43rj43t4
         github_user: false
         github_username: Registrado con email adminCoder@coder.com
+
+    UpdateUserSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        userInfoDto:
+          $ref: "#components/schemas/user"
+      example:
+        status: success
+        message: Usuario actualizado
+        userInfoDto:
+          _id: dvfesr343w42qwrfwr
+          avatar: "noImgProfile-profile.jpg"
+          full_name: Nombre Apellido
+          email: prueba@gmail.com
+          age: 20
+          role: usuario
+          cart: kkkdsdkwee23w3e32
+
+    AddDocumentUserSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        documents:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              reference:
+                type: string
+      example:
+        status: success
+        message: Los documentos del usuario fueron actualizados con éxito
+        documents:
+          - name: identification
+            reference: prueba@gmail.com-document-identificacion.pdf
+          - name: address
+            reference: prueba@gmail.com-comprobanteDeDomicilio.pdf
+          - name: account_statement
+            reference: prueba@gmail.com-document-comprobanteDeEstadoDeCuenta.pdf
 
     SuccessMessage:
       type: object
@@ -188,3 +317,46 @@ components:
       example:
         status: error
         error: Ocurrió un error
+
+  requestBodies:
+    UpdateUser:
+      type: object
+      properties:
+        avatar:
+          type: string
+          description: Foto de perfil
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: Email del usuario (único)
+        age:
+          type: number
+          description: Edad del usuario
+      example:
+        avatar: nuevoemail@gmail.com-profile-fotodeperfil.jpg
+        first_name: soy
+        last_name: prueba
+        email: nuevoemail@gmail.com
+        age: 20
+
+    AddDocumentUser:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          reference:
+            type: string
+      example:
+        - name: identification
+          reference: prueba@gmail.com-document-identificacion.pdf
+        - name: address
+          reference: prueba@gmail.com-comprobanteDeDomicilio.pdf
+        - name: account_statement
+          reference: prueba@gmail.com-document-comprobanteDeEstadoDeCuenta.pdf

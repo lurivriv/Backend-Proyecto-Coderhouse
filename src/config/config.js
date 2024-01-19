@@ -22,7 +22,7 @@ dotenv.config({
 export const config = {
     server: {
         envMode: envMode,
-        port: process.env.PORT,
+        port: process.env.PORT || 8080,
         secretSession: process.env.SECRET_SESSION
     },
     mongo: {

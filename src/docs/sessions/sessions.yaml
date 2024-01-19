@@ -112,6 +112,9 @@ components:
     Signup:
       type: object
       properties:
+        avatar:
+          type: string
+          description: Foto de perfil
         first_name:
           type: string
           description: Nombre del usuario
@@ -128,6 +131,7 @@ components:
           type: string
           description: Contraseña del usuario
       example:
+        avatar: prueba@gmail.com-profile-fotodeperfil.jpg
         first_name: Usuario
         last_name: Prueba
         email: usuarioprueba@gmail.com

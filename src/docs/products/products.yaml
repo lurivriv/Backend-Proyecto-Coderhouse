@@ -248,7 +248,7 @@ components:
         price: 200
         stock: 40
         category: vegetariano
-        thumbnail: 1697091632561-item-9.jpg
+        thumbnail: vegg1-product-item-9.jpg
         owner: hjsg892778234sde32
 
     AddProductSuccess:
@@ -271,7 +271,7 @@ components:
           price: 200
           stock: 40
           category: vegetariano
-          thumbnail: 1697091632561-item-9.jpg
+          thumbnail: vegg1-product-item-9.jpg
           owner: hjsg892778234sde32
 
     UpdateProductSuccess:
@@ -294,7 +294,7 @@ components:
           price: 200
           stock: 40
           category: vegetariano
-          thumbnail: 1697091632561-item-9.jpg
+          thumbnail: vegg1-product-item-9.jpg
           owner: hjsg892778234sde32
 
     DeleteProductSuccess:
@@ -317,7 +317,7 @@ components:
           price: 200
           stock: 40
           category: vegetariano
-          thumbnail: 1697091632561-item-9.jpg
+          thumbnail: vegg1-product-item-9.jpg
           owner: hjsg892778234sde32
 
     ErrorMessage:
@@ -363,4 +363,4 @@ components:
         price: 200
         stock: 40
         category: vegetariano
-        thumbnail: 1697091632561-item-9.jpg
+        thumbnail: vegg1-product-item-9.jpg

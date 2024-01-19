@@ -9,7 +9,8 @@ export const generateProductMock = () => {
         price: parseInt(faker.commerce.price(30, 300, 0)),
         stock: parseInt(faker.random.numeric(2)),
         category: faker.commerce.department(),
-        thumbnail: faker.image.imageUrl()
+        thumbnail: faker.image.imageUrl(),
+        owner: faker.internet.email()
     }
 }
 

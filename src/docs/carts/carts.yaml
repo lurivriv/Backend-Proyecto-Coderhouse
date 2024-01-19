@@ -471,7 +471,7 @@ components:
               price: 200
               stock: 40
               category: vegetariano
-              thumbnail: 1697091632561-item-9.jpg
+              thumbnail: vegg1-product-item-9.jpg
               owner: hjsg892778234sde32
             quantity: 1
   
@@ -598,7 +598,7 @@ components:
           type: string
           description: Código de la compra (único)
         purchase_datetime:
-          type: string
+          type: date
           description: Fecha de la commpra
         amount:
           type: number
@@ -613,7 +613,7 @@ components:
       example:
         _id: vnejnvi3j345435
         code: vmk4r3-44343-fe343
-        purchase_datetime: 12/28/2023, 5:28:50 PM
+        purchase_datetime: 2024-01-17T19:52:02.623+00:00
         amount: 1000
         purchaser: lu@gmail.com
         purchase_products:
@@ -625,7 +625,7 @@ components:
               price: 200
               stock: 40
               category: vegetariano
-              thumbnail: 1697091632561-item-9.jpg
+              thumbnail: vegg1-product-item-9.jpg
               owner: hjsg892778234sde32
             quantity: 5
 
@@ -654,7 +654,7 @@ components:
         newPurchase: 
           _id: vnejnvi3j345435
           code: vmk4r3-44343-fe343
-          purchase_datetime: 12/28/2023, 5:28:50 PM
+          purchase_datetime: 2024-01-17T19:52:02.623+00:00
           amount: 1000
           purchaser: lu@gmail.com
           purchase_products:
@@ -666,7 +666,7 @@ components:
                 price: 200
                 stock: 40
                 category: vegetariano
-                thumbnail: 1697091632561-item-9.jpg
+                thumbnail: vegg1-product-item-9.jpg
                 owner: hjsg892778234sde32
               quantity: 5
 

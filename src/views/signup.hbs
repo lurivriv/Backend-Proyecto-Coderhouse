@@ -6,7 +6,11 @@
         </div>
     {{/if}}
     <div class="form-container">
-        <form method="post" action="/api/sessions/signup">
+        <form method="post" action="/api/sessions/signup" enctype="multipart/form-data">
+            <div class="mb-lg-3 mb-0">
+                <label for="avatar" class="form-label">Foto de perfil</label>
+                <input type="file" name="avatar" id="avatar" class="form-control">
+            </div>
             <div class="mb-lg-3 mb-0">
                 <label for="first_name" class="form-label">Nombre</label>
                 <input type="text" name="first_name" placeholder="Nombre" id="first_name" class="form-control">

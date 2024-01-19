@@ -33,7 +33,8 @@ const productSchema = new mongoose.Schema({
         enum: ["vegano", "vegetariano"]
     },
     thumbnail: {
-        type: String
+        type: String,
+        default: "noImgProduct-product.jpg"
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,

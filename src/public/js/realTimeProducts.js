@@ -20,7 +20,7 @@ socketClient.on("productsArray", (productsData) => {
 
             if (product.thumbnail) {
                 cardProduct += `
-                    <img class="card-img-top" src="/assets/imgProducts/${product.thumbnail}" alt="${product.title}">
+                    <img class="card-img-top" src="/assets/products/img/${product.thumbnail}" alt="${product.title}">
                 `
             }
 
@@ -97,6 +97,7 @@ addProductForm.addEventListener("submit", (e) => {
         jsonData[key] = key === "description" ? value.split(",").map((item) => item.trim()) : value
     }
 
+    jsonData.thumbnail = formData.thumbnail || "noImgProduct-product.jpg"
     jsonData.owner = userId
 
     socketClient.emit("addProduct", jsonData)

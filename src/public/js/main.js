@@ -2,18 +2,18 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const cartWidget = document.querySelector(".btn-cart-widget")
     const cartId = cartWidget.getAttribute("data-cart-id")
-    
+
     const updateCartCounter = async () => {
         try {
             const response = await fetch(`/api/carts/${cartId}`)
 
             if (!response.ok) {
-                throw error
+                throw new Error("Error al obtener el carrito")
             }
 
             const data = await response.json()
 
-            const totalProductsInCart = data.data.products.reduce((acc, product) => acc + product.quantity, 0)
+            const totalProductsInCart = data.cart.products.reduce((acc, product) => acc + product.quantity, 0)
 
             const cartCounter = cartWidget.querySelector(".counter-cart-widget")
 

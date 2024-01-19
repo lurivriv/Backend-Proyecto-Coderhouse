@@ -9,7 +9,7 @@ const ticketSchema = new mongoose.Schema({
         unique: true
     },
     purchase_datetime: {
-        type: String,
+        type: Date,
         default: Date.now
     },
     amount: {

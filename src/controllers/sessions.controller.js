@@ -4,7 +4,7 @@ import { logger } from "../helpers/logger.js"
 import { createHash, isValidPassword } from "../utils.js"
 
 export class SessionsController {
-    static redirectLogin = async (req, res) => {
+    static registerUser = async (req, res) => {
         res.render("login", { message: "Usuario registrado :)" })
     }
 
@@ -24,7 +24,7 @@ export class SessionsController {
         })
     }
 
-    static redirectProducts = async (req, res) => {
+    static loginUser = async (req, res) => {
         res.redirect("/products")
     }
 
@@ -95,6 +95,11 @@ export class SessionsController {
 
     static logout = async (req, res) => {
         try {
+            // Nueva fecha de cierre de sesión
+            const user = { ...req.user }
+            user.last_connection = new Date()
+            await UsersService.updateUser(user._id, user)
+
             req.session.destroy((err) => {
                 if (err) {
                     logger.error("logout: Error al cerrar la sesión")

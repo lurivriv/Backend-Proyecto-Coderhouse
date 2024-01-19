@@ -1,17 +1,53 @@
 <div class="app-content container">
     <h1 class="title-category">TU PERFIL</h1>
     <div class="profile-container">
+        <div class="img-user-profile-container">
+            <img class="img-user-profile avatar-profile" src="/assets/users/img/{{userInfoDto.avatar}}" alt="Foto de perfil de {{userInfoDto.full_name}}">
+        </div>
         <ul>
-            <li><b class="item-profile">Nombre y apellido: </b><span class="data-item-profile">{{userInfoDto.full_name}}</span></li>
-            {{#if userInfoDto.email}}
-                <li><b class="item-profile">Email: </b><span class="data-item-profile">{{userInfoDto.email}}</span></li>
-                <li><b class="item-profile">Edad: </b><span class="data-item-profile">{{userInfoDto.age}}</span></li>
-            {{/if}}
+            <li><b class="item-profile">Nombre y apellido: </b><span class="data-item-profile full-name-profile">{{userInfoDto.full_name}}</span></li>
+            <li><b class="item-profile">Email: </b><span class="data-item-profile email-profile">{{userInfoDto.email}}</span></li>
+            <li><b class="item-profile">Edad: </b><span class="data-item-profile age-profile">{{userInfoDto.age}}</span></li>
             {{#if userInfoDto.github_username}}
                 <li><b class="item-profile">Usuario de GitHub: </b><span class="data-item-profile">{{userInfoDto.github_username}}</span></li>
             {{/if}}
             <li><b class="item-profile">Rol: </b><span class="data-item-profile">{{userInfoDto.role}}</span></li>
+            <li class="btn-item-profile">
+                <div class="btn-edit-profile-container">
+                    <button type="button" class="btn-edit-profile" id="edit-profile-btn" data-user-id="{{userInfoDto._id}}">Editar perfil</button>
+                </div>
+            </li>
         </ul>
+    </div>
+    <div class="form-container edit-profile-form-container d-none">
+        <div class="img-user-profile-container" id="edit-profile-img-container">
+            <img class="img-user-profile avatar-profile" src="/assets/users/img/{{userInfoDto.avatar}}" alt="Foto de perfil de {{userInfoDto.full_name}}">
+            <div class="mb-lg-3 mb-0" id="edit-profile-img">
+                <label for="avatar" class="form-label">Foto de perfil</label>
+                <input type="file" name="avatar" id="avatar" class="form-control">
+            </div>
+        </div>
+        <form id="edit-profile-form" method="put" action="/api/users/{{userInfoDto._id}}" enctype="multipart/form-data">
+            <div class="mb-lg-3 mb-0">
+                <label for="first_name" class="form-label">Nombre</label>
+                <input type="text" name="first_name" placeholder="{{userFirstName}}" value="{{userFirstName}}"  id="first_name" class="form-control">
+            </div>
+            <div class="mb-lg-3 mb-0">
+                <label for="last_name" class="form-label">Apellido</label>
+                <input type="text" name="last_name" placeholder="{{userLastName}}" value="{{userLastName}}" id="last_name" class="form-control">
+            </div>
+            <div class="mb-lg-3 mb-0">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" placeholder="{{userInfoDto.email}}" value="{{userInfoDto.email}}" id="email" class="form-control">
+            </div>
+            <div class="mb-lg-3 mb-0">
+                <label for="age" class="form-label">Edad</label>
+                <input type="number" name="age" placeholder="{{userInfoDto.age}}" value="{{userInfoDto.age}}" id="age" class="form-control">
+            </div>
+            <div class="btn-submit-container">
+                <button type="submit" class="btn-submit">Guardar cambios</button>
+            </div>
+        </form>
     </div>
     <div class="btn-logout-container">
         <button type="button" class="btn-logout" onclick="window.location.href = '/api/sessions/logout'">Cerrar sesión</button>
@@ -19,3 +55,4 @@
 </div>
 
 <script type="module" src="/js/main.js"></script>
+<script type="module" src="/js/profile.js"></script>

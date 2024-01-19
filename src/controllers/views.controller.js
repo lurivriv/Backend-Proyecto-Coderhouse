@@ -199,7 +199,10 @@ export class ViewsController {
     static renderProfile = async (req, res) => {
         try {
             const userInfoDto = new GetUserInfoDto(req.user)
-            res.render("profile", { userInfoDto, title: "Perfil - Sabores verdes" })   
+            const userFirstName = req.user.first_name
+            const userLastName = req.user.last_name
+
+            res.render("profile", { userInfoDto, userFirstName, userLastName, title: "Perfil - Sabores verdes" })   
         } catch (error) {
             res.json({ status: "error", error: "Error al obtener el perfil" })
         }
