@@ -1,5 +1,8 @@
 import { UsersService } from "../services/users.service.js"
+import { ProductsService } from "../services/products.service.js"
+import { CartsService } from "../services/carts.service.js"
 import { GetUserInfoDto } from "../dao/dto/getUserInfo.dto.js"
+import { sendDeleteUserEmail, sendDeleteInactiveUsersEmail } from "../helpers/email.js"
 import { EError } from "../enums/EError.js"
 import { CustomError } from "../services/customErrors/customError.service.js"
 import { databaseGetError, paramError } from "../services/customErrors/errors/generalErrors.service.js"
@@ -7,10 +10,10 @@ import { databaseGetError, paramError } from "../services/customErrors/errors/ge
 export class UsersController {
     static getUsers = async (req, res, next) => {
         try {
-            const users = await UsersService.getUsers()
+            const usersData = await UsersService.getUsers()
 
             // Error customizado
-            if (!users) {
+            if (!usersData) {
                 CustomError.createError ({
                     name: "get users error",
                     cause: databaseGetError(),
@@ -19,6 +22,7 @@ export class UsersController {
                 })
             }
 
+            const users = usersData.map((user) => new GetUserInfoDto(user))
             res.json({ status: "success", users })
         } catch (error) {
             next(error)
@@ -51,6 +55,7 @@ export class UsersController {
             const { uid } = req.params
             const { first_name, last_name, email, age } = req.body
             const avatar = req.file?.filename
+            const users = await UsersService.getUsers()
             const user = await UsersService.getUserById(uid)
 
             // Error customizado
@@ -60,6 +65,18 @@ export class UsersController {
                     cause: paramError(uid),
                     message: "Error al actualizar el usuario: ",
                     errorCode: EError.INVALID_PARAM_ERROR
+                })
+            }
+
+            const existingEmail = users.find((user) => user.email === email)
+
+            if (((age && isNaN(age)) || age < 0) ||
+                (existingEmail && existingEmail._id.toString() !== user._id.toString())) {
+                CustomError.createError ({
+                    name: "update user error",
+                    cause: "Hay campos inválidos",
+                    message: "Error al actualizar el usuario: ",
+                    errorCode: EError.INVALID_BODY_ERROR
                 })
             }
             
@@ -78,6 +95,88 @@ export class UsersController {
             res.json({ status: "success", message: "Usuario actualizado", userInfoDto })
         } catch (error) {
             next(error)
+        }
+    }
+    
+    static deleteUser = async (req, res) => {
+        try {
+            const { uid } = req.params
+            const loggedUser = req.user
+            const user = await UsersService.getUserById(uid)
+            
+            const deletedUser = await UsersService.deleteUser(uid)
+
+            // Eliminar session del usuario eliminado si tiene la sesión activa
+            if (uid === loggedUser._id.toString()) {
+                req.session.destroy((err) => {
+                    if (err) {
+                        logger.error("delete user error: Error al destruir la sesión del usuario eliminado")
+                    }
+                })
+            }
+
+            // Eliminar los productos del usuario eliminado (menos del admin)
+            if (user.role === "premium") {
+                const userProducts = await ProductsService.getProductsNoFilter(user.role, uid)
+
+                for (const product of userProducts) {
+                    await ProductsService.deleteProduct(product._id)
+                }
+            }
+
+            // Eliminar carrito del usuario eliminado
+            if (user.cart) {
+                await CartsService.deleteCart(user.cart)
+            }
+
+            await sendDeleteUserEmail(req, user.email)
+
+            res.json({ status: "success", message: `El usuario '${user.full_name}' fue eliminado`, deletedUser })
+        } catch (error) {
+            throw new Error(`Error al eliminar el usuario: ${error}`)
+        }
+    }
+
+    static deleteInactiveUsers = async (req, res) => {
+        try {
+            const loggedUser = req.user
+            const twoDaysAgo = new Date()
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+
+            const deletedInactiveUsers = await UsersService.deleteInactiveUsers({ last_connection: { $lt: twoDaysAgo  } })
+
+            for (const user of deletedInactiveUsers) {
+                await UsersService.deleteUser(user._id)
+
+                // Eliminar session del usuario eliminado si tiene la sesión activa
+                if (user._id.toString() === loggedUser._id.toString()) {
+                    req.session.destroy((err) => {
+                        if (err) {
+                            logger.error("delete inactive users error: Error al destruir la sesión del usuario eliminado")
+                        }
+                    })
+                }
+
+                // Eliminar los productos del usuario eliminado (menos del admin)
+                if (user.role === "premium") {
+                    const userProducts = await ProductsService.getProductsNoFilter(user.role, user._id)
+
+                    for (const product of userProducts) {
+                        await ProductsService.deleteProduct(product._id)
+                    }
+                }
+
+                // Eliminar carrito del usuario eliminado
+                if (user.cart) {
+                    await CartsService.deleteCart(user.cart)
+                }
+
+                await sendDeleteInactiveUsersEmail(req, user.email)
+            }
+
+            res.json({ status: "success", message: "Los usuarios inactivos fueron eliminados", deletedInactiveUsers })
+        } catch (error) {
+            throw new Error(`Error al eliminar los usuarios inactivos: ${error}`)
         }
     }
 
@@ -150,7 +249,7 @@ export class UsersController {
             }
 
             await UsersService.updateUser(user._id, user)
-            res.json({ status: "success", message: "Los documentos del usuario fueron actualizados con éxito", documents: user.documents })
+            res.json({ status: "success", message: "Los documentos del usuario fueron actualizados con éxito", documents: user.documents, statusDocuments: user.status })
         } catch (error) {
             res.json({ status: "error", error: `Error al actualizar los documentos del usuario: ${error.message}` })
         }

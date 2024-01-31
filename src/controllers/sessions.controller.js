@@ -4,11 +4,11 @@ import { logger } from "../helpers/logger.js"
 import { createHash, isValidPassword } from "../utils.js"
 
 export class SessionsController {
-    static registerUser = async (req, res) => {
+    static registerUser = (req, res) => {
         res.render("login", { message: "Usuario registrado :)" })
     }
 
-    static failSignup = async (req, res) => {
+    static failSignup = (req, res) => {
         // Error customizado
         logger.error("signup error: Error al completar el registro")
         res.render("signup", { error: `
@@ -24,11 +24,11 @@ export class SessionsController {
         })
     }
 
-    static loginUser = async (req, res) => {
+    static loginUser = (req, res) => {
         res.redirect("/products")
     }
 
-    static failLogin = async (req, res) => {
+    static failLogin = (req, res) => {
         logger.error("login error: Error al iniciar sesión")
         res.render("login", { error: `
                                     Error al iniciar sesión
@@ -63,7 +63,7 @@ export class SessionsController {
         try {
             const token = req.query.token
             const { newPassword } = req.body
-            const validEmail = verifyEmailToken(token)
+            const validEmail = await verifyEmailToken(token)
 
             if (!validEmail) {
                 return res.render("resetPassword", { message: "El link para restablecer tu contraseña ha expirado" })

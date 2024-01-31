@@ -6,10 +6,10 @@ import { TicketsController } from "../controllers/tickets.controller.js"
 const router = Router()
 
 // Obtener todos los carritos (GET: http://localhost:8080/api/carts)
-router.get("/", noSessionMiddleware, CartsController.getCarts)
+router.get("/", noSessionMiddleware, checkRoleMiddleware(["admin"]), CartsController.getCarts)
 
 // Obtener todos los tickets de compra (GET: http://localhost:8080/api/carts/tickets)
-router.get("/tickets", noSessionMiddleware, TicketsController.getTickets)
+router.get("/tickets", noSessionMiddleware, checkRoleMiddleware(["admin"]), TicketsController.getTickets)
 
 // Obtener un carrito por ID (GET: http://localhost:8080/api/carts/cid)
 router.get("/:cid", noSessionMiddleware, CartsController.getCartById)

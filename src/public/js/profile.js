@@ -9,59 +9,78 @@ document.addEventListener("DOMContentLoaded", async () => {
         editProfileBtn.addEventListener("click", () => {
             profileContainer.classList.add("d-none")
             editProfileFormContainer.classList.remove("d-none")
-            editProfileFormContainer.classList.add("d-md-flex", "justify-content-center", "align-items-center")
+            editProfileFormContainer.classList.add("d-block", "d-lg-flex", "justify-content-center", "align-items-center")
         })
     
         // Formulario
         const editProfileForm = document.getElementById("edit-profile-form")
 
         editProfileForm.addEventListener("submit", async (e) => {
-            e.preventDefault()
+            try {
+                e.preventDefault()
 
-            const formData = new FormData(editProfileForm)
+                const formData = new FormData(editProfileForm)
 
-            const response = await fetch(`/api/users/${userId}`, {
-                method: "PUT",
-                body: formData,
-            })
+                const response = await fetch(`/api/users/${userId}`, {
+                    method: "PUT",
+                    body: formData
+                })
 
-            if (response.ok) {
-                const updatedUserInfo = await response.json()
+                if (response.ok) {
+                    location.reload()
+                } else {
+                    throw new Error("Error al actualizar los datos del perfil")
+                }
+            } catch (error) {
+                throw error
+            }
+        })
 
-                localStorage.setItem("editedInfoProfile", JSON.stringify(updatedUserInfo))
-                updateProfileInfo(updatedUserInfo)
+        // Subir documentos
+        const uploadDocumentsForm = document.getElementById("upload-documents-form")
 
-                profileContainer.classList.remove("d-none")
-                editProfileFormContainer.classList.remove("d-md-flex", "justify-content-center", "align-items-center")
-                editProfileFormContainer.classList.add("d-none")
-            } else {
-                throw new Error("Error al actualizar los datos del perfil")
+        uploadDocumentsForm.addEventListener("submit", async (e) => {
+            try {
+                e.preventDefault()
+
+                const formData = new FormData(uploadDocumentsForm)
+
+                const response = await fetch(`/api/users/${userId}/documents`, {
+                    method: "POST",
+                    body: formData
+                })
+
+                if (response.ok) {
+                    location.reload()
+                } else {
+                    throw new Error("Error al subir los documentos")
+                }
+            } catch (error) {
+                throw error
             }
         })
     } catch (error) {
         throw error
     }
-})
 
-// Actualizar perfil en el DOM
-const updateProfileInfo = (updatedUserInfo) => {
-    const avatarProfile = document.querySelector(".avatar-profile")
-    const fullNameProfile = document.querySelector(".full-name-profile")
-    const emailProfile = document.querySelector(".email-profile")
-    const ageProfile = document.querySelector(".age-profile")
-    
-    avatarProfile.src = `/assets/users/img/${updatedUserInfo.userInfoDto.avatar}`
-    fullNameProfile.textContent = updatedUserInfo.userInfoDto.full_name
-    emailProfile.textContent = updatedUserInfo.userInfoDto.email
-    ageProfile.textContent = updatedUserInfo.userInfoDto.age
-}
+    // Eliminar usuario
+    const deleteAccountBtn = document.querySelector(".btn-delete-account")
 
-// Recuperar información actualizada del perfil del localStorage
-window.addEventListener("load", () => {
-    const editedInfoProfile = JSON.parse(localStorage.getItem("editedInfoProfile"))
+    deleteAccountBtn.addEventListener("click", async (e) => {
+        try {
+            const userId = e.currentTarget.getAttribute("data-user-id")
+            
+            const response = await fetch(`/api/users/${userId}`, {
+                method: "DELETE"
+            })
 
-    if (editedInfoProfile) {
-        updateProfileInfo(editedInfoProfile)
-        localStorage.removeItem("editedInfoProfile")
-    }
+            if (response.ok) {
+                location.reload()
+            } else {
+                throw new Error("Error al eliminar tu cuenta")
+            }
+        } catch (error) {
+            throw error
+        }
+    })
 })

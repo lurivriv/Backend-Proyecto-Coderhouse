@@ -45,7 +45,7 @@ export class UserManagerDB {
     }
 
     // Obtener un usuario por ID
-    async getUserById(userId){
+    async getUserById(userId) {
         try {
             const result = await this.model.findById(userId).lean()
 
@@ -73,6 +73,33 @@ export class UserManagerDB {
         } catch (error) {
             logger.error(`update user error: Error al actualizar el usuario: ${error}`)
             throw new Error(`update user error: Error al actualizar el usuario: ${error}`)
+        }
+    }
+
+    // Eliminar un usuario
+    async deleteUser(userId) {
+        try {
+            const result = await this.model.findByIdAndDelete(userId)
+            
+            if (!result) {
+                throw error
+            }
+
+            return result
+        } catch (error) {
+            logger.error(`delete user error: Error al eliminar el usuario: ${error}`)
+            throw new Error(`delete user error: Error al eliminar el usuario: ${error}`)
+        }
+    }
+
+    //Eliminar usuarios inactivos
+    async deleteInactiveUsers(lastConnection) {
+        try {
+            const result = await this.model.find(lastConnection).lean()
+            return result
+        } catch (error) {
+            logger.error(`delete inactive users error: Error al eliminar los usuarios inactivos: ${error}`)
+            throw new Error(`delete inactive users error: Error al eliminar los usuarios inactivos: ${error}`)
         }
     }
 }

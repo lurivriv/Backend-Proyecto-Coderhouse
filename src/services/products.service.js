@@ -1,8 +1,8 @@
 import { productsDao } from "../dao/index.js"
 
 export class ProductsService {
-    static getProductsNoFilter() {
-        return productsDao.getProductsNoFilter()
+    static getProductsNoFilter(userRole, userId) {
+        return productsDao.getProductsNoFilter(userRole, userId)
     }
 
     static getProducts(query, options) {

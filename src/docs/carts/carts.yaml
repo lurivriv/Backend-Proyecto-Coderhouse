@@ -1,7 +1,7 @@
 paths:
   /api/carts:
     get:
-      summary: Obtener todos los carritos (Iniciar sesión)
+      summary: Obtener todos los carritos (Iniciar sesión con admin)
       tags:
         - Carritos
       responses:
@@ -304,7 +304,7 @@ paths:
 
   /api/carts/tickets:
     get:
-      summary: Obtener todos los tickets de compra (Iniciar sesión)
+      summary: Obtener todos los tickets de compra (Iniciar sesión con admin)
       tags:
         - Carritos
       responses:
@@ -509,7 +509,7 @@ components:
         message:
           type: string
         addedProductToCart:
-          $ref: "#components/schemas/cart"
+          $ref: "#components/schemas/Cart"
       example:
         status: success
         message: Producto agregado al carrito
@@ -527,7 +527,7 @@ components:
         message:
           type: string
         updatedProductsInCart:
-          $ref: "#components/schemas/cart"
+          $ref: "#components/schemas/Cart"
       example:
         status: success
         message: Productos en el carrito actualizados
@@ -545,7 +545,7 @@ components:
         message:
           type: string
         updatedQuantityProductInCart:
-          $ref: "#components/schemas/cart"
+          $ref: "#components/schemas/Cart"
       example:
         status: success
         message: Cantidad del producto actualizada
@@ -563,7 +563,7 @@ components:
         message:
           type: string
         emptyNewCart:
-          $ref: "#components/schemas/cart"
+          $ref: "#components/schemas/Cart"
       example:
         status: success
         message: Carrito vaciado
@@ -579,7 +579,7 @@ components:
         message:
           type: string
         newCart:
-          $ref: "#components/schemas/cart"
+          $ref: "#components/schemas/Cart"
       example:
         status: success
         message: Producto eliminado del carrito
@@ -609,7 +609,7 @@ components:
         purchase_products:
           type: array
           items:
-            $ref: "#components/schemas/cart/properties/products"
+            $ref: "#components/schemas/Cart/properties/products"
       example:
         _id: vnejnvi3j345435
         code: vmk4r3-44343-fe343
@@ -639,9 +639,9 @@ components:
         error:
           type: string
         productsRejectedInCart:
-          $ref: "#components/schemas/cart"
+          $ref: "#components/schemas/Cart"
         newPurchase:
-          $ref: "#components/schemas/ticket"
+          $ref: "#components/schemas/Ticket"
       example:
         status: success
         message: Compra realizada

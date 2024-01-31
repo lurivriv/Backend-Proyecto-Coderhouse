@@ -82,6 +82,55 @@ a:link, a:visited, a:active {
   font-size: 1rem;
   border-radius: 8px;
   display: flex;
+  align-items: center;
+}
+
+#accept-toast-btn {
+  width: 110px;
+  height: 40px;
+  background-color: #008040;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 10px 10px 10px 20px;
+  border: none;
+  border-radius: 8px;
+}
+
+#accept-toast-btn:hover {
+  background-color: #015c2e;
+}
+
+#accept-toast-btn:active {
+  background-color: #029049;
+}
+
+#accept-toast-btn:disabled {
+  background-color: rgba(0, 128, 64, 0.7);
+}
+
+#cancel-toast-btn {
+  width: 110px;
+  height: 40px;
+  background-color: #a4102d;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+}
+
+#cancel-toast-btn:hover {
+  background-color: rgb(201, 18, 55);
+}
+
+#cancel-toast-btn:active {
+  background-color: #880b24;
+}
+
+#cancel-toast-btn:disabled {
+  background-color: #b9445b;
 }
 
 .title-category {
@@ -130,21 +179,7 @@ a:link, a:visited, a:active {
 }
 
 .form-container form div {
-  width: 350px;
-}
-
-#edit-profile-img-container {
-  width: 350px;
-  padding: 0px 0px;
-}
-
-#edit-profile-img {
-  margin-top: 30px;
-}
-
-#edit-profile-form {
-  width: 350px;
-  margin-left: 60px;
+  width: 280px;
 }
 
 .error-session {
@@ -171,7 +206,13 @@ a:link, a:visited, a:active {
   margin: 20px 0px;
 }
 
-.btn-signup, .btn-login, .btn-add-product, .btn-submit {
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.btn-signup, .btn-login, .btn-add-product, .btn-submit, .btn-modify-rol {
   width: 250px;
   height: 46px;
   background-color: #008040;
@@ -182,15 +223,15 @@ a:link, a:visited, a:active {
   border-radius: 8px;
 }
 
-.btn-signup:hover, .btn-login:hover, .btn-add-product:hover {
+.btn-signup:hover, .btn-login:hover, .btn-add-product:hover, .btn-submit:hover , .btn-modify-rol:hover {
   background-color: #015c2e;
 }
 
-.btn-signup:active, .btn-login:active, .btn-add-product:active {
+.btn-signup:active, .btn-login:active, .btn-add-product:active, .btn-submit:active , .btn-modify-rol:active {
   background-color: #029049 ;
 }
 
-.btn-signup:disabled, .btn-login:disabled, .btn-add-product:disabled {
+.btn-signup:disabled, .btn-login:disabled, .btn-add-product:disabled, .btn-submit:disabled , .btn-modify-rol:disabled {
   background-color: rgba(0, 128, 64, 0.7);
 }
 
@@ -237,7 +278,7 @@ a:link, a:visited, a:active {
   color: #7e0d23;;
 }
 
-.btn-signup-gh, .btn-login-gh {
+.btn-signup-gh, .btn-login-gh, .btn-delete-user, .btn-delete-inactive-users {
   width: 250px;
   height: 46px;
   background-color: #24292e;
@@ -250,37 +291,51 @@ a:link, a:visited, a:active {
   color: #FFFFFF;
 }
 
-.btn-signup-gh:hover, .btn-login-gh:hover {
+.btn-delete-inactive-users {
+  width: auto;
+  padding: 0px 20px;
+}
+
+.btn-signup-gh:hover, .btn-login-gh:hover, .btn-delete-user:hover, .btn-delete-inactive-users:hover {
   background-color: #0f1114;
 }
 
-.btn-signup-gh:active, .btn-login-gh:active {
+.btn-signup-gh:active, .btn-login-gh:active, .btn-delete-user:active, .btn-delete-inactive-users:active {
   background-color: #2b3137 ;
 }
 
-.btn-signup-gh:disabled, .btn-login-gh:disabled {
+.btn-signup-gh:disabled, .btn-login-gh:disabled, .btn-delete-user:disabled, .btn-delete-inactive-users:disabled {
   background-color: rgba(36, 41, 46, 0.7);
 }
 
-.profile-container, .edit-profile-form-container {
+.profile-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .img-user-profile-container {
-  width: 350px;
-  margin-right: 100px;
-  margin-bottom: 20px;
-  padding: 0px 70px 20px 70px;
+  width: 280px;
+  margin-right: 55px;
+  margin-bottom: 80px;
+  text-align: center;
+}
+
+.img-edit-user-profile-container {
+  width: 280px;
+  margin-bottom: 65px;
   text-align: center;
 }
 
 .img-user-profile {
-  width: 20rem;
-  height: 20rem;
+  width: 19rem;
+  height: 19rem;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.profile-container ul {
+  width: 600px;
 }
 
 .profile-container ul li {
@@ -312,7 +367,23 @@ a:link, a:visited, a:active {
   font-size: 1.3rem;
 }
 
-.btn-edit-profile {
+#edit-profile-form {
+  width: 280px;
+  margin-right: 40px;
+  margin-left: 60px;
+}
+
+#upload-documents-form {
+  width: 280px;
+}
+
+.upload-documents-title {
+  font-weight: 500;
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+
+.btn-edit-profile, .btn-delete-account {
   width: 250px;
   height: 46px;
   background-color: #FFFFFF;
@@ -325,16 +396,16 @@ a:link, a:visited, a:active {
   text-decoration: underline;
 }
 
-.btn-edit-profile:hover {
+.btn-edit-profile:hover, .btn-delete-account:hover {
   font-weight: 700;
 }
 
-.btn-edit-profile:active {
+.btn-edit-profile:active, .btn-delete-account:active {
   color: #222020;
   font-weight: 700;
 }
 
-.btn-edit-profile:disabled {
+.btn-edit-profile:disabled, .btn-delete-account:disabled {
   color: #544e4e;
 }
 
@@ -430,8 +501,14 @@ a:link, a:visited, a:active {
   align-self: center;
 }
 
-.btn-delete-product {
-  margin: 10px auto 12px !important;
+.user-info-card-list {
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.product-info-card-list {
+  font-size: 1rem;
+  margin-bottom: 10px;
 }
 
 .pagination-container {
@@ -633,7 +710,7 @@ a:link, a:visited, a:active {
   display: block;
 }
 
-.btn-back-menu, .btn-delete-product {
+.btn-back-menu, .btn-delete-product, .btn-update-product {
   width: 200px;
   background-color: #FFFFFF;
   color: #40372B;
@@ -645,13 +722,21 @@ a:link, a:visited, a:active {
   border-radius: 8px;
 }
 
-.btn-back-menu:hover, .btn-delete-product:hover {
+.btn-update-product {
+  margin: 0px auto;
+}
+
+.btn-delete-product {
+  margin: 10px auto 12px;
+}
+
+.btn-back-menu:hover, .btn-delete-product:hover, .btn-update-product:hover {
   background-color: #40372B;
   color: #FFFFFF;
   border: 2px solid #40372B;
 }
 
-.btn-back-menu:active, .btn-delete-product:active {
+.btn-back-menu:active, .btn-delete-product:active, .btn-update-product:active {
   background-color: #534533 !important;
   color: #FFFFFF !important;
   border: 2px solid #534533 !important;
@@ -845,6 +930,20 @@ footer {
     font-size: 0.8rem;
   }
 
+  #accept-toast-btn {
+    width: 80px;
+    height: 30px;
+    font-size: 0.8rem;
+    margin: 8px 8px 8px 16px;
+  }
+  
+  #cancel-toast-btn {
+    width: 80px;
+    height: 30px;
+    font-size: 0.8rem;
+    margin: 8px 4px 8px 8px;
+  }
+
   .title-category {
     font-size: 1.5rem;
   }
@@ -875,10 +974,14 @@ footer {
     margin: 16px 0px;
   }
   
-  .btn-signup, .btn-login, .btn-add-product, .btn-submit {
+  .btn-signup, .btn-login, .btn-add-product, .btn-submit, .btn-modify-rol {
     width: 200px;
     height: 40px;
     font-size: 0.8rem;
+  }
+
+  .btn-submit {
+    margin-bottom: 16px;
   }
   
   .btn-login-signup, .btn-signup-login {
@@ -887,22 +990,37 @@ footer {
     font-size: 0.8rem;
   }
 
-  .btn-signup-gh, .btn-login-gh {
+  .btn-signup-gh, .btn-login-gh, .btn-delete-user, .btn-delete-inactive-users {
     width: 200px;
     height: 40px;
     font-size: 0.8rem;
     margin-bottom: 16px;
   }
+
+  .btn-delete-inactive-users {
+    width: auto;
+    padding: 0px 18px;
+  }
   
   .img-user-profile-container {
-    margin-right: 8px;
+    width: 500px;
+    margin-right: 30px;
+    margin-bottom: 70px;
+  }
+
+  .img-edit-user-profile-container {
+    width: auto;
+    margin: 0 auto;
     margin-bottom: 16px;
-    padding: 0px 65px 16px 65px;
   }
   
   .img-user-profile {
     width: 12rem;
     height: 12rem;
+  }
+
+  .profile-container ul {
+    width: 500px;
   }
 
   .profile-container ul li {
@@ -919,7 +1037,16 @@ footer {
     font-size: 1.1rem;
   }
 
-  .btn-edit-profile {
+  #edit-profile-form, #upload-documents-form {
+    margin: 0 auto;
+  }
+
+  .upload-documents-title {
+    font-size: 0.82rem;
+    margin-bottom: 8px;
+  }
+
+  .btn-edit-profile, .btn-delete-account {
     width: 200px;
     height: 40px;
     font-size: 0.8rem;
@@ -1000,10 +1127,14 @@ footer {
     width: 110px;
   }
   
-  .btn-back-menu, .btn-delete-product {
+  .btn-back-menu, .btn-delete-product, .btn-update-product {
     width: 150px;
     font-size: 0.8rem;
-    margin: 22px auto 0px;
+    margin: 8px auto 0px;
+  }
+
+  .btn-update-product {
+    margin: 0px auto;
   }
 
   .btn-empty-cart {
@@ -1093,6 +1224,18 @@ footer {
     margin: 0px 0px 8px 8px;
   }
 
+  #accept-toast-btn {
+    width: 70px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+  
+  #cancel-toast-btn {
+    width: 70px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
   .title-category {
     font-size: 1.3rem;
     margin-bottom: 20px;
@@ -1110,14 +1253,6 @@ footer {
   .form-select {
     font-size: 0.7rem;
     margin-bottom: 10px;
-  }
-  
-  #edit-profile-img {
-    margin-top: 22px;
-  }
-
-  #edit-profile-form {
-    margin: 0 auto;
   }
 
   .form-add-product-container {
@@ -1146,7 +1281,7 @@ footer {
     justify-content: center;
   }
 
-  .btn-signup, .btn-login, .btn-add-product, .btn-submit {
+  .btn-signup, .btn-login, .btn-add-product, .btn-submit, .btn-modify-rol {
     width: 170px;
     height: 34px;
     font-size: 0.7rem;
@@ -1158,26 +1293,38 @@ footer {
     font-size: 0.7rem;
   }
   
-  .btn-signup-gh, .btn-login-gh {
+  .btn-signup-gh, .btn-login-gh, .btn-delete-user, .btn-delete-inactive-users {
     width: 170px;
     height: 34px;
     font-size: 0.7rem;
     margin-bottom: 13px;
   }
 
-  .profile-container, .edit-profile-form-container {
+  .btn-delete-inactive-users {
+    width: auto;
+    padding: 0px 16px;
+  }
+
+  .profile-container {
+    margin: 0 auto;
     display: block;
   }
 
   .img-user-profile-container {
+    width: auto;
     margin: 0 auto;
     margin-bottom: 25px;
-    padding: 0px 60px 13px 60px;
   }
   
   .img-user-profile {
     width: 10rem;
     height: 10rem;
+  }
+
+  .profile-container ul {
+    width: auto;
+    margin: 0 auto;
+    margin-bottom: 16px;
   }
 
   .profile-container ul li {
@@ -1195,7 +1342,12 @@ footer {
     font-size: 1rem;
   }
 
-  .btn-edit-profile {
+  .upload-documents-title {
+    font-size: 0.73rem;
+    margin-bottom: 4px;
+  }
+
+  .btn-edit-profile, .btn-delete-account {
     width: 170px;
     height: 34px;
     font-size: 0.7rem;
@@ -1219,6 +1371,16 @@ footer {
   
   .role-message {
     font-size: 0.8rem;
+  }
+
+  .user-info-card-list {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .product-info-card-list {
+    font-size: 0.8rem;
+    margin-bottom: 0px;
   }
 
   .pagination-container {
@@ -1305,11 +1467,15 @@ footer {
     width: 90px;
   }
   
-  .btn-back-menu, .btn-delete-product {
+  .btn-back-menu, .btn-delete-product, .btn-update-product {
     width: 120px;
     font-size: 0.7rem;
-    margin: 18px auto 0px;
+    margin: 14px auto 0px;
     border: 1.7px solid #40372B;
+  }
+
+  .btn-update-product {
+    margin: 0px auto;
   }
 
   .btn-empty-cart {
@@ -1415,6 +1581,20 @@ footer {
     font-size: 0.6rem;
   }
 
+  #accept-toast-btn {
+    width: 62px;
+    height: 24px;
+    font-size: 0.6rem;
+    margin: 4px 4px 4px 8px;
+  }
+  
+  #cancel-toast-btn {
+    width: 62px;
+    height: 24px;
+    font-size: 0.6rem;
+    margin: 4px 2px 4px 4px;
+  }
+
   .toastify-right {
     width: max-content;
   }
@@ -1442,23 +1622,11 @@ footer {
     width: 150px;
   }
 
-  #edit-profile-img-container {
-    width: 150px;
-  }
-
-  #edit-profile-img {
-    margin-top: 5px;
-  }
-
-  #edit-profile-form {
-    width: 150px;
-  }
-
   .btn-signup-container, .btn-login-container, .btn-submit-container {
     margin: 10px 0px;
   }
   
-  .btn-signup, .btn-login, .btn-add-product, .btn-submit {
+  .btn-signup, .btn-login, .btn-add-product, .btn-submit, .btn-modify-rol {
     width: 140px;
     height: 30px;
     font-size: 0.6rem;
@@ -1470,17 +1638,20 @@ footer {
     font-size: 0.6rem;
   }
 
-  .btn-signup-gh, .btn-login-gh {
+  .btn-signup-gh, .btn-login-gh, .btn-delete-user, .btn-delete-inactive-users {
     width: 140px;
     height: 30px;
     font-size: 0.6rem;
     margin-bottom: 10px;
   }
+
+  .btn-delete-inactive-users {
+    width: auto;
+    padding: 0px 10px;
+  }
   
   .img-user-profile-container {
-    width: 150px;
     margin-bottom: 15px;
-    padding: 0px 40px 10px 40px;
   }
   
   .img-user-profile {
@@ -1503,7 +1674,16 @@ footer {
     font-size: 0.8rem;
   }
 
-  .btn-edit-profile {
+  #edit-profile-form, #upload-documents-form {
+    width: 150px;
+  }
+
+  .upload-documents-title {
+    font-size: 0.53rem;
+    margin-bottom: 0px;
+  }
+
+  .btn-edit-profile, .btn-delete-account {
     width: 140px;
     height: 30px;
     font-size: 0.6rem;
@@ -1543,6 +1723,10 @@ footer {
     font-size: 0.8rem;
   } 
   
+  .user-info-card-list {
+    font-size: 0.7rem;
+  }
+
   .pagination-container {
     margin: 12px 0px;
   }
@@ -1614,11 +1798,15 @@ footer {
     width: 80px;
   }
   
-  .btn-back-menu, .btn-delete-product {
-    width: auto;
+  .btn-back-menu, .btn-delete-product, .btn-update-product {
+    width: 80px;
     font-size: 0.5rem;
-    margin: 16px auto 0px;
+    margin: 8px auto 0px;
     border: 1.4px solid #40372B;
+  }
+
+  .btn-update-product {
+    margin: 0px auto;
   }
 
   .btn-empty-cart {

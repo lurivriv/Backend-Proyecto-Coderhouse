@@ -1,5 +1,6 @@
 import { ProductsService } from "../services/products.service.js"
 import { CartsService } from "../services/carts.service.js"
+import { UsersService } from "../services/users.service.js"
 import { GetUserInfoDto } from "../dao/dto/getUserInfo.dto.js"
 import { EError } from "../enums/EError.js"
 import { CustomError } from "../services/customErrors/customError.service.js"
@@ -7,31 +8,15 @@ import { databaseGetError, paramError } from "../services/customErrors/errors/ge
 import { logger } from "../helpers/logger.js"
 
 export class ViewsController {
-    static renderHome = async (req, res, next) => {
-        try {
-            const productsNoFilter = await ProductsService.getProductsNoFilter()
-            
-            // Error customizado
-            if (!productsNoFilter) {
-                CustomError.createError ({
-                    name: "get products error",
-                    cause: databaseGetError(),
-                    message: "Error al obtener los productos: ",
-                    errorCode: EError.DATABASE_ERROR
-                })
-            }
-
-            const userInfoDto = new GetUserInfoDto(req.user)
-            res.render("home", { productsNoFilter, userInfoDto, title: "Sabores verdes - Uruguay" })
-        } catch (error) {
-            next(error)
-        }
-    }
-
     static renderRealTimeProducts = async (req, res) => {
         try {
+            const productInfo = req.body
+            productInfo.thumbnail = req.file?.filename
+
             const userInfoDto = new GetUserInfoDto(req.user)
-            res.render("realTimeProducts", { userInfoDto, title: "Menú - Sabores verdes" })
+            const products = await ProductsService.getProductsNoFilter(userInfoDto.role, userInfoDto._id)
+            
+            res.render("realTimeProducts", { products, userInfoDto, title: "Mis productos - Sabores verdes" })
         } catch (error) {
             logger.error(`real time products: Error al renderizar la página: ${error}`)
             res.json({ status: "error", error: error })
@@ -103,7 +88,7 @@ export class ViewsController {
             }
     
             const userInfoDto = new GetUserInfoDto(req.user)
-            res.render("productsPaginate", { dataProducts, userInfoDto })
+            res.render("productsPaginate", { dataProducts, userInfoDto, title: "Menú - Sabores verdes" })
         } catch (error) {    
             next(error)
         }
@@ -157,6 +142,7 @@ export class ViewsController {
             })
     
             const userInfoDto = new GetUserInfoDto(req.user)
+
             res.render("cart", { cart, totalPrice, userInfoDto, title: "Carrito - Sabores verdes" })
         } catch (error) {
             next(error)
@@ -205,6 +191,26 @@ export class ViewsController {
             res.render("profile", { userInfoDto, userFirstName, userLastName, title: "Perfil - Sabores verdes" })   
         } catch (error) {
             res.json({ status: "error", error: "Error al obtener el perfil" })
+        }
+    }
+
+    static renderUsersInfo = async (req, res) => {
+        try {
+            const usersData = await UsersService.getUsers()
+
+            const users = usersData.map((user) => {
+                const userInfo = new GetUserInfoDto(user)
+        
+                return {
+                    ...userInfo,
+                    last_connection: user.last_connection,
+                }
+            })
+
+            const userInfoDto = new GetUserInfoDto(req.user)
+            res.render("usersInfo", { users, userInfoDto, title: "Usuarios - Sabores verdes" })   
+        } catch (error) {
+            res.json({ status: "error", error: "Error al obtener los datos de los usuarios" })
         }
     }
 

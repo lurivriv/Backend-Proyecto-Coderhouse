@@ -6,11 +6,17 @@ export class ProductManagerDB {
         this.model = productsModel
     }
 
-    // Obtener todos los productos sin filtro (home)
-    async getProductsNoFilter() {
+    // Obtener todos los productos sin filtro y según usuario
+    async getProductsNoFilter(userRole, userId) {
         try {
-            const result = await this.model.find().lean()
-            return result
+            const allProducts = await this.model.find().lean()
+
+            if (userRole === "premium" && userId) {
+                const userProducts = allProducts.filter((product) => product.owner && product.owner.toString() === userId.toString())
+                return userProducts
+            }
+
+            return allProducts
         } catch (error) {
             logger.error(`get products no filter error: Error al obtener los productos: ${error}`)
             throw new Error(`get products no filter error: Error al obtener los productos: ${error}`)

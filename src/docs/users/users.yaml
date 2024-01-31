@@ -32,6 +32,30 @@ paths:
               schema:
                 $ref: "#components/schemas/ErrorMessage"
 
+    delete:
+      summary: Eliminar usuarios inactivos (Iniciar sesión con admin)
+      tags:
+        - Usuarios
+      responses:
+        "200":
+          description: Se eliminaron los usuarios inactivos
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/DeleteInactiveUsersSuccess"
+        "401":
+          description: Este usuario no tiene permisos para eliminar los usuarios inactivos
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se eliminaron los usuarios inactivos por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+  
   /api/users/{uid}:
     get:
       summary: Obtener un usuario por Id (Iniciar sesión con admin)
@@ -114,6 +138,37 @@ paths:
               schema:
                 $ref: "#components/schemas/ErrorMessage"
 
+    delete:
+      summary: Eliminar un usuario por Id (Iniciar sesión)
+      tags:
+        - Usuarios
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El Id del usuario a eliminar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se eliminó el usuario con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/DeleteUserSuccess"
+        "404":
+          description: El usuario a eliminar no fue encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+        "500":
+          description: No se eliminó el usuario por un error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ErrorMessage"
+  
   /api/users/premium/{uid}:
     put:
       summary: Modificar el rol de un usuario (Iniciar sesión con admin)
@@ -190,7 +245,7 @@ paths:
             application/json:
               schema:
                 $ref: "#components/schemas/ErrorMessage"
-        
+
 components:
   schemas:
     User:
@@ -200,9 +255,6 @@ components:
           type: string
           format: ObjectId
           description: Id generado por la base de datos (requerido)
-        avatar:
-          type: string
-          description: Foto de perfil
         full_name:
           type: string
           description: Nombre y apellido del usuario (generado a partir de first_name y last_name o del github_name)
@@ -228,6 +280,25 @@ components:
           type: string
           format: ObjectId
           description: Id del carrito asociado al usuario (generado por la base de datos)
+        documents:
+          type: array
+          description: Documentos subidos por el usuario (requerido para ser premium)
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              reference:
+                type: string
+        last_connection:
+          type: date
+          description: Fecha de última actividad del usuario
+        status:
+          type: string
+          description: Estado de los documentos
+        avatar:
+          type: string
+          description: Foto de perfil
         github_user:
           type: boolean
           description: Booleano correspondiente a usuarios locales o de GitHub
@@ -236,7 +307,6 @@ components:
           description: Usuario de GitHub del usuario (aclaración del email en caso de ser un usuario local) (único)
       example:
         _id: hjsg892778234sde32
-        avatar: "noImgProfile-profile.jpg"
         full_name: Admin Coder
         first_name: Admin
         last_name: Coder
@@ -245,6 +315,10 @@ components:
         password: usy89127kjashd9123asd
         role: admin
         cart: d43r34nfrh43rj43t4
+        documents: []
+        last_connection: 2024-01-27T02:18:17.188Z
+        status: pendiente
+        avatar: "noImgProfile-profile.jpg"
         github_user: false
         github_username: Registrado con email adminCoder@coder.com
 
@@ -256,7 +330,7 @@ components:
         message:
           type: string
         userInfoDto:
-          $ref: "#components/schemas/user"
+          $ref: "#components/schemas/User"
       example:
         status: success
         message: Usuario actualizado
@@ -267,7 +341,68 @@ components:
           email: prueba@gmail.com
           age: 20
           role: usuario
+          status: pendiente
           cart: kkkdsdkwee23w3e32
+
+    DeleteUserSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        deletedUser:
+          $ref: "#components/schemas/User"
+      example:
+        status: success
+        message: Usuario eliminado
+        deletedUser:
+          _id: hjsg892778234sde32
+          full_name: Nombre Apellido
+          first_name: Nombre
+          last_name: Apellido
+          email: usuario@gmail.com
+          age: 20
+          password: vefg3454354tgt556t5
+          role: usuario
+          cart: fnerj48yr43rfu
+          documents: []
+          last_connection: 2024-01-27T02:18:17.188Z
+          status: pendiente
+          avatar: "noImgProfile-profile.jpg"
+          github_user: false
+          github_username: Registrado con email usuario@gmail.com
+
+    DeleteInactiveUsersSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        deletedInactiveUsers:
+          type: array
+          items:
+            $ref: "#components/schemas/User"
+      example:
+        status: success
+        message: Los usuarios inactivos fueron eliminados
+        deletedInactiveUsers:
+          - _id: hjsg892778234sde32
+            full_name: Nombre Apellido
+            first_name: Nombre
+            last_name: Apellido
+            email: usuario@gmail.com
+            age: 20
+            password: vefg3454354tgt556t5
+            role: usuario
+            cart: fnerj48yr43rfu
+            documents: []
+            last_connection: 2024-01-27T02:18:17.188Z
+            status: pendiente
+            avatar: "noImgProfile-profile.jpg"
+            github_user: false
+            github_username: Registrado con email usuario@gmail.com
 
     AddDocumentUserSuccess:
       type: object
@@ -292,7 +427,7 @@ components:
           - name: identification
             reference: prueba@gmail.com-document-identificacion.pdf
           - name: address
-            reference: prueba@gmail.com-comprobanteDeDomicilio.pdf
+            reference: prueba@gmail.com-document-comprobanteDeDomicilio.pdf
           - name: account_statement
             reference: prueba@gmail.com-document-comprobanteDeEstadoDeCuenta.pdf
 
@@ -357,6 +492,6 @@ components:
         - name: identification
           reference: prueba@gmail.com-document-identificacion.pdf
         - name: address
-          reference: prueba@gmail.com-comprobanteDeDomicilio.pdf
+          reference: prueba@gmail.com-document-comprobanteDeDomicilio.pdf
         - name: account_statement
           reference: prueba@gmail.com-document-comprobanteDeEstadoDeCuenta.pdf

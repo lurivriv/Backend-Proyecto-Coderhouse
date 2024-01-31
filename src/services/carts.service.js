@@ -32,4 +32,8 @@ export class CartsService {
     static deleteProductInCart(cartId, productId) {
         return cartsDao.deleteProductInCart(cartId, productId)
     }
+
+    static deleteCart(cartId) {
+        return cartsDao.deleteCart(cartId)
+    }
 }

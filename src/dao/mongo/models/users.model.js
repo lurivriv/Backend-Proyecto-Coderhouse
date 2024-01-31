@@ -31,7 +31,8 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: function() {
             return !this.github_user
-        }
+        },
+        min: 0
     },
     password: {
         type: String,

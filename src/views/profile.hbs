@@ -2,16 +2,17 @@
     <h1 class="title-category">TU PERFIL</h1>
     <div class="profile-container">
         <div class="img-user-profile-container">
-            <img class="img-user-profile avatar-profile" src="/assets/users/img/{{userInfoDto.avatar}}" alt="Foto de perfil de {{userInfoDto.full_name}}">
+            <img class="img-user-profile" src="/assets/users/img/{{userInfoDto.avatar}}" alt="Foto de perfil de {{userInfoDto.full_name}}">
         </div>
         <ul>
-            <li><b class="item-profile">Nombre y apellido: </b><span class="data-item-profile full-name-profile">{{userInfoDto.full_name}}</span></li>
-            <li><b class="item-profile">Email: </b><span class="data-item-profile email-profile">{{userInfoDto.email}}</span></li>
-            <li><b class="item-profile">Edad: </b><span class="data-item-profile age-profile">{{userInfoDto.age}}</span></li>
+            <li><b class="item-profile">Nombre y apellido: </b><span class="data-item-profile">{{userInfoDto.full_name}}</span></li>
+            <li><b class="item-profile">Email: </b><span class="data-item-profile">{{userInfoDto.email}}</span></li>
+            <li><b class="item-profile">Edad: </b><span class="data-item-profile">{{userInfoDto.age}}</span></li>
             {{#if userInfoDto.github_username}}
                 <li><b class="item-profile">Usuario de GitHub: </b><span class="data-item-profile">{{userInfoDto.github_username}}</span></li>
             {{/if}}
             <li><b class="item-profile">Rol: </b><span class="data-item-profile">{{userInfoDto.role}}</span></li>
+            <li><b class="item-profile">Documentos: </b><span class="data-item-profile">{{userInfoDto.status}}</span></li>
             <li class="btn-item-profile">
                 <div class="btn-edit-profile-container">
                     <button type="button" class="btn-edit-profile" id="edit-profile-btn" data-user-id="{{userInfoDto._id}}">Editar perfil</button>
@@ -19,15 +20,17 @@
             </li>
         </ul>
     </div>
+
+    {{!-- Editar perfil --}}
     <div class="form-container edit-profile-form-container d-none">
-        <div class="img-user-profile-container" id="edit-profile-img-container">
-            <img class="img-user-profile avatar-profile" src="/assets/users/img/{{userInfoDto.avatar}}" alt="Foto de perfil de {{userInfoDto.full_name}}">
-            <div class="mb-lg-3 mb-0" id="edit-profile-img">
+        <div class="img-edit-user-profile-container">
+            <img class="img-user-profile" src="/assets/users/img/{{userInfoDto.avatar}}" alt="Foto de perfil de {{userInfoDto.full_name}}">
+        </div>
+        <form id="edit-profile-form" action="/api/users/{{userInfoDto._id}}" enctype="multipart/form-data">
+            <div class="mb-lg-3 mb-0">
                 <label for="avatar" class="form-label">Foto de perfil</label>
                 <input type="file" name="avatar" id="avatar" class="form-control">
             </div>
-        </div>
-        <form id="edit-profile-form" method="put" action="/api/users/{{userInfoDto._id}}" enctype="multipart/form-data">
             <div class="mb-lg-3 mb-0">
                 <label for="first_name" class="form-label">Nombre</label>
                 <input type="text" name="first_name" placeholder="{{userFirstName}}" value="{{userFirstName}}"  id="first_name" class="form-control">
@@ -48,9 +51,30 @@
                 <button type="submit" class="btn-submit">Guardar cambios</button>
             </div>
         </form>
+        <form id="upload-documents-form" method="post" action="/api/users/{{userInfoDto._id}}/documents" enctype="multipart/form-data">
+            <p class="upload-documents-title">Subir los 3 documentos para poder ser premium: </p>
+            <div class="mb-lg-3 mb-0">
+                <label for="identification" class="form-label">Identificación</label>
+                <input type="file" name="identification" id="identification" class="form-control">
+            </div>
+            <div class="mb-lg-3 mb-0">
+                <label for="address" class="form-label">Comprobante de domicilio</label>
+                <input type="file" name="address" id="address" class="form-control">
+            </div>
+            <div class="mb-lg-3 mb-0">
+                <label for="account_statement" class="form-label">Comprobante de estado de cuenta</label>
+                <input type="file" name="account_statement" id="account_statement" class="form-control">
+            </div>
+            <div class="btn-submit-container">
+                <button type="submit" class="btn-submit">Subir documentos</button>
+            </div>
+        </form>
     </div>
     <div class="btn-logout-container">
         <button type="button" class="btn-logout" onclick="window.location.href = '/api/sessions/logout'">Cerrar sesión</button>
+    </div>
+    <div class="btn-container">
+        <button type="button" class="btn-delete-account" data-user-id="{{userInfoDto._id}}">Eliminar cuenta</button>
     </div>
 </div>
 
