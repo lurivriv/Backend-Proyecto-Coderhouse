@@ -20,4 +20,12 @@ export class UsersService {
     static updateUser(userId, user) {
         return usersDao.updateUser(userId, user)
     }
+
+    static deleteUser(userId) {
+        return usersDao.deleteUser(userId)
+    }
+
+    static deleteInactiveUsers(lastConnection) {
+        return usersDao.deleteInactiveUsers(lastConnection)
+    } 
 }

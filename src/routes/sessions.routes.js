@@ -2,6 +2,7 @@ import { Router } from "express"
 import passport from "passport"
 import { config } from "../config/config.js"
 import { uploadProfile } from "../utils.js"
+import { noSessionMiddleware } from "../middlewares/auth.js"
 import { SessionsController } from "../controllers/sessions.controller.js"
 
 const router = Router()
@@ -31,13 +32,13 @@ router.post("/login", passport.authenticate("loginLocalStrategy", {
 // Fail login
 router.get("/fail-login", SessionsController.failLogin)
 
-// Restablecer contraseña
+// Restablecer contraseña (POST: http://localhost:8080/api/sessions/forgot-password)
 router.post("/forgot-password", SessionsController.forgotPassword)
 
 // Nueva contraseña
 router.post("/reset-password", SessionsController.resetPassword)
 
 // Logout (GET: http://localhost:8080/api/sessions/logout)
-router.get("/logout", SessionsController.logout)
+router.get("/logout", noSessionMiddleware, SessionsController.logout)
 
 export { router as sessionsRouter }

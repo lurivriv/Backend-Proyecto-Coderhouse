@@ -14,7 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     {{!-- Custom css --}}
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="icon" href="/assets/sabores-verdes.ico">
+    <link rel="icon" href="/assets/logo/sabores-verdes.ico">
     <title>{{title}}</title>
 </head>
 <body>
@@ -23,33 +23,36 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="/">
-                <img src="/assets/logo-saboresverdes.svg" alt="Logo de Sabores Verdes">
+            <a class="navbar-brand" href="/products">
+                <img src="/assets/logo/logo-saboresverdes.svg" alt="Logo de Sabores Verdes">
             </a>
             <button class="btn-cart-widget" data-cart-id="{{#if userInfoDto}}{{userInfoDto.cart}}{{/if}}" onclick="window.location.href = '{{#if userInfoDto}}/carts/{{userInfoDto.cart}}{{/if}}'">
-                <img class="icon-cart-widget" src="/assets/icon-cart.png" alt="Carrito">
+                <img class="icon-cart-widget" src="/assets/icons/icon-cart.png" alt="Carrito">
                 <span class="counter-cart-widget d-none">0</span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/realTimeProducts">REAL TIME PRODUCTS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/products">PRODUCTS PAGINATE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/signup">REGISTRARSE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">INICIAR SESIÓN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profile">PERFIL</a>
-                    </li>
+                    {{#if userInfoDto}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/products">MENÚ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/realTimeProducts">MIS PRODUCTOS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/users-info">USUARIOS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">PERFIL</a>
+                        </li>
+                    {{else}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/signup">REGISTRARSE</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">INICIAR SESIÓN</a>
+                        </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -61,7 +64,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-12 pt-lg-4 pt-4 pb-lg-0 pb-2 text-center text-md-start">
-                    <a class="logo-footer-container" href="/"><img class="logo-footer mt-md-2" src="/assets/logo-saboresverdes.svg" alt="Logo de sabores verdes"></a>
+                    <a class="logo-footer-container" href="/products"><img class="logo-footer mt-md-2" src="/assets/logo/logo-saboresverdes.svg" alt="Logo de sabores verdes"></a>
                     <p class="text-footer pt-lg-2 pt-1">Nos esforzamos por ofrecerte lo mejor en comida casera <b>basada en plantas</b>. Creemos en el poder de la alimentación consciente y nos comprometemos a brindarte opciones deliciosas que también sean amigables con el medio ambiente y los animales.</p>
                     <p class="text-footer py-0"><b>¡Gracias por elegirnos!</b></p>
                 </div>
@@ -72,13 +75,13 @@
                 <div class="col-md-4 col-12 px-md-5 pt-lg-4 pb-2 text-center text-md-start">
                     <h4 class="titles-footer">Contacto</h4>
                     <ul class="text-footer pt-lg-2 pt-1">
-                        <li class="my-1 social-media-footer"><a href="https://www.whatsapp.com/?lang=es" target="_blank"><img class="icon-social-media-footer" src="/assets/icon-whatsapp.png" alt="Whatsapp">+598 111 111 111</a></li>
-                        <li class="mt-3 social-media-footer"><a href="https://www.instagram.com/" target="_blank"><img class="icon-social-media-footer" src="/assets/icon-instagram.png" alt="Instagram">@saboresverdes.uy</a></li>
+                        <li class="my-1 social-media-footer"><a href="https://www.whatsapp.com/?lang=es" target="_blank"><img class="icon-social-media-footer" src="/assets/icons/icon-whatsapp.png" alt="Whatsapp">+598 111 111 111</a></li>
+                        <li class="mt-3 social-media-footer"><a href="https://www.instagram.com/" target="_blank"><img class="icon-social-media-footer" src="/assets/icons/icon-instagram.png" alt="Instagram">@saboresverdes.uy</a></li>
                     </ul>
                 </div>
             </div>
             <div class="row">
-                <p class="copyright-footer">© Todos los derechos reservados - 2023</p>
+                <p class="copyright-footer">© Todos los derechos reservados - 2024</p>
             </div>
         </div>
     </footer>

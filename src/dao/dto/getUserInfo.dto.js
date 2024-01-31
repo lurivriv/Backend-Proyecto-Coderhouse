@@ -6,6 +6,7 @@ export class GetUserInfoDto {
         this.email = userInfo.email
         this.age = userInfo.age
         this.role = userInfo.role
+        this.status = userInfo.status
         this.cart = userInfo.cart
 
         if (userInfo.github_user) {

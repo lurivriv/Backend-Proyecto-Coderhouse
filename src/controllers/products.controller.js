@@ -1,6 +1,9 @@
-import { ProductsService } from "../services/products.service.js"
 import { productsModel } from "../dao/mongo/models/products.model.js"
 import { usersModel } from "../dao/mongo/models/users.model.js"
+import { ProductsService } from "../services/products.service.js"
+import { UsersService } from "../services/users.service.js"
+import { CartsService } from "../services/carts.service.js"
+import { sendDeleteProductEmail } from "../helpers/email.js"
 import { generateProductMock } from "../helpers/mock.js"
 import { EError } from "../enums/EError.js"
 import { CustomError } from "../services/customErrors/customError.service.js"
@@ -147,6 +150,7 @@ export class ProductsController {
             const { pid } = req.params
             const { title, description, code, price, stock, category } = req.body
             const thumbnail = req.file?.filename
+            const products = await ProductsService.getProductsNoFilter()
             const product = await ProductsService.getProductById(pid)
 
             // Error customizado
@@ -159,6 +163,19 @@ export class ProductsController {
                 })
             }
 
+            const existingCode = products.find((product) => product.code === code)
+            
+            if (((price && isNaN(price)) || (stock && isNaN(stock)) || price < 0 || stock < 0) ||
+                (category && category !== "vegano" && category !== "vegetariano") ||
+                (existingCode && existingCode._id.toString() !== product._id.toString())) {
+                CustomError.createError ({
+                    name: "update product error",
+                    cause: "Hay campos inválidos",
+                    message: "Error al actualizar el producto: ",
+                    errorCode: EError.INVALID_BODY_ERROR
+                })
+            }
+
             // Campos
             const updateFields = {
                 title: title || product.title,
@@ -168,6 +185,30 @@ export class ProductsController {
                 stock: stock || product.stock,
                 category: category || product.category,
                 thumbnail: thumbnail || product.thumbnail,
+            }
+
+            // Actualizar producto en el carrito (si es que está en uno)
+            const carts = await CartsService.getCarts()
+            const cartsWithProduct = carts.filter((cart) => cart.products.some((product) => product.product._id.toString() === pid))
+
+            if (cartsWithProduct.length !== 0) {
+                for (const cart of cartsWithProduct) {
+                    const updatedProducts = cart.products.map((productInCart) => {
+                        if (productInCart.product._id.toString() === pid) {
+                            return {
+                                product: {
+                                    ...productInCart.product,
+                                    ...updateFields,
+                                },
+                                quantity: productInCart.quantity,
+                                _id: productInCart._id,
+                            }
+                        }
+                        return productInCart
+                    })
+
+                    await CartsService.updateProductsInCart(cart._id, updatedProducts)
+                }
             }
 
             if ((req.user.role === "premium" && product.owner.toString() === req.user._id.toString()) || req.user.role === "admin") {
@@ -193,7 +234,26 @@ export class ProductsController {
             const product = await ProductsService.getProductById(pid)
 
             if ((req.user.role === "premium" && product.owner.toString() === req.user._id.toString()) || req.user.role === "admin") {
+                // Eliminar producto eliminado del carrito (si es que está en uno)
+                const carts = await CartsService.getCarts()
+                const cartsWithProduct = carts.filter((cart) => cart.products.some((product) => product.product._id.toString() === pid))
+
+                if (cartsWithProduct.length !== 0) {
+                    for (const cart of cartsWithProduct) {
+                        await CartsService.deleteProductInCart(cart._id, pid)
+                    }
+                }
+
                 const deletedProduct = await ProductsService.deleteProduct(pid)
+
+                // Enviar mail si el producto eliminado es de un usuario premium y no del admin
+                if ((req.user.role === "admin" && product.owner.toString() !== req.user._id.toString()) || (req.user.role === "premium" && product.owner.toString() === req.user._id.toString())) {
+                    const owner = await UsersService.getUserById(product.owner)
+                    const ownerEmail = owner.email
+
+                    await sendDeleteProductEmail(ownerEmail, product.title)
+                }
+
                 res.json({ status: "success", message: "Producto eliminado", deletedProduct })
             } else {
                 // Error customizado

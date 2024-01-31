@@ -182,7 +182,7 @@ paths:
             $type: string
       responses:
         "200":
-          description: Se obtuvo el producto por Id con éxito
+          description: Se eliminó el producto con éxito
           content:
             application/json:
               schema:
@@ -259,7 +259,7 @@ components:
         message:
           type: string
         addedProduct:
-          $ref: "#components/schemas/product"
+          $ref: "#components/schemas/Product"
       example:
         status: success
         message: Producto creado
@@ -282,7 +282,7 @@ components:
         message:
           type: string
         updatedProduct:
-          $ref: "#components/schemas/product"
+          $ref: "#components/schemas/Product"
       example:
         status: success
         message: Producto actualizado
@@ -305,7 +305,7 @@ components:
         message:
           type: string
         deletedProduct:
-          $ref: "#components/schemas/product"
+          $ref: "#components/schemas/Product"
       example:
         status: success
         message: Producto eliminado
