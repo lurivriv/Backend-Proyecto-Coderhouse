@@ -97,6 +97,6 @@ Además de las tecnologías trabajadas en clase, se utilizaron las siguientes he
 
 - [**Bootstrap:**](https://getbootstrap.com/) para facilitar el diseño responsivo del sitio web, proporcionando un conjunto de estilos y componentes predefinidos.
 - [**Toastify Js:**](https://apvarun.github.io/toastify-js/) para agregar notificaciones emergentes y proporcionarle feedback de sus acciones al usuario.
-- [**Railway.app:**](https://railway.app/) para realizar el despliegue de la aplicación y llevarla a un ambiente de producción.
+- [**Render:**](https://render.com/?_gl=1*1n0164c*_gcl_au*MzAwNDI5NDQ4LjE3MjU0MzE3NDY.*_ga*MTYxMzk5NTUwNi4xNzI1NDMxNzQ0*_ga_QK9L9QJC5N*MTcyNTQzMTc0My4xLjEuMTcyNTQzMTc1Ni40Ny4wLjA.) para realizar el despliegue de la aplicación y llevarla a un ambiente de producción.
 
 ### [**¡Explora el e-commerce de Sabores Verdes!**](https://sabores-verdes-proyecto-backend.onrender.com/)
